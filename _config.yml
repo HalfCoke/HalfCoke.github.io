@@ -3,8 +3,9 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: CCCCCoke
-subtitle: '可乐喝多了胖'
+title: '小小小站'
+subtitle: 'CCCCCoke'
+subtitle_desc: '可乐喝多了胖'
 description: ''
 keywords:
 author: Half Coke
@@ -16,6 +17,8 @@ menu:
   archive: /archives
   about: /about
   search: /search
+# 博客图标
+favicon_ico: themes/hexo-theme-skapp/source/img/logo.svg
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'
