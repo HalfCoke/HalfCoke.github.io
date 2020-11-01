@@ -3,11 +3,11 @@
   <title>CCCCCoke</title>
   
   <subtitle>CCCCCoke</subtitle>
-  <link href="http://halfcoke.github.io/atom.xml" rel="self"/>
+  <link href="https://halfcoke.github.io/atom.xml" rel="self"/>
   
-  <link href="http://halfcoke.github.io/"/>
+  <link href="https://halfcoke.github.io/"/>
   <updated>2020-11-01T12:33:25.957Z</updated>
-  <id>http://halfcoke.github.io/</id>
+  <id>https://halfcoke.github.io/</id>
   
   <author>
     <name>[object Object]</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://halfcoke.github.io/2020/11/01/hello-world/"/>
-    <id>http://halfcoke.github.io/2020/11/01/hello-world/</id>
+    <link href="https://halfcoke.github.io/2020/11/01/hello-world/"/>
+    <id>https://halfcoke.github.io/2020/11/01/hello-world/</id>
     <published>2020-11-01T10:57:23.671Z</published>
     <updated>2020-11-01T12:33:25.957Z</updated>
     
