@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <url>
+    <loc>http://halfcoke.github.io/2020/11/01/hello-world/</loc>
+    
+    <lastmod>2020-11-01</lastmod>
+    
+  </url>
+  
+
+  <url>
+    <loc>http://halfcoke.github.io/</loc>
+    <lastmod>2020-11-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  
+
+  
+</urlset>
