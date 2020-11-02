@@ -64,8 +64,10 @@
         {% else %}
         <div class="post-announce">
             {{ __('copyright_statement.three') }}
-            <a href="{{ config.url }}">{{ get_setting('title') }}</a>
-            {{ __('copyright_statement.four') }}：{{ get_setting('title') }}（<a href="{{ config.url }}{{ url_for(page.path) }}">{{ config.url }}{{ url_for(page.path) }}</a>）
+            {#<a href="{{ config.url }}">{{ get_setting('title') }}</a>#}
+            <a href="{{ config.url }}">{{ config.author.name }}</a>
+            {#{{ __('copyright_statement.four') }}：{{ get_setting('title') }}（<a href="{{ config.url }}{{ url_for(page.path) }}">{{ config.url }}{{ url_for(page.path) }}</a>）#}
+            {{ __('copyright_statement.four') }}：{{ config.author.name }}（<a href="{{ config.url }}{{ url_for(page.path) }}">{{ config.url }}{{ url_for(page.path) }}</a>）
         </div>
         {% endif %}
 
