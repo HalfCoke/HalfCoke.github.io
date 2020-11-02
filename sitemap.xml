@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://halfcoke.github.io/2020/11/01/hello-world/</loc>
+    <loc>https://halfcoke.github.io/2020/fa08f4c5/</loc>
     
     <lastmod>2020-11-02</lastmod>
     
@@ -25,14 +25,28 @@
 
   
   <url>
-    <loc>https://halfcoke.github.io/tags/Hello/</loc>
+    <loc>https://halfcoke.github.io/tags/Hexo/</loc>
     <lastmod>2020-11-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>https://halfcoke.github.io/tags/world/</loc>
+    <loc>https://halfcoke.github.io/tags/GitHub/</loc>
+    <lastmod>2020-11-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://halfcoke.github.io/tags/Windows/</loc>
+    <lastmod>2020-11-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://halfcoke.github.io/tags/%E5%9B%BE%E5%BA%8A/</loc>
     <lastmod>2020-11-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
@@ -41,14 +55,7 @@
 
   
   <url>
-    <loc>https://halfcoke.github.io/categories/test/</loc>
-    <lastmod>2020-11-02</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://halfcoke.github.io/categories/test/ttt/</loc>
+    <loc>https://halfcoke.github.io/categories/WEB%E9%83%A8%E7%BD%B2/</loc>
     <lastmod>2020-11-02</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
