@@ -4,7 +4,7 @@
   <url>
     <loc>https://halfcoke.github.io/2020/11/01/hello-world/</loc>
     
-    <lastmod>2020-11-01</lastmod>
+    <lastmod>2020-11-02</lastmod>
     
   </url>
   
@@ -25,5 +25,19 @@
 
   
 
+  
+  <url>
+    <loc>https://halfcoke.github.io/categories/test/</loc>
+    <lastmod>2020-11-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://halfcoke.github.io/categories/test/ttt/</loc>
+    <lastmod>2020-11-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
   
 </urlset>
