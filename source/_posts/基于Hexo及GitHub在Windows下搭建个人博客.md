@@ -15,6 +15,7 @@ author:
 typora-copy-images-to: upload
 abbrlink: fa08f4c5
 date: 2020-11-02 11:44:06
+update: 2020-11-02 18:37:00
 ---
 
 # 基于Hexo及GitHub在Windows下搭建个人博客
@@ -338,4 +339,35 @@ PicGo的配置方式比较容易，我们选择`GitHub图床`
 
 ### Hexo主题配置
 
-我所使用的主题是[[hexo-theme-skapp](https://github.com/Mrminfive/hexo-theme-skapp)]，作者提供了比较详细的配置过程，大家可以直接参考。
+我所使用的主题是[hexo-theme-skapp](https://github.com/Mrminfive/hexo-theme-skapp)，作者提供了比较详细的配置过程，大家可以直接参考。
+
+### Hexo插件
+
+#### 中文标题链接处理
+
+使用Hexo的`abbrlink`插件，方法参考作者Shin的[博客]( http://www.ideashin.com/post/2a09be9d/)
+
+1. 安装
+    ```bash
+    npm install hexo-abbrlink --save
+    ```
+    
+2. 在Hexo站点配置文件`_config.yml`中修改
+
+    ```
+    permalink: :year/:abbrlink/
+    ```
+
+3. 添加abbrlink配置
+
+    ```
+    # abbrlink config
+    abbrlink:
+      alg: crc32  # 算法：crc16(default) and crc32
+      rep: hex    # 进制：dec(default) and hex
+    ```
+
+
+
+有任何问题欢迎一起探讨！
+
