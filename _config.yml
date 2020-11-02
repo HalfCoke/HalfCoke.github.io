@@ -3,26 +3,44 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: '小小小站'
+title: 'CCCCCoke'
 subtitle: 'CCCCCoke'
 subtitle_desc: '可乐喝多了胖'
 description: ''
 keywords:
-author: Half Coke
 language: zh_cn
 timezone: 'Asia/ShangHai'
 # Menu
 menu:
   home: /
   archive: /archives
-  about: /about
-  search: /search
 # 博客图标
-favicon_ico: themes/hexo-theme-skapp/source/img/logo.svg
-
+favicon_ico: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/a438d60e1807aabd60d48ff95d2c570a9b9279d0/themes/hexo-theme-skapp/source/img/logo.svg
+logo: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/a438d60e1807aabd60d48ff95d2c570a9b9279d0/themes/hexo-theme-skapp/source/img/logo.svg
+qrcode: https://github.com/HalfCoke/HalfCoke.github.io/blob/Hexo/themes/hexo-theme-skapp/source/img/qrcode.jpg?raw=true
+default_cover: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/Hexo/themes/hexo-theme-skapp/source/img/article.webp
+header_cover: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/Hexo/themes/hexo-theme-skapp/source/img/background.webp
+error_page_bg: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/Hexo/themes/hexo-theme-skapp/source/img/404.webp
+loader_img: https://github.com/HalfCoke/HalfCoke.github.io/blob/Hexo/themes/hexo-theme-skapp/source/img/loader.gif?raw=true
+# 站长信息
+author:
+  name: HalfCoke
+  link: https://github.com/HalfCoke
+about:
+  info: 本站是基于 Hexo 搭建的静态资源博客，主要用于分享日常学习、生活及工作的一些心得总结。
+  address: BeiJing, China
+  email: halfcoke@163.com
+# 评论系统
+gitTalk:
+  clientId: 0373d8209e264e713cc6
+  clientSecret: aa5d879ee9d4a36cecca5388e881a72e53177676
+  repo: HalfCoke.github.io
+  owner: halfcoke
+  admin:
+    - halfcoke
 # URL
 ## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'
-url: http://HalfCoke.github.io
+url: https://HalfCoke.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -115,3 +133,36 @@ deploy:
   type: git
   repo: https://github.com/HalfCoke/HalfCoke.github.io.git
   branch: master
+
+# Math Equations Render Support
+math:
+  enable: true
+
+  # Default(true) will load mathjax/katex script on demand
+  # That is it only render those page who has 'mathjax: true' in Front Matter.
+  # If you set it to false, it will load mathjax/katex srcipt EVERY PAGE.
+  per_page: false
+
+  engine: mathjax
+  #engine: katex
+
+  # hexo-rendering-pandoc (or hexo-renderer-kramed) needed to full MathJax support.
+  mathjax:
+    # Use 2.7.1 as default, jsdelivr as default CDN, works everywhere even in China
+    cdn: //cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+    # For newMathJax CDN (cdnjs.cloudflare.com) with fallback to oldMathJax (cdn.mathjax.org).
+    #cdn: //cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+    # For direct link to MathJax.js with CloudFlare CDN (cdnjs.cloudflare.com).
+    #cdn: //cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML
+    # For automatic detect latest version link to MathJax.js and get from Bootcss.
+    #cdn: //cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML
+
+  # hexo-renderer-markdown-it-plus (or hexo-renderer-markdown-it with markdown-it-katex plugin)
+  # needed to full Katex support.
+  katex:
+    # Use 0.7.1 as default, jsdelivr as default CDN, works everywhere even in China
+    cdn: //cdn.jsdelivr.net/npm/katex@0.7.1/dist/katex.min.css
+    # CDNJS, provided by cloudflare, maybe the best CDN, but not works in China
+    #cdn: //cdnjs.cloudflare.com/ajax/libs/KaTeX/0.7.1/katex.min.css
+    # Bootcss, works great in China, but not so well in other region
+    #cdn: //cdn.bootcss.com/KaTeX/0.7.1/katex.min.css
