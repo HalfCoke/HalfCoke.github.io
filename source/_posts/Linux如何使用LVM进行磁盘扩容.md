@@ -40,7 +40,7 @@ fdisk -l
 
 ![image-20201106185215998](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106185215998.png)
 
-可以看到我们这块磁盘有`268.4GB`大小的空间，但只有两个分区`vda1`和`vda2`。我们同样可以使用<span id="lsblk">`lsblk`来查看当前分区状态。执行结果应该类似下图：
+可以看到我们这块磁盘有`268.4GB`大小的空间，但只有两个分区`vda1`和`vda2`。我们同样可以使用<span id="lsblk">`lsblk`</span>来查看当前分区状态。执行结果应该类似下图：
 
 ![image-20201106190400637](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106190400637.png)
 
@@ -106,7 +106,7 @@ vgextend centos /dev/vda3
 
 ![image-20201106194122215](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106194122215.png)
 
-确定我们要扩容的分区，可以通过刚才执行的<a href="#lsblk">`lsblk`命令查看，我们这里要扩容的`LV Path`是`/dev/centos/root`。
+确定我们要扩容的分区，可以通过刚才执行的<a href="#lsblk">`lsblk`</a>命令查看，我们这里要扩容的`LV Path`是`/dev/centos/root`。
 
 执行以下命令：
 
