@@ -15,13 +15,13 @@ menu:
   home: /
   archive: /archives
 # 博客图标
-favicon_ico: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/a438d60e1807aabd60d48ff95d2c570a9b9279d0/themes/hexo-theme-skapp/source/img/logo.svg
-logo: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/a438d60e1807aabd60d48ff95d2c570a9b9279d0/themes/hexo-theme-skapp/source/img/logo.svg
+favicon_ico: https://gitee.com/halfcoke/blog_img/raw/master/img/logo.svg
+logo: https://gitee.com/halfcoke/blog_img/raw/master/img/logo.svg
 qrcode: https://gitee.com/halfcoke/blog_img/raw/master/img/sin_qrcode.png
-default_cover: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/Hexo/themes/hexo-theme-skapp/source/img/article.webp
-header_cover: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/Hexo/themes/hexo-theme-skapp/source/img/background.webp
-error_page_bg: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/Hexo/themes/hexo-theme-skapp/source/img/404.webp
-loader_img: https://github.com/HalfCoke/HalfCoke.github.io/blob/Hexo/themes/hexo-theme-skapp/source/img/loader.gif?raw=true
+default_cover: https://gitee.com/halfcoke/blog_img/raw/master/img/article.webp
+header_cover: https://gitee.com/halfcoke/blog_img/raw/master/img/background.webp
+error_page_bg: https://gitee.com/halfcoke/blog_img/raw/master/img/404.webp
+loader_img: https://gitee.com/halfcoke/blog_img/raw/master/img/loader.gif
 # 站长信息
 author:
   name: HalfCoke
