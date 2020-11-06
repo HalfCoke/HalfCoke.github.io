@@ -17,7 +17,7 @@ menu:
 # 博客图标
 favicon_ico: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/a438d60e1807aabd60d48ff95d2c570a9b9279d0/themes/hexo-theme-skapp/source/img/logo.svg
 logo: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/a438d60e1807aabd60d48ff95d2c570a9b9279d0/themes/hexo-theme-skapp/source/img/logo.svg
-qrcode: https://github.com/HalfCoke/HalfCoke.github.io/blob/Hexo/themes/hexo-theme-skapp/source/img/qrcode.jpg?raw=true
+qrcode: https://gitee.com/halfcoke/blog_img/raw/master/img/sin_qrcode.png
 default_cover: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/Hexo/themes/hexo-theme-skapp/source/img/article.webp
 header_cover: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/Hexo/themes/hexo-theme-skapp/source/img/background.webp
 error_page_bg: https://raw.githubusercontent.com/HalfCoke/HalfCoke.github.io/Hexo/themes/hexo-theme-skapp/source/img/404.webp
