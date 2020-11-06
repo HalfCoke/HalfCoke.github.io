@@ -1,5 +1,6 @@
 ---
 title: Linux如何使用LVM进行磁盘扩容
+subtitle: 在Linux下，使用LVM对现有磁盘进行扩容
 cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/1200px-LVM1.svg.png'
 author:
   nick: HalfCoke
