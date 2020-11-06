@@ -369,5 +369,10 @@ PicGo的配置方式比较容易，我们选择`GitHub图床`
 
 
 
-有任何问题欢迎一起探讨！
+---
 
+
+有任何问题欢迎一起探讨！
+欢迎扫码关注，不定期更新各种经验。
+
+<img src="https://gitee.com/halfcoke/blog_img/raw/master/img/qrcode.jpg" style="zoom: 67%;" />
