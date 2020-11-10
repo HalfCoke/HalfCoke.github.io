@@ -14,7 +14,7 @@
             admin: [{% for item in config.gitTalk.admin %}'{{ item }}', {% endfor %}],
             {# labels: tags, #}
             {#id: (new Date({{ page.date }})).getTime() > (new Date('2018-02-15')).getTime() ? md5(location.href) : location.href#}
-            id: md5({{ page.title }})
+            id: md5('{{ page.title }}')
         });
 
         gitalk.render('comment-container');
