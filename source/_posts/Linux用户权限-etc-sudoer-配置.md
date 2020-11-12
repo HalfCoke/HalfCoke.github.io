@@ -5,15 +5,15 @@ author:
   nick: HalfCoke
   link: 'https://halfcoke.github.io/'
 tags:
-  - linux
+  - Linux
   - 用户权限
 categories:
-  - linux
+  - Linux
 typora-copy-images-to: upload
 abbrlink: 4adf7b4
 date: 2020-11-11 18:44:10
 update: 2020-11-11 18:44:10
-cover:
+cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/sudo-command-in-linux.jpg'
 ---
 
 # 【转载】Linux /etc/sudoer 配置
