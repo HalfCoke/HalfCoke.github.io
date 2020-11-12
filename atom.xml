@@ -6,7 +6,7 @@
   <link href="https://halfcoke.github.io/atom.xml" rel="self"/>
   
   <link href="https://halfcoke.github.io/"/>
-  <updated>2020-11-12T03:48:20.668Z</updated>
+  <updated>2020-11-12T03:49:20.443Z</updated>
   <id>https://halfcoke.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://halfcoke.github.io/2020/4adf7b4/"/>
     <id>https://halfcoke.github.io/2020/4adf7b4/</id>
     <published>2020-11-11T10:44:10.000Z</published>
-    <updated>2020-11-12T03:48:20.668Z</updated>
+    <updated>2020-11-12T03:49:20.443Z</updated>
     
     <content type="html"><![CDATA[<h1 id="【转载】Linux-etc-sudoer-配置"><a href="#【转载】Linux-etc-sudoer-配置" class="headerlink" title="【转载】Linux /etc/sudoer 配置"></a>【转载】Linux /etc/sudoer 配置</h1><blockquote><p>原文链接：<a href="https://zhuanlan.zhihu.com/p/43934300">https://zhuanlan.zhihu.com/p/43934300</a></p></blockquote><p>当普通用户向其他的用户获取它的权限的时候，其他用户怎么去判断是不是需要给这样的权限给这个普通用户。其中的权限分配体现在给予权限者的<code>/etc/sudoers</code>文件当中。</p><p>比如在文件中配置有这样一条信息。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/v2-aabac307640f3d2f50be74d9c6cc2497_r.png" alt="v2-aabac307640f3d2f50be74d9c6cc2497_r"></p><ul><li><code>zhang</code>：表示用户名</li><li><code>ALL=(ALL)</code>：第一个<code>ALL</code>表示所有的主机，第二个<code>ALL</code>表示所有的用户</li><li>NOPASSWD：表示不需要密码就能切换到用户</li><li><code>/usr/bin/bash,/usr/bin/sh</code>：表示能够执行的命令</li></ul><p>这个配置的意思就是，<code>zhang</code>用户可以在任意主机上不输入密码的情况下以任意用户执行<code>/usr/bin/bash,/usr/bin/sh</code></p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/v2-df97d0ae89d65a68445075be4e4a7304_r.jpg" alt="v2-df97d0ae89d65a68445075be4e4a7304_r"></p>]]></content>
     
@@ -33,10 +33,10 @@
     
     
     
-    <category term="linux" scheme="https://halfcoke.github.io/categories/linux/"/>
+    <category term="Linux" scheme="https://halfcoke.github.io/categories/Linux/"/>
     
     
-    <category term="linux" scheme="https://halfcoke.github.io/tags/linux/"/>
+    <category term="Linux" scheme="https://halfcoke.github.io/tags/Linux/"/>
     
     <category term="用户权限" scheme="https://halfcoke.github.io/tags/%E7%94%A8%E6%88%B7%E6%9D%83%E9%99%90/"/>
     
