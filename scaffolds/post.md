@@ -12,4 +12,5 @@ author:
 tags:
 categories:
 typora-copy-images-to: upload
+mathjax: true
 ---
