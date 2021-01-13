@@ -1,7 +1,7 @@
 ---
 title: 基于Hexo及GitHub在Windows下搭建个人博客
 subtitle: 使用Hexo及GitHub在Windows下部署个人博客，利用GitHub做图床，将图片保存至GitHub
-cover: https://raw.githubusercontent.com/HalfCoke/blog_img/master/img/20201102182344.png
+cover: https://gitee.com/halfcoke/blog_img/raw/master/img/20201102182344.png
 tags:
   - Hexo
   - GitHub
