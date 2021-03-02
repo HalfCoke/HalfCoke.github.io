@@ -16,7 +16,7 @@ menu:
   archive: /archives
 # 博客图标
 favicon_ico: https://gitee.com/halfcoke/blog_img/raw/master/img/logo.svg
-logo: https://gitee.com/halfcoke/blog_img/raw/master/img/logo.svg
+logo: https://gitee.com/halfcoke/blog_img/raw/master/20210228214106.svg
 qrcode: https://gitee.com/halfcoke/blog_img/raw/master/img/sin_qrcode.png
 default_cover: https://gitee.com/halfcoke/blog_img/raw/master/img/article.webp
 header_cover: https://gitee.com/halfcoke/blog_img/raw/master/img/background.webp
@@ -33,11 +33,11 @@ about:
 # 评论系统
 gitTalk:
   clientId: 0373d8209e264e713cc6
-  clientSecret: aa5d879ee9d4a36cecca5388e881a72e53177676
+  clientSecret: 5959db7d97f07e6f602d9ef98744530be3bea3fe
   repo: HalfCoke.github.io
-  owner: halfcoke
+  owner: HalfCoke
   admin:
-    - halfcoke
+    - HalfCoke
 busuanzi: true
 # URL
 ## If your site is put in a subdirectory, set url as 'http://example.com/child' and root as '/child/'

@@ -1024,7 +1024,7 @@ CMD			# 指定容器启动的时候要运行的命令，CMD只有最后一个会
 ENTRYPOINT   # 容器启动的时候要运行的命令，可以追加命令  
 # CMD 与ENTRYPOINT 区别，比如说   ls -l   如果是使用CMD 写ls -a  则执行docker run 会替换掉ls -l   如果是ENTRYPOINT则会变成 ls -a  ls -l 下面详细介绍
 ONBUILD 	# 当构建一个被继承DockerFile的时候，就会歘ONBUILD执行，触发指令
-COPY 		#  类似ADD,将我们的问价拷贝到镜像中
+COPY 		#  类似ADD,将我们的文件拷贝到镜像中
 ENV 		# 构建的时候，设置的环境变量    
 ```
 

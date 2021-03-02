@@ -8,6 +8,7 @@ tags:
   - Windows
   - 图床
 categories:
+  - WEB
   - WEB部署
 author:
   nick: HalfCoke
