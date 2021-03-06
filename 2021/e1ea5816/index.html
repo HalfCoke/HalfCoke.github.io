@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     
-        <title>CCCCCoke</title>
+        <title>GoLang远程开发配置 | CCCCCoke</title>
     
 
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
@@ -20,7 +20,7 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="robots" content="all" />
 
-<link rel="canonical" href="https://halfcoke.github.io/tags/SSH/index.html">
+<link rel="canonical" href="https://halfcoke.github.io/2021/e1ea5816/index.html">
 
 <link rel="icon" type="image/png" href="https://gitee.com/halfcoke/blog_img/raw/master/img/logo.svg" sizes="32x32">
 
@@ -43,9 +43,6 @@
 
 
 
-    
-    
-
 
 <!-- CSS -->
 
@@ -65,7 +62,7 @@
     
     
     
-<link rel="stylesheet" href="/scss/views/page/tag.css">
+<link rel="stylesheet" href="/scss/views/page/post.css">
 
 
 <meta name="generator" content="Hexo 5.2.0"></head>
@@ -112,79 +109,122 @@
         
     <main class="page__container page__main">
     <div class="page__content">
-        <div class="page__posts clearfix">
+        <article class="page__post">
+    <div class="post__cover">
+        <img src="https://gitee.com/halfcoke/blog_img/raw/master/20210306101640.png" alt="GoLang远程开发配置">
+    </div>
+
+    <header class="post__info">
+        <h1 class="post__title">GoLang远程开发配置</h1>
+
+        <div class="post__mark">
+            <div class="mark__block">
+                <i class="mark__icon iconfont icon-write"></i>
+                <ul class="mark__list clearfix">
+                    
+                        <li class="mark__item">
+                            <a href="https://halfcoke.github.io/">HalfCoke</a>
+                        </li>
+                    
+                </ul>
+            </div>
             
-                <div class="page__post">
-                    <article itemscope itemtype="http://schema.org/Article" class="page__mini-article">
-    <div class="mini-article__cover">
-        
-        
-            <img itemprop="image" src="https://gitee.com/halfcoke/blog_img/raw/master/img/20210110211017.jpg" alt="SSH端口转发详解"/>
-        
-        <div itemprop="datePublished" content="" class="mini-article__date">
-            <span class="date__day">10</span>
+            <div class="mark__block">
+                <i class="mark__icon iconfont icon-time"></i>
+                <ul class="mark__list clearfix">
+                    <li class="mark__item"><span>2021-03-06</span></li>
+                </ul>
+            </div>
+
+            <div class="mark__block">
+                <i class="mark__icon iconfont icon-tab"></i>
+                <ul class="mark__list clearfix">
+                    
+                        <li class="mark__item">
+                            <a href="/tags/Go%E8%AF%AD%E8%A8%80/">Go语言</a>
+                        </li>
+                    
+                        <li class="mark__item">
+                            <a href="/tags/%E8%BF%9C%E7%A8%8B%E5%BC%80%E5%8F%91/">远程开发</a>
+                        </li>
+                    
+                </ul>
+            </div>
+
             
-                <span class="date__month">一月</span>
+            <div class="mark__block">
+                <i class="mark__icon iconfont icon-eye"></i>
+                <ul class="mark__list clearfix">
+                    <li id="busuanzi_container_page_pv" class="mark__item"><span id="busuanzi_value_page_pv"></span>次</li>
+                </ul>
+            </div>
             
         </div>
-        <a itemprop="url" class="iconfont icon-enter" href="/2021/cac946/"></a>
-    </div>
-    <div class="mini-article__info">
-        <h3 itemprop="name" class="mini-article__title">
-            <a itemprop="url" href="/2021/cac946/" title="SSH端口转发详解">SSH端口转发详解</a>
-        </h3>
-        <p class="mini-article__author">by 
+    </header>
+
+    <div class="post__content">
+        <h1 id="GoLang远程开发配置"><a href="#GoLang远程开发配置" class="headerlink" title="GoLang远程开发配置"></a>GoLang远程开发配置</h1><p><strong>本文介绍如何配置GoLang如何在服务器上进行调试开发</strong></p>
+<p>附上官网说明:</p>
+<p><a target="_blank" rel="noopener" href="https://www.jetbrains.com/help/go/attach-to-running-go-processes-with-debugger.html#step-2-run-delve-on-the-host-machine">https://www.jetbrains.com/help/go/attach-to-running-go-processes-with-debugger.html#step-2-run-delve-on-the-host-machine</a></p>
+<p>远程环境与本地环境版本最好相同，避免玄学错误</p>
+<h2 id="远程环境"><a href="#远程环境" class="headerlink" title="远程环境"></a>远程环境</h2><p>远程使用Ubuntu18</p>
+<p>Go语言linux版下载链接：<a target="_blank" rel="noopener" href="https://golang.org/dl/go1.16.linux-amd64.tar.gz">go1.16.linux-amd64.tar.gz</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 使用命令解压压缩包</span></span><br><span class="line">tar -C ./env/go -zxf go1.16.linux-amd64.tar.gz</span><br><span class="line"><span class="comment"># 配置环境变量</span></span><br><span class="line">vim ~/.bashrc</span><br><span class="line"><span class="comment"># 在最下面加上这几行</span></span><br><span class="line"><span class="comment"># &gt;&gt;&gt; go env &gt;&gt;&gt;</span></span><br><span class="line"><span class="built_in">export</span> GOPATH=~/.go</span><br><span class="line"><span class="built_in">export</span> GOROOT=~/env/go</span><br><span class="line"><span class="built_in">export</span> GOBIN=<span class="variable">$GOROOT</span>/bin</span><br><span class="line"><span class="built_in">export</span> PATH=<span class="variable">$GOBIN</span>:<span class="variable">$PATH</span></span><br><span class="line"><span class="comment"># &lt;&lt;&lt; go env &lt;&lt;&lt;</span></span><br><span class="line"><span class="comment"># 使环境变量生效</span></span><br><span class="line"><span class="built_in">source</span> ~/.bashrc</span><br><span class="line"><span class="comment"># 执行命令</span></span><br><span class="line">go version</span><br><span class="line"><span class="comment"># 输出：go version go1.16 linux/amd64</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装远程调试工具  </span></span><br><span class="line"><span class="comment"># github：https://github.com/go-delve/delve</span></span><br><span class="line"><span class="comment"># 执行以下命令：</span></span><br><span class="line">go install github.com/go-delve/delve/cmd/dlv@latest</span><br><span class="line"><span class="comment"># 安装完成后，执行以下命令验证：</span></span><br><span class="line">dlv version</span><br><span class="line"></span><br><span class="line">Delve Debugger</span><br><span class="line">Version: 1.6.0</span><br><span class="line">Build: <span class="variable">$Id</span>: 8cc9751909843dd55a46e8ea2a561544f70db34d $</span><br><span class="line"></span><br><span class="line"><span class="comment"># 至此远程环境配置完成</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="本地环境"><a href="#本地环境" class="headerlink" title="本地环境"></a>本地环境</h2><p>本地使用GoLand进行开发</p>
+<p>在本地新建<code>Hello.go</code>文件</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;run&quot;</span>)</span><br><span class="line">	fmt.Println(<span class="string">&quot;debug&quot;</span>)</span><br><span class="line">	fmt.Println(<span class="string">&quot;finish&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><strong>然后创建Go.mod文件</strong></p>
+<p>！！！很重要，不然无法断点调试</p>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210306120910.png" alt="image-20210306120910761"></p>
+<p>在GoLand配置<code>Deployment</code>，将本地文件同步到服务器上，如何配置Deployment参考网络上其他教程，讲这部分内容的很多，主要步骤如下截图：</p>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210306103625.png" alt="image-20210306103624938"></p>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210306103717.png" alt="image-20210306103717312"></p>
+<p>点击这里</p>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210306103926.png" alt="image-20210306103925994"></p>
+<p>新建一个Go Remote配置</p>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210306103951.png" alt="image-20210306103951739"></p>
+<p>根据自己的情况设置IP和端口</p>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210306104040.png" alt="image-20210306104039977"></p>
+<p>在<strong>远程环境</strong>的终端上进入刚刚的项目路径（比如我的是<code>/tmp/go_practice/2021-03-06</code>），然后选择执行如下命令</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">在 main.go目录下执行 </span><br><span class="line">dlv debug --headless --listen&#x3D;:2345 --api-version&#x3D;2</span><br></pre></td></tr></table></figure>
+
+<p>然后回到Goland点击调试即可</p>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210306121101.png" alt="image-20210306121101391"></p>
+<p>直接在GoLand中进行远程调试就很方便了。</p>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210306121931.png" alt="image-20210306121931106"></p>
+
+
+        
+        <div class="post-announce">
+            感谢您的阅读，本文由
             
-                <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-                    <a itemprop="url" href="https://halfcoke.github.io/" target="_blank">
-                        <span itemprop="name">HalfCoke</span>
-                    </a>
-                </span>
+            <a href="https://HalfCoke.github.io">HalfCoke</a>
             
-        </p>
-        <p itemprop="articleSection" class="min-article__desc">
-            SSH端口转发
-        </p>
-        <div class="min-article__tags">
-            <i class="iconfont icon-tab"></i>
-            <ul class="tags__list clearfix">
+            版权所有。如若转载，请注明出处：HalfCoke（<a href="https://HalfCoke.github.io/2021/e1ea5816/">https://HalfCoke.github.io/2021/e1ea5816/</a>）
+        </div>
+        
+
+        <div class="post__prevs">
+            <div class="post__prev">
                 
-                    <li class="tags__item">
-                        <a href="/tags/Linux/">Linux</a>
-                    </li>
+                <a href="/2021/e15cc6f/" title="vue ElementUI中的BackTop组件使用"><i class="iconfont icon-prev"></i>vue ElementUI中的BackTop组件使用</a>
                 
-                    <li class="tags__item">
-                        <a href="/tags/SSH/">SSH</a>
-                    </li>
+            </div>
+            <div class="post__prev post__prev--right">
                 
-                    <li class="tags__item">
-                        <a href="/tags/%E8%BD%AC%E5%8F%91/">转发</a>
-                    </li>
-                
-                    <li class="tags__item">
-                        <a href="/tags/%E9%9A%A7%E9%81%93/">隧道</a>
-                    </li>
-                
-            </ul>
+            </div>
         </div>
     </div>
 </article>
 
-                </div>
-            
-        </div>
+        
+            <div id="comment-container"></div>
         
         
-        <nav class="page__paginator">
-            <ul class="paginator__list clearfix">
-                
-            <li class="paginator__item">
-                <span>1</span>
-            </li>
-        
-            </ul>
-        </nav>
-    
     </div>
 
     <aside class="page__sidebar">
@@ -498,9 +538,42 @@
 
     
     
+<script src="/js/page/post.js"></script>
+
+
 
     
     
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+    <script src="/js/md5.min.js"></script>
+
+    <script>
+        
+
+        var gitalk = new Gitalk({
+            clientID: '0373d8209e264e713cc6',
+            clientSecret: '5959db7d97f07e6f602d9ef98744530be3bea3fe',
+            repo: 'HalfCoke.github.io',
+            owner: 'HalfCoke',
+            admin: ['HalfCoke', ],
+            
+            
+            id: md5('GoLang远程开发配置'),
+            proxy: 'https://halfcoke.herokuapp.com/https://github.com/login/oauth/access_token'
+        });
+
+        gitalk.render('comment-container');
+    </script>
+
+
+
+
+    <!-- 不蒜子统计 -->
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
 
      
 
@@ -509,6 +582,30 @@
   
   
 
+  
+    
+    
+              
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+            tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+                processEscapes: true,
+                skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            }
+            });
+        </script>
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Queue(function() {
+            var all = MathJax.Hub.getAllJax(), i;
+                for (i=0; i < all.length; i += 1) {
+                all[i].SourceElement().parentNode.className += ' has-jax';
+                }
+            });
+        </script>      
+        <script type="text/javascript" src="//cdn.jsdelivr.net/npm/mathjax@2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>    
+    
+    
   
 
 
