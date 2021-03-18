@@ -11,6 +11,7 @@ tags:
   - 磁盘扩容
 categories:
   - Linux
+  - LVM
 typora-copy-images-to: upload
 abbrlink: 189b3b4
 date: 2020-11-06 18:29:50

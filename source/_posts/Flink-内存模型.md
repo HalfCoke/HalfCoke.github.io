@@ -138,7 +138,7 @@ Flink 将*框架堆外内存*和*任务堆外内存*都计算在 JVM 的*直接�
 
 ## Web UI 界面介绍
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/img/20210103212633.svg)
+![](https://gitee.com/halfcoke/blog_img/raw/master/20210312150340.svg)
 
 ### 内存根据Slot数量划分部分源码
 
