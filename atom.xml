@@ -6,7 +6,7 @@
   <link href="https://halfcoke.github.io/atom.xml" rel="self"/>
   
   <link href="https://halfcoke.github.io/"/>
-  <updated>2021-03-06T04:20:21.059Z</updated>
+  <updated>2021-03-18T02:45:33.403Z</updated>
   <id>https://halfcoke.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Linux如何在LVM中移除PV</title>
+    <link href="https://halfcoke.github.io/2021/2d54e946/"/>
+    <id>https://halfcoke.github.io/2021/2d54e946/</id>
+    <published>2021-03-18T01:38:22.000Z</published>
+    <updated>2021-03-18T02:45:33.403Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Linux如何在LVM中移除PV"><a href="#Linux如何在LVM中移除PV" class="headerlink" title="Linux如何在LVM中移除PV"></a>Linux如何在LVM中移除PV</h1><p>网上很多人都在讲如何直接移除PV，但是实际过程中，很有可能我们的PV还没有空闲空间，这样也就没办法直接用<code>pvmove</code>指令。</p><p>我们先介绍如何将pv空闲出来。</p><h2 id="移除PV准备工作"><a href="#移除PV准备工作" class="headerlink" title="移除PV准备工作"></a>移除PV准备工作</h2><p>通过<code>lsblk</code>命令我们可以看到，当前根目录的<code>LVM</code>是用了两个盘的，即<code>sda</code>和<code>sdb</code>。我们想将<code>sda</code>从<code>LVM</code>中拿出来，这样<code>sda</code>就可以用来做别的事情了。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210318100540.png" alt="image-20210318100540412"></p><p>使用<code>df -hT</code>查看当前分区的使用情况，我们可以看到根目录只用了72G，<code>/home</code>目录空闲有249G，这个时候我们可以将<code>/home</code>中的一部分空间拿出来，最好空闲直接大于72G，保证能装得下。如果小于72G的时候不确定能不能装得下，这部分需要自己试一下。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210318101352.png" alt="image-20210318101352606"></p><p>我们执行一下<code>lvdisplay</code>，查看一下lv的信息，下图列出了部分内容。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210318101759.png" alt="image-20210318101759476"></p><p>这个时候我们执行<code>lvreduce -L 150G /dev/cl/home</code>命令，这条命令相当于将<code>/home</code>路径的空间直接缩小到150G，因为我们在上面通过<code>df -hT</code>看到了<code>/home</code>目录只用了144G。</p><p>这样我们相当于已经有空间用来存放根目录的数据了。</p><p>接下来我们执行移除PV的相关操作</p><h2 id="移除PV"><a href="#移除PV" class="headerlink" title="移除PV"></a>移除PV</h2><p>我们执行<code>pvs -o+pv_used</code>，只要<code>/dev/sda1</code>的<code>used</code>的是0就可以了。下面这个图忘记截了，放一个之前的数据的图。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210318103700.png" alt="image-20210318103700432"></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 然后执行下面的命令，转移PV中的数据</span></span><br><span class="line">pvmove /dev/sda1</span><br><span class="line"><span class="comment"># 然后从vg中移除pv</span></span><br><span class="line">vgreduce &#123;vg组名&#125; /dev/sda1</span><br><span class="line">即：vgreduce cl /dev/sda1</span><br><span class="line"><span class="comment"># 然后移除PV</span></span><br><span class="line">pvremove /dev/sda1</span><br></pre></td></tr></table></figure><p>至此，所有步骤完成。</p><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p>[1] <a href="https://www.2daygeek.com/linux-remove-delete-physical-volume-pv-from-volume-group-vg-in-lvm/">How to Remove Physical Volume from a Volume Group in LVM</a></p><p>[2] <a href="https://www.cnblogs.com/sparkdev/p/10213655.html">LVM : 缩减文件系统的容量</a></p><p>[3] <a href="https://halfcoke.github.io/2020/189b3b4/">Linux如何使用LVM进行磁盘扩容</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Linux如何在LVM中移除PV&quot;&gt;&lt;a href=&quot;#Linux如何在LVM中移除PV&quot; class=&quot;headerlink&quot; title=&quot;Linux如何在LVM中移除PV&quot;&gt;&lt;/a&gt;Linux如何在LVM中移除PV&lt;/h1&gt;&lt;p&gt;网上很多人都在讲如何直接移除</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://halfcoke.github.io/categories/Linux/"/>
+    
+    <category term="LVM" scheme="https://halfcoke.github.io/categories/Linux/LVM/"/>
+    
+    
+    <category term="Linux" scheme="https://halfcoke.github.io/tags/Linux/"/>
+    
+    <category term="LVM" scheme="https://halfcoke.github.io/tags/LVM/"/>
+    
+  </entry>
   
   <entry>
     <title>GoLang远程开发配置</title>
@@ -392,7 +420,7 @@
     <link href="https://halfcoke.github.io/2020/189b3b4/"/>
     <id>https://halfcoke.github.io/2020/189b3b4/</id>
     <published>2020-11-06T10:29:50.000Z</published>
-    <updated>2020-11-06T13:37:34.000Z</updated>
+    <updated>2021-03-18T02:00:19.131Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Linux如何使用LVM进行磁盘扩容"><a href="#Linux如何使用LVM进行磁盘扩容" class="headerlink" title="Linux如何使用LVM进行磁盘扩容"></a>Linux如何使用LVM进行磁盘扩容</h1><p><strong><em>提醒：操作磁盘的工作都需要小心谨慎，避免数据丢失损坏，下文涉及到分区表的操作请再三确认</em></strong></p><h2 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h2><p>关于LVM的介绍请参考<a href="https://en.wikipedia.org/wiki/Logical_Volume_Manager_(Linux)">维基百科</a>或<a href="https://baike.baidu.com/item/LVM">百度百科</a>。</p><p>本文不提供如何将现有的非LVM分区转换为LVM分区的方法，本文主要解决现有LVM如何进行扩容的问题。</p><h2 id="磁盘状态查看"><a href="#磁盘状态查看" class="headerlink" title="磁盘状态查看"></a>磁盘状态查看</h2><p><strong><em>注意：磁盘操作需要有管理员权限，请确认你有管理员权限再执行如下操作。</em></strong></p><p>我们可以使用这个命令来查看当前硬盘的详细信息，包括当前磁盘容量以及分区信息。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk -l</span><br></pre></td></tr></table></figure><p>命令执行结果与下图类似：</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106185215998.png" alt="image-20201106185215998"></p><p>可以看到我们这块磁盘有<code>268.4GB</code>大小的空间，但只有两个分区<code>vda1</code>和<code>vda2</code>。我们同样可以使用<span id="lsblk"><code>lsblk</code></span>来查看当前分区状态。执行结果应该类似下图：</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106190400637.png" alt="image-20201106190400637"></p><p>通过这里我们看到，主要要解决的问题是，如何把我们这200多GB的空间都用上。</p><h2 id="磁盘扩容"><a href="#磁盘扩容" class="headerlink" title="磁盘扩容"></a>磁盘扩容</h2><p>根据我们的硬盘名称，执行下面的命令进入磁盘分区管理。其中<code>/dev/vda</code>应该更换为你自己查询到的名字。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fdisk /dev/vda</span><br></pre></td></tr></table></figure><p>命令执行后的状态应该类似下图：</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106190949198.png" alt="image-20201106190949198"></p><p>我们可以在这里输入<code>p</code>来查看当前硬盘的信息，结果如下：</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106191051650.png" alt="image-20201106191051650"></p><p>接下来执行我们的扩容过程。</p><h3 id="新建一块分区"><a href="#新建一块分区" class="headerlink" title="新建一块分区"></a>新建一块分区</h3><p>新建分区的过程如下图所示，输入<code>n</code>，然后输入<code>P</code>（最多四个分区）。接下来的<code>Partition number</code>、<code>First sector</code>及<code>Last sector</code>我这里选择的都是默认值，因为我要用到剩下全部的磁盘空间，你在设置的时候根据你自己的情况决定。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106191356630.png" alt="image-20201106191356630"></p><p>再次输入<code>p</code>，我们可以看到新建的分区。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106191912730.png" alt="image-20201106191912730"></p><h3 id="修改分区类型"><a href="#修改分区类型" class="headerlink" title="修改分区类型"></a>修改分区类型</h3><p>我们这里的分区类型有问题，需要修改分区类型为<code>8e</code>。</p><p>输入<code>t</code>，选择新建出来的分区号，我这里是<code>3</code>，然后输入<code>8e</code>，再输入<code>p</code>查看分区类型，我们可以看到新建的分区的类型已经更改过来了。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106192200782.png" alt="image-20201106192200782"></p><h3 id="写入分区表"><a href="#写入分区表" class="headerlink" title="写入分区表"></a>写入分区表</h3><p>输入<code>w</code>，将刚刚的更改写入。然后执行<code>partprobe</code>重读分区表。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106192900952.png" alt="image-20201106192900952"></p><h3 id="扩容VG"><a href="#扩容VG" class="headerlink" title="扩容VG"></a>扩容VG</h3><p>输入<code>vgdisplay</code>查看当前VG信息。</p><p>输入下面的命令，其中<code>centos</code>是刚刚看到的<code>VG Name</code>，<code>/dev/vda3</code>是刚刚新建的分区</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vgextend centos /dev/vda3</span><br></pre></td></tr></table></figure><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106193352723.png" alt="image-20201106193352723"></p><h3 id="扩容LV"><a href="#扩容LV" class="headerlink" title="扩容LV"></a>扩容LV</h3><p>输入<code>lvdisplay</code>来查看当前存在的LV信息，如下图所示。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106194122215.png" alt="image-20201106194122215"></p><p>确定我们要扩容的分区，可以通过刚才执行的<a href="#lsblk"><code>lsblk</code></a>命令查看，我们这里要扩容的<code>LV Path</code>是<code>/dev/centos/root</code>。</p><p>执行以下命令：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lvextend -l +100%FREE /dev/centos/root</span><br><span class="line">xfs_growfs /dev/centos/root</span><br></pre></td></tr></table></figure><p>这时候我们执行下面命令查看，就能看到已经成功扩容了。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">df -h</span><br></pre></td></tr></table></figure><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106201915719.png" alt="image-20201106201915719"></p><hr><p>欢迎扫码关注，不定期更新各种经验。</p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/qrcode.jpg" style="zoom: 67%;" />]]></content>
     
@@ -405,6 +433,8 @@
     
     
     <category term="Linux" scheme="https://halfcoke.github.io/categories/Linux/"/>
+    
+    <category term="LVM" scheme="https://halfcoke.github.io/categories/Linux/LVM/"/>
     
     
     <category term="Linux" scheme="https://halfcoke.github.io/tags/Linux/"/>
