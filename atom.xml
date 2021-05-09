@@ -6,7 +6,7 @@
   <link href="https://halfcoke.github.io/atom.xml" rel="self"/>
   
   <link href="https://halfcoke.github.io/"/>
-  <updated>2021-05-02T14:58:28.569Z</updated>
+  <updated>2021-05-09T08:23:04.657Z</updated>
   <id>https://halfcoke.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Cygwin：用来执行linux命令的工具</title>
+    <link href="https://halfcoke.github.io/2021/8d1f253e/"/>
+    <id>https://halfcoke.github.io/2021/8d1f253e/</id>
+    <published>2021-05-09T07:57:59.000Z</published>
+    <updated>2021-05-09T08:23:04.657Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Cygwin：在Windows上执行linux命令的工具"><a href="#Cygwin：在Windows上执行linux命令的工具" class="headerlink" title="Cygwin：在Windows上执行linux命令的工具"></a>Cygwin：在Windows上执行linux命令的工具</h1><h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>官网链接：<a href="https://cygwin.com/index.html">https://cygwin.com/index.html</a></p><p>维基百科：<a href="https://zh.wikipedia.org/wiki/Cygwin">https://zh.wikipedia.org/wiki/Cygwin</a></p><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>直接<a href="https://cygwin.com/setup-x86_64.exe">点击链接</a>下载64位版本的Cygwin，安装过程比较简单，一直下一步即可，建议保留此安装包，后续在Cygwin中安装软件还会需要。</p><h2 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h2><h3 id="方法一"><a href="#方法一" class="headerlink" title="方法一"></a>方法一</h3><p>安装软件需要运行Cygwin安装包，一直点击下一步到如下页面。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210509160929.png" alt="image-20210509160734409"></p><p>比如要安装wget，则在搜索框中输入<code>wget</code>，view选择Full。然后选择软件版本，我这里已经安装过了，所以会有<code>keep</code>和<code>reinstall</code>选项。然后再一直点击下一步即可。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210509160940.png" alt="image-20210509160832027"></p><h3 id="方法二"><a href="#方法二" class="headerlink" title="方法二"></a>方法二</h3><p>使用<code>apt-cyg</code>对软件进行安装，首先需要下载安装<code>apt-cyg</code>。在<a href="%5Bhttps://github.com/transcode-open/apt-cyg%5D(https://github.com/transcode-open/apt-cyg)">链接</a>中下载<code>apt-cyg</code>，然后copy到<code>C:\cygwin64\bin</code>目录下，这里<code>C:\cygwin64\</code>是我的cygwin的安装目录，根据情况进行修改。</p><p>这时启动cygwin终端已经可以使用<code>apt-cyg</code>命令了。</p><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210509162122.png" alt="image-20210509161847316"></p><h2 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h2><h3 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h3><p>如果windows本身安装了ssh，需要卸掉原来的ssh客户端，避免与<code>cygwin</code>中的冲突，冲突的情况下会无法使用<code>rsync</code>命令</p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Cygwin：在Windows上执行linux命令的工具&quot;&gt;&lt;a href=&quot;#Cygwin：在Windows上执行linux命令的工具&quot; class=&quot;headerlink&quot; title=&quot;Cygwin：在Windows上执行linux命令的工具&quot;&gt;&lt;/a&gt;Cy</summary>
+      
+    
+    
+    
+    <category term="系统工具" scheme="https://halfcoke.github.io/categories/%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="cygwin" scheme="https://halfcoke.github.io/categories/%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/cygwin/"/>
+    
+    
+    <category term="系统工具" scheme="https://halfcoke.github.io/tags/%E7%B3%BB%E7%BB%9F%E5%B7%A5%E5%85%B7/"/>
+    
+    <category term="cygwin" scheme="https://halfcoke.github.io/tags/cygwin/"/>
+    
+  </entry>
   
   <entry>
     <title>Maven部分配置项解释</title>
