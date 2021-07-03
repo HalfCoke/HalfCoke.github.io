@@ -6,7 +6,7 @@
   <link href="https://halfcoke.github.io/atom.xml" rel="self"/>
   
   <link href="https://halfcoke.github.io/"/>
-  <updated>2021-07-03T19:30:15.986Z</updated>
+  <updated>2021-07-03T19:48:45.890Z</updated>
   <id>https://halfcoke.github.io/</id>
   
   <author>
@@ -21,7 +21,7 @@
     <link href="https://halfcoke.github.io/2021/828bfc98/"/>
     <id>https://halfcoke.github.io/2021/828bfc98/</id>
     <published>2021-07-03T19:30:15.000Z</published>
-    <updated>2021-07-03T19:30:15.986Z</updated>
+    <updated>2021-07-03T19:48:45.890Z</updated>
     
     
     
@@ -34,11 +34,28 @@
     <link href="https://halfcoke.github.io/2021/3ee22ef9/"/>
     <id>https://halfcoke.github.io/2021/3ee22ef9/</id>
     <published>2021-07-03T19:29:47.000Z</published>
-    <updated>2021-07-03T19:29:47.586Z</updated>
+    <updated>2021-07-03T20:01:47.216Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Java-SPI机制简单介绍"><a href="#Java-SPI机制简单介绍" class="headerlink" title="Java SPI机制简单介绍"></a>Java SPI机制简单介绍</h1>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Java-SPI机制简单介绍&quot;&gt;&lt;a href=&quot;#Java-SPI机制简单介绍&quot; class=&quot;headerlink&quot; title=&quot;Java SPI机制简单介绍&quot;&gt;&lt;/a&gt;Java SPI机制简单介绍&lt;/h1&gt;</summary>
+      
     
     
     
+    <category term="学习笔记" scheme="https://halfcoke.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
     
+    <category term="Java" scheme="https://halfcoke.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Java/"/>
+    
+    
+    <category term="学习笔记" scheme="https://halfcoke.github.io/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="Java" scheme="https://halfcoke.github.io/tags/Java/"/>
+    
+    <category term="SPI" scheme="https://halfcoke.github.io/tags/SPI/"/>
     
   </entry>
   
@@ -47,7 +64,7 @@
     <link href="https://halfcoke.github.io/2021/e20ce22c/"/>
     <id>https://halfcoke.github.io/2021/e20ce22c/</id>
     <published>2021-07-03T19:29:27.000Z</published>
-    <updated>2021-07-03T19:47:15.072Z</updated>
+    <updated>2021-07-03T19:48:45.880Z</updated>
     
     <content type="html"><![CDATA[<h1 id="ClickHouse分布式表介绍"><a href="#ClickHouse分布式表介绍" class="headerlink" title="ClickHouse分布式表介绍"></a>ClickHouse分布式表介绍</h1>]]></content>
     
@@ -75,7 +92,7 @@
     <link href="https://halfcoke.github.io/2021/e385259a/"/>
     <id>https://halfcoke.github.io/2021/e385259a/</id>
     <published>2021-07-03T19:29:09.000Z</published>
-    <updated>2021-07-03T19:48:10.575Z</updated>
+    <updated>2021-07-03T19:48:45.894Z</updated>
     
     <content type="html"><![CDATA[<h1 id="MongoDB数据库副本集及分片集群介绍"><a href="#MongoDB数据库副本集及分片集群介绍" class="headerlink" title="MongoDB数据库副本集及分片集群介绍"></a>MongoDB数据库副本集及分片集群介绍</h1>]]></content>
     
@@ -103,7 +120,7 @@
     <link href="https://halfcoke.github.io/2021/102c449e/"/>
     <id>https://halfcoke.github.io/2021/102c449e/</id>
     <published>2021-07-03T19:28:28.000Z</published>
-    <updated>2021-07-03T19:42:54.791Z</updated>
+    <updated>2021-07-03T19:48:45.898Z</updated>
     
     <content type="html"><![CDATA[<h1 id="基于Debezium的Flink-MySQL-CDC源码分析"><a href="#基于Debezium的Flink-MySQL-CDC源码分析" class="headerlink" title="基于Debezium的Flink-MySQL-CDC源码分析"></a>基于Debezium的Flink-MySQL-CDC源码分析</h1>]]></content>
     
@@ -139,7 +156,7 @@
     <link href="https://halfcoke.github.io/2021/26c0fffa/"/>
     <id>https://halfcoke.github.io/2021/26c0fffa/</id>
     <published>2021-07-03T19:28:06.000Z</published>
-    <updated>2021-07-03T19:34:01.471Z</updated>
+    <updated>2021-07-03T19:48:45.887Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Flink-HiveSink源码分析"><a href="#Flink-HiveSink源码分析" class="headerlink" title="Flink HiveSink源码分析"></a>Flink HiveSink源码分析</h1>]]></content>
     
@@ -173,7 +190,7 @@
     <link href="https://halfcoke.github.io/2021/6a92d281/"/>
     <id>https://halfcoke.github.io/2021/6a92d281/</id>
     <published>2021-07-03T19:27:40.000Z</published>
-    <updated>2021-07-03T19:33:23.089Z</updated>
+    <updated>2021-07-03T19:48:45.883Z</updated>
     
     <content type="html"><![CDATA[<h1 id="Flink-SteamingFileSink源码分析"><a href="#Flink-SteamingFileSink源码分析" class="headerlink" title="Flink SteamingFileSink源码分析"></a>Flink SteamingFileSink源码分析</h1>]]></content>
     

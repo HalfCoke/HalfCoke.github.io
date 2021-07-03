@@ -2,14 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://halfcoke.github.io/2021/e385259a/</loc>
-    
-    <lastmod>2021-07-03</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://halfcoke.github.io/2021/e20ce22c/</loc>
+    <loc>https://halfcoke.github.io/2021/3ee22ef9/</loc>
     
     <lastmod>2021-07-03</lastmod>
     
@@ -17,6 +10,20 @@
   
   <url>
     <loc>https://halfcoke.github.io/2021/102c449e/</loc>
+    
+    <lastmod>2021-07-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://halfcoke.github.io/2021/e385259a/</loc>
+    
+    <lastmod>2021-07-03</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://halfcoke.github.io/2021/828bfc98/</loc>
     
     <lastmod>2021-07-03</lastmod>
     
@@ -37,14 +44,7 @@
   </url>
   
   <url>
-    <loc>https://halfcoke.github.io/2021/828bfc98/</loc>
-    
-    <lastmod>2021-07-03</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://halfcoke.github.io/2021/3ee22ef9/</loc>
+    <loc>https://halfcoke.github.io/2021/e20ce22c/</loc>
     
     <lastmod>2021-07-03</lastmod>
     
@@ -479,6 +479,20 @@
     <priority>0.6</priority>
   </url>
   
+  <url>
+    <loc>https://halfcoke.github.io/tags/Java/</loc>
+    <lastmod>2021-07-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://halfcoke.github.io/tags/SPI/</loc>
+    <lastmod>2021-07-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
 
   
   <url>
@@ -686,6 +700,13 @@
   
   <url>
     <loc>https://halfcoke.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MongoDB/</loc>
+    <lastmod>2021-07-03</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://halfcoke.github.io/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Java/</loc>
     <lastmod>2021-07-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
