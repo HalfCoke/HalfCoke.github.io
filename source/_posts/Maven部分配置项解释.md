@@ -85,6 +85,14 @@ cover:
 					<outputDirectory>
 						${build.target.dir}/lib
 					</outputDirectory>
+                    <!--这个选项是在文件中生成classpath，这样只通过"java -cp jarname mainclass"执行自己的jar包就可以了-->
+                      <archive>
+						<manifest>
+						<addClasspath>true</addClasspath>
+						<classpathLayoutType>custom</classpathLayoutType>
+					     <customClasspathLayout>$${artifact.artifactId}-$${artifact.version}$${dashClassifier?}.$${artifact.extension}</customClasspathLayout>
+						</manifest>
+					</archive>
 					<excludes>
                         <!--在这里表示，会排除static路径下的所有文件，不会打入jar包中，这个路径需要是classes目录的相对路径
 						https://maven.apache.org/plugins/maven-jar-plugin/examples/include-exclude.html
@@ -94,6 +102,26 @@ cover:
 					</excludes>
 				</configuration>
 			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-assembly-plugin</artifactId>-->
+<!--				<version>3.0.0</version>-->
+<!--				<configuration>-->
+<!--					<descriptorRefs>-->
+<!--						<descriptorRef>jar-with-dependencies</descriptorRef>-->
+<!--					</descriptorRefs>-->
+<!--					<outputDirectory>${build.target.dir}/lib</outputDirectory>-->
+<!--				</configuration>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>make-assembly</id>-->
+<!--						<phase>package</phase>-->
+<!--						<goals>-->
+<!--							<goal>single</goal>-->
+<!--						</goals>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->         
             <!--用来指定将哪些文件复制到哪里去-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
