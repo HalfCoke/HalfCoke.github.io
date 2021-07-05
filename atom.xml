@@ -64,14 +64,14 @@
     <link href="https://halfcoke.github.io/2021/e20ce22c/"/>
     <id>https://halfcoke.github.io/2021/e20ce22c/</id>
     <published>2021-07-03T19:29:27.000Z</published>
-    <updated>2021-07-03T20:05:20.210Z</updated>
+    <updated>2021-07-05T10:37:27.844Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="ClickHouse分布式表介绍"><a href="#ClickHouse分布式表介绍" class="headerlink" title="ClickHouse分布式表介绍"></a>ClickHouse分布式表介绍</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="ClickHouse分布式表介绍"><a href="#ClickHouse分布式表介绍" class="headerlink" title="ClickHouse分布式表介绍"></a>ClickHouse分布式表介绍</h1><p>ClickHouse中的分布式表，本身并不存储数据，而是要依赖一些本地表</p><p>在进行分布式表创建时其实是指定的创建表的引擎为Distributed</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">TABLE</span> <span class="keyword">IF</span> <span class="keyword">NOT</span> <span class="keyword">EXISTS</span> <span class="keyword">events</span> <span class="keyword">ON</span> CLUSTER test_cluster</span><br><span class="line"><span class="keyword">AS</span> <span class="keyword">events</span></span><br><span class="line"><span class="keyword">ENGINE</span> = <span class="keyword">Distributed</span>(test_cluster,<span class="keyword">test</span>,events_local,<span class="keyword">rand</span>());</span><br></pre></td></tr></table></figure><p>Distributed引擎需要以下几个参数：</p><ul><li>集群标识符<br> 注意不是复制表宏中的标识符，而是<remote_servers>中指定的那个。</li><li>本地表所在的数据库名称</li><li>本地表名称</li><li>（可选的）分片键（sharding key）<br> 该键与config.xml中配置的分片权重（weight）一同决定写入分布式表时的路由，即数据最终落到哪个物理表上。它可以是表中一列的原始数据，也可以是函数调用的结果，如上面的SQL语句采用了随机值<code>rand()</code>。注意该键要尽量保证数据均匀分布，另外一个常用的操作是采用区分度较高的列的哈希值。</li></ul><p>在分布式表上执行查询的流程简图如下所示。发出查询后，各个实例之间会交换自己持有的分片的表数据，最终汇总到同一个实例上返回给用户。</p><p><img src="https://gitee.com/halfcoke/blog_img_2021/raw/master/20210705182734.webp" alt="img"></p>]]></content>
     
     
       
       
-    <summary type="html">&lt;h1 id=&quot;ClickHouse分布式表介绍&quot;&gt;&lt;a href=&quot;#ClickHouse分布式表介绍&quot; class=&quot;headerlink&quot; title=&quot;ClickHouse分布式表介绍&quot;&gt;&lt;/a&gt;ClickHouse分布式表介绍&lt;/h1&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;ClickHouse分布式表介绍&quot;&gt;&lt;a href=&quot;#ClickHouse分布式表介绍&quot; class=&quot;headerlink&quot; title=&quot;ClickHouse分布式表介绍&quot;&gt;&lt;/a&gt;ClickHouse分布式表介绍&lt;/h1&gt;&lt;p&gt;ClickHouse中的分布</summary>
       
     
     
@@ -92,14 +92,14 @@
     <link href="https://halfcoke.github.io/2021/e385259a/"/>
     <id>https://halfcoke.github.io/2021/e385259a/</id>
     <published>2021-07-03T19:29:09.000Z</published>
-    <updated>2021-07-03T20:02:38.740Z</updated>
+    <updated>2021-07-05T10:37:27.846Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="MongoDB数据库副本集及分片集群介绍"><a href="#MongoDB数据库副本集及分片集群介绍" class="headerlink" title="MongoDB数据库副本集及分片集群介绍"></a>MongoDB数据库副本集及分片集群介绍</h1>]]></content>
+    <content type="html"><![CDATA[<h1 id="MongoDB数据库副本集及分片集群介绍"><a href="#MongoDB数据库副本集及分片集群介绍" class="headerlink" title="MongoDB数据库副本集及分片集群介绍"></a>MongoDB数据库副本集及分片集群介绍</h1><h2 id="MongoDB核心概念"><a href="#MongoDB核心概念" class="headerlink" title="MongoDB核心概念"></a>MongoDB核心概念</h2><ul><li><p><a href="https://docs.mongodb.com/manual/introduction/#document-database">Document</a>：</p><p>MongoDB中的数据记录就是一个Document，Document的结构与JSON比较类似；</p><p>document可以嵌套</p><p><img src="https://docs.mongodb.com/manual/images/crud-annotated-document.bakedsvg.svg"></p></li><li><p><a href="https://docs.mongodb.com/manual/core/databases-and-collections/#collections">Collection</a>:</p><p>MongoDB的Document存储在collection中，collection的概念与关系型数据库中表的概念相对应</p><p><img src="https://docs.mongodb.com/manual/images/crud-annotated-collection.bakedsvg.svg"></p></li><li><p><a href="https://docs.mongodb.com/manual/core/databases-and-collections/#databases">Database</a>：</p><p>Database可以包含多个collection</p></li></ul><h2 id="副本集Replica-Set"><a href="#副本集Replica-Set" class="headerlink" title="副本集Replica Set"></a>副本集Replica Set</h2><p>副本集中的每个节点维护着相同的数据，副本集的存在是为了提供数据冗余，提供高可用</p><p>副本集包含多个数据承载节点和一个可选的仲裁节点；在数据承载节点中，只有一个节点被视为主节点，其他的数据承载节点被视为备份节点</p><p>主节点接收所有写操作，主节点记录所有对数据集的更改，将其作为oplog。</p><p><img src="https://docs.mongodb.com/manual/images/replica-set-read-write-operations-primary.bakedsvg.svg"></p><p>备份节点重复主节点的oplog，并将其中的操作应用在备份节点的数据中，从而与主节点之间形成同步。如果主节点不可用，有资格的备份节点将会选举出新的主节点。</p><h2 id="分片集群"><a href="#分片集群" class="headerlink" title="分片集群"></a>分片集群</h2><p>分片的作用是将数据分布在多个机器上，MongoDB使用分片支持部署超大规模的数据，并提供高吞吐。</p><p>MongoDB的分片集群包含以下组件：</p><ul><li><p><a href="https://docs.mongodb.com/manual/core/sharded-cluster-shards/">分片shard</a></p><p>每个分片是分片数据的自己，每个分片都可以部署为一个replica set</p></li><li><p><a href="https://docs.mongodb.com/manual/core/sharded-cluster-query-router/">路由mongos</a></p><p><code>mongos</code>作为一个查询的路由，作为用户查询MongoDB分片集群的入口</p></li><li><p><a href="https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/">配置服务器config servers</a></p><p>配置服务器存放了集群的元数据和配置设置</p></li></ul><p><img src="https://docs.mongodb.com/manual/images/sharded-cluster-production-architecture.bakedsvg.svg"></p><p>MongoDB的将数据在collection级别分片， 将collection数据分布在集群的shards之间。</p><p>用户在使用分片集群与非分片集群的MongoDB时，在使用上没有区别，通过客户端和mongouri即可访问；</p>]]></content>
     
     
       
       
-    <summary type="html">&lt;h1 id=&quot;MongoDB数据库副本集及分片集群介绍&quot;&gt;&lt;a href=&quot;#MongoDB数据库副本集及分片集群介绍&quot; class=&quot;headerlink&quot; title=&quot;MongoDB数据库副本集及分片集群介绍&quot;&gt;&lt;/a&gt;MongoDB数据库副本集及分片集群介绍&lt;/h1&gt;</summary>
+    <summary type="html">&lt;h1 id=&quot;MongoDB数据库副本集及分片集群介绍&quot;&gt;&lt;a href=&quot;#MongoDB数据库副本集及分片集群介绍&quot; class=&quot;headerlink&quot; title=&quot;MongoDB数据库副本集及分片集群介绍&quot;&gt;&lt;/a&gt;MongoDB数据库副本集及分片集群介绍&lt;/h1&gt;&lt;</summary>
       
     
     
@@ -272,19 +272,6 @@
     <category term="开发工具" scheme="https://halfcoke.github.io/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
     <category term="maven" scheme="https://halfcoke.github.io/tags/maven/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Flink高级应用系列--欺诈检测系统(3)</title>
-    <link href="https://halfcoke.github.io/2021/964fa673/"/>
-    <id>https://halfcoke.github.io/2021/964fa673/</id>
-    <published>2021-03-25T09:08:44.000Z</published>
-    <updated>2021-05-02T11:17:06.835Z</updated>
-    
-    
-    
-    
     
   </entry>
   
@@ -574,6 +561,34 @@
     <category term="流处理" scheme="https://halfcoke.github.io/tags/%E6%B5%81%E5%A4%84%E7%90%86/"/>
     
     <category term="metrics" scheme="https://halfcoke.github.io/tags/metrics/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Linux Top 命令详解</title>
+    <link href="https://halfcoke.github.io/2020/8649918/"/>
+    <id>https://halfcoke.github.io/2020/8649918/</id>
+    <published>2020-12-23T05:53:45.000Z</published>
+    <updated>2020-12-23T06:56:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Linux下Top命令详解"><a href="#Linux下Top命令详解" class="headerlink" title="Linux下Top命令详解"></a>Linux下Top命令详解</h1><h2 id="命令简介"><a href="#命令简介" class="headerlink" title="命令简介"></a>命令简介</h2><p><strong>top命令</strong> 可以实时动态地查看系统的整体运行情况，是一个综合了多方信息监测系统性能和运行信息的实用工具。通过top命令所提供的互动式界面，用热键可以管理。</p><h2 id="命令选项"><a href="#命令选项" class="headerlink" title="命令选项"></a>命令选项</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">-b：以批处理模式操作；</span><br><span class="line">-c：显示完整的治命令；</span><br><span class="line">-d：屏幕刷新间隔时间；</span><br><span class="line">-I：忽略失效过程；</span><br><span class="line">-s：保密模式；</span><br><span class="line">-S：累积模式；</span><br><span class="line">-i&lt;时间&gt;：设置间隔时间；</span><br><span class="line">-u&lt;用户名&gt;：指定用户名；</span><br><span class="line">-p&lt;进程号&gt;：指定进程；</span><br><span class="line">-n&lt;次数&gt;：循环显示的次数。</span><br></pre></td></tr></table></figure><h2 id="交互命令"><a href="#交互命令" class="headerlink" title="交互命令"></a>交互命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">h：显示帮助画面，给出一些简短的命令总结说明；</span><br><span class="line">k：终止一个进程；</span><br><span class="line">i：忽略闲置和僵死进程，这是一个开关式命令；</span><br><span class="line">q：退出程序；</span><br><span class="line">r：重新安排一个进程的优先级别；</span><br><span class="line">S：切换到累计模式；</span><br><span class="line">s：改变两次刷新之间的延迟时间（单位为s），如果有小数，就换算成ms。输入0值则系统将不断刷新，默认值是5s；</span><br><span class="line">f或者F：从当前显示中添加或者删除项目；</span><br><span class="line">o或者O：改变显示项目的顺序；</span><br><span class="line">l：切换显示平均负载和启动时间信息；</span><br><span class="line">m：切换显示内存信息；</span><br><span class="line">t：切换显示进程和CPU状态信息；</span><br><span class="line">c：切换显示命令名称和完整命令行；</span><br><span class="line">M：根据驻留内存大小进行排序；</span><br><span class="line">P：根据CPU使用百分比大小进行排序；</span><br><span class="line">T：根据时间/累计时间进行排序；</span><br><span class="line">w：将当前设置写入~/.toprc文件中。</span><br><span class="line">I: 切换Irix模式和Solaris模式</span><br></pre></td></tr></table></figure><h2 id="显示结果介绍"><a href="#显示结果介绍" class="headerlink" title="显示结果介绍"></a>显示结果介绍</h2><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/20201223140206.png" alt="image-20201223140206196"></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">top - 14:12:41 up 40 days,  8:58,  1 user,  load average: 0.01, 0.04, 0.05</span><br><span class="line">Tasks: 150 total,   1 running, 149 sleeping,   0 stopped,   0 zombie</span><br><span class="line">%Cpu(s):  0.2 us,  0.1 sy,  0.0 ni, 99.7 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st</span><br><span class="line">KiB Mem : 16265208 total, 13027888 free,  1907500 used,  1329820 buff&#x2F;cache</span><br><span class="line">KiB Swap:  2097148 total,  2097148 free,        0 used. 14028784 avail Mem</span><br><span class="line"></span><br><span class="line">  PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND</span><br><span class="line">31413lsy       20   0 7789400 810980  28092 S   1.7  5.0   0:38.60 java</span><br><span class="line">14052lsy       20   0 6060348 282744  22764 S   0.7  1.7  96:03.88 java</span><br><span class="line">31983root      20   0  162152   2288   1548 R   0.3  0.0   0:00.50 top</span><br><span class="line">1root      20   0  191284   4280   2596 S   0.0  0.0   0:15.67 systemd</span><br><span class="line">2root      20   0       0      0      0 S   0.0  0.0   0:00.60 kthreadd</span><br><span class="line">4root       0 -20       0      0      0 S   0.0  0.0   0:00.00 kworker&#x2F;0:0H</span><br><span class="line">5root      20   0       0      0      0 S   0.0  0.0   0:10.16 kworker&#x2F;u16:0</span><br></pre></td></tr></table></figure><p><strong>第一行</strong></p><ul><li><code>top - 14:09:28</code>：显示当前系统时间</li><li><code>up 40 days,  8:57</code>：系统已经运行了16天</li><li><code> 1 user</code>：一个用户登录</li><li><code>load average: 0.04, 0.05, 0.05</code>：系统负载，即任务队列的平均长度，三个数值分别为截止目前1分钟，5分钟，15分钟内的平均值</li></ul><p><strong>第二行</strong></p><ul><li><code>Tasks: 150 total</code>：总进程数</li><li><code>1 running</code>：正在运行的进程数</li><li><code>149 sleeping</code>：睡眠进程数</li><li><code>0 stopped</code>：停止进程数</li><li><code>0 zombie</code>：冻结进程数</li></ul><p><strong>第三行</strong></p><ul><li><p><code>%Cpu(s):  0.2 us</code>：用户空间进程占用CPU时间的百分比</p></li><li><p><code>0.1 sy</code>：内核空间进程占用CPU时间的百分比</p></li><li><p><code>0.0 ni</code>：ni表示nice的意思，也就是哪些用户进程被提升优先级之后，占用的CPU运行时间</p></li><li><p><code>99.7 id</code>：系统空闲时间</p></li><li><p><code>0.0 wa</code>：等待输入输出的CPU百分比</p></li><li><p><code>0.0 hi</code>：CPU处理硬中断(hard interrupt）的时间百分比</p></li><li><p><code> 0.0 si</code>：CPU处理软中断(soft interrupt）的时间百分比</p></li><li><p><code>0.0 st</code>：这个表示在有虚拟机的时候，被虚拟机占用的CPU时间。st表示窃取的意思，steal的意思。</p><p><strong><em>上面这些百分比相加的话，是等于100%的，按数字键 1 可以看到不同核心的负载</em></strong></p></li></ul><p><strong>第四行</strong></p><ul><li><code>KiB Mem : 16265208 total</code>：表示系统可用的物理内存总量</li><li><code>13027888 free</code>：表示当前空闲的内存总量</li><li><code>1907500 used</code>：表示当前已用的内存总量</li><li><code>1329820 buff/cache</code>：用作系统内核缓存的物理内存总量</li></ul><p><strong>第五行</strong></p><ul><li><code>KiB Swap:  2097148 total</code>：交换区总量</li><li><code>2097148 free</code>：交换区空闲</li><li><code>      0 used</code>：交换区使用</li><li><code>14028784 avail Mem</code>：avail number是在不进行交换的情况下，用于启动新应用程序的可用物理内存的估计。与free字段不同，它试图考虑容易回收的页面缓存和内存。它在内核3.14上可用，在内核2.6.27+上可模拟，否则就像free一样</li></ul><p><strong>第七行以下</strong></p><ul><li><code>PID</code>：进程id</li><li><code>USER</code>：进程所有者</li><li><code>PR</code>：进程优先级</li><li><code>NI</code>：nice值。负值表示高优先级，正值表示低优先级</li><li><code>VIRT</code>：进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES</li><li><code>RES</code>：进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA</li><li><code>SHR</code>：共享内存大小，单位kb</li><li><code>S</code>：进程状态。D=不可中断的睡眠状态 R=运行 S=睡眠 T=跟踪/停止 Z=僵尸进程</li><li><code>%CPU</code>：上次更新到现在的CPU时间占用百分比，对一个多线程程序，如果不是在线程模式下，这个数值是可能超过100%的。对于多处理器环境，如果<code>Irix</code>模式是关闭状态，top将在<code>Solaris</code>模式下工作，任务的CPU使用率将除以CPU数量，可以通过交互命令<code>I</code>来更改状态</li><li><code>%MEM</code>：进程使用的物理内存百分比</li><li><code>TIME+</code>：进程使用的CPU时间总计，单位1/100秒</li><li><code>COMMAND</code>：进程名称（命令名/命令行）</li></ul><p>参考：</p><p>[1] <a href="https://wangchujiang.com/linux-command/c/top.html">https://wangchujiang.com/linux-command/c/top.html</a></p><p>[2] <a href="https://www.cnblogs.com/taobataoma/archive/2007/12/26/1015167.html">https://www.cnblogs.com/taobataoma/archive/2007/12/26/1015167.html</a></p>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h1 id=&quot;Linux下Top命令详解&quot;&gt;&lt;a href=&quot;#Linux下Top命令详解&quot; class=&quot;headerlink&quot; title=&quot;Linux下Top命令详解&quot;&gt;&lt;/a&gt;Linux下Top命令详解&lt;/h1&gt;&lt;h2 id=&quot;命令简介&quot;&gt;&lt;a href=&quot;#命令简介&quot;</summary>
+      
+    
+    
+    
+    <category term="Linux" scheme="https://halfcoke.github.io/categories/Linux/"/>
+    
+    <category term="命令" scheme="https://halfcoke.github.io/categories/Linux/%E5%91%BD%E4%BB%A4/"/>
+    
+    
+    <category term="Linux" scheme="https://halfcoke.github.io/tags/Linux/"/>
+    
+    <category term="命令" scheme="https://halfcoke.github.io/tags/%E5%91%BD%E4%BB%A4/"/>
     
   </entry>
   
