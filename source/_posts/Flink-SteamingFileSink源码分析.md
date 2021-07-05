@@ -74,7 +74,7 @@ public class StreamingFileSink<IN> extends RichSinkFunction<IN> implements Check
 
 而且这两个Builder均继承自`StreamingFileSink`的内部抽象类`BucketsBuilder`。
 
-![image-20210705000231492](C:/Users/halfcoke/AppData/Roaming/Typora/typora-user-images/image-20210705000231492.png)
+![image-20210705000231492](https://gitee.com/halfcoke/blog_img/raw/master/20210705101329.png)
 
 
 
