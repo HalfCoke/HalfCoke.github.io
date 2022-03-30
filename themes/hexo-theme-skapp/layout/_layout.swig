@@ -5,9 +5,9 @@
     {% block title %}
         <title>{% if page.title %}{{ page.title }} | {% endif %}{{ config.subtitle|default(theme.subtitle) }}</title>
     {% endblock %}
-
+    <meta name="description" content="技术博客|分享各类技术信息|分享日常使用的工具技术">
     {% include './_partial/common/head.swig' %}
-    
+
     {% block pageCss %}
     {% endblock %}
 </head>

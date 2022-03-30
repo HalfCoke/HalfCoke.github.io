@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: 基于Debezium的Flink-MySQL-CDC源码分析
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/20201223151557.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310143241.png'
 tags:
   - Flink
   - 流处理
