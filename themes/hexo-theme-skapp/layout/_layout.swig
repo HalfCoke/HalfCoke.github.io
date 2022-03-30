@@ -6,6 +6,7 @@
         <title>{% if page.title %}{{ page.title }} | {% endif %}{{ config.subtitle|default(theme.subtitle) }}</title>
     {% endblock %}
     <meta name="description" content="技术博客|分享各类技术信息|分享日常使用的工具技术">
+    <meta name="google-site-verification" content="R3m7NgTKKhEvPx0ADHPDEdwUnfnjbuX8vbawkixPz_U" />
     {% include './_partial/common/head.swig' %}
 
     {% block pageCss %}
