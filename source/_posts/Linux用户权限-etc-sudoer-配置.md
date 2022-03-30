@@ -13,7 +13,7 @@ typora-copy-images-to: upload
 abbrlink: 4adf7b4
 date: 2020-11-11 18:44:10
 update: 2020-11-11 18:44:10
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/sudo-command-in-linux.jpg'
+cover: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134262.jpeg
 ---
 
 # 【转载】Linux /etc/sudoer 配置
@@ -24,7 +24,7 @@ cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/sudo-command-in-linux
 
 比如在文件中配置有这样一条信息。
 
-![v2-aabac307640f3d2f50be74d9c6cc2497_r](https://gitee.com/halfcoke/blog_img/raw/master/img/v2-aabac307640f3d2f50be74d9c6cc2497_r.png)
+![v2-aabac307640f3d2f50be74d9c6cc2497_r](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135159.png)
 
 - `zhang`：表示用户名
 - `ALL=(ALL)`：第一个`ALL`表示所有的主机，第二个`ALL`表示所有的用户

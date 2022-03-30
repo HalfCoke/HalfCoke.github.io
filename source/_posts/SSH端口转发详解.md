@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: SSH端口转发
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/20210110211017.jpg'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135924.jpeg'
 tags:
   - Linux
   - SSH
@@ -31,7 +31,7 @@ SSH端口转发(隧道)可以建立SSH通道，并将TCP链接放到这个通道
 
 1. 本地转发
 
-![image-20210110224549253](https://gitee.com/halfcoke/blog_img/raw/master/img/20210110224549.png)
+![image-20210110224549253](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135914.png)
 
 本地转发通过`-L`选项指定
 
@@ -60,7 +60,7 @@ SSH端口转发(隧道)可以建立SSH通道，并将TCP链接放到这个通道
 
 2. 远程转发
 
-   ![image-20210110224639362](https://gitee.com/halfcoke/blog_img/raw/master/img/20210110224639.png)
+   ![image-20210110224639362](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135083.png)
 
    远程转发通过`-R`选项指定
 
@@ -87,7 +87,7 @@ SSH端口转发(隧道)可以建立SSH通道，并将TCP链接放到这个通道
 
 3. 动态转发
 
-   ![image-20210111144331152](https://gitee.com/halfcoke/blog_img/raw/master/img/20210111144331.png)
+   ![image-20210111144331152](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135778.png)
 
    动态转发通过 `-D`选项指定
 
@@ -107,7 +107,7 @@ SSH端口转发(隧道)可以建立SSH通道，并将TCP链接放到这个通道
 
 ### TCP FORWARDING
 
-![image-20210111145707861](https://gitee.com/halfcoke/blog_img/raw/master/img/20210111145707.png)
+![image-20210111145707861](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135967.png)
 
 > 可以通过命令行或配置文件通过安全通道转发任意TCP链接。一个可能的TCP转发应用场景是通过安全链接访问邮件服务或穿透防火墙。
 >
@@ -208,19 +208,19 @@ ServerAliveCountMax 3
 
 - `-N`
 
-  ![image-20210112202116993](https://gitee.com/halfcoke/blog_img/raw/master/img/20210112202117.png)
+  ![image-20210112202116993](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310136858.png)
 
   不执行远程命令，表示仅用来进行端口转发，常常与`-T`结合使用
 
 - `-T`
 
-  ![image-20210112202204575](https://gitee.com/halfcoke/blog_img/raw/master/img/20210112202204.png)
+  ![image-20210112202204575](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310136963.png)
 
   不分配伪终端，
 
 - `-f`
 
-  ![image-20210112202347594](https://gitee.com/halfcoke/blog_img/raw/master/img/20210112202347.png)
+  ![image-20210112202347594](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310136544.png)
 
   请求ssh在命令执行之前转到后台，如果ssh要求输入密码或密码短语，但用户希望在后台输入密码，那么这是非常有用的。这表示`-n`，在远程站点启动X11程序的推荐方法是使用ssh -f host xterm之类的工具。
 
@@ -230,7 +230,7 @@ ServerAliveCountMax 3
 
 - `-C`
 
-  ![image-20210112204811052](https://gitee.com/halfcoke/blog_img/raw/master/img/20210112204811.png)
+  ![image-20210112204811052](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310136387.png)
 
   请求压缩所有数据，压缩算法和`gzip`相同，压缩在调制解调器线路和其他慢速连接上是可取的，但在高速网络上只会减慢速度。默认值可以在配置文件中按主机设置;请参阅压缩选项。
 

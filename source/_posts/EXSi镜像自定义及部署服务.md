@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: 自定义ESXi镜像踩坑及数据分区、服务部署
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/20211120225607.jpeg'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117154.jpeg'
 tags:
   - 虚拟化
   - ESXi
@@ -42,15 +42,15 @@ ESXi镜像自定义有两种方式，一是使用Powershell脚本安装，另一
 
 自定义ESXi镜像时，不能直接使用iso文件，需要使用**Offline Bundle**文件，点击[官方下载链接](https://customerconnect.vmware.com/downloads/info/slug/datacenter_cloud_infrastructure/vmware_vsphere/6_7)，或者访问我的[下载链接](https://github.com/HalfCoke/custom-vmware-exsi/raw/main/esxi/ESXi670-201912001.zip)
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121152729728.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117820.png)
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121152752238.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117696.png)
 
 #### 网卡驱动准备(以r8168为例)
 
 [下载](https://vibsdepot.v-front.de/wiki/index.php/Net55-r8168)网卡驱动，vib格式在使用脚本打包的时候会用到，Offline Bundle格式在使用命令行打包时会用到
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121160332619.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117630.png)
 
 在当前路径新建文件夹`drivers`，将vib格式的网卡驱动移动进文件夹
 
@@ -82,11 +82,11 @@ ESXi镜像自定义有两种方式，一是使用Powershell脚本安装，另一
 
 **Step1：**将之前下载的zip文件添加到工作空间中，执行`add-esxsoftwaredepot .\ESXi670-201912001.zip`
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121190132589.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117070.png)
 
 **Step2：**检查当前的`Acceptance Level`，执行`get-esximageprofile`，接下来需要修改`Acceptance Level`
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121190224541.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117003.png)
 
 **Step3：**
 
@@ -94,7 +94,7 @@ ESXi镜像自定义有两种方式，一是使用Powershell脚本安装，另一
 new-esximageprofile -cloneprofile "ESXi-6.7.0-20191204001-standard" -name "ESXi-6.7.0-custom" -vendor "VMware-cus"
 ```
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121192321029.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117892.png)
 
 **Step4：**
 
@@ -102,7 +102,7 @@ new-esximageprofile -cloneprofile "ESXi-6.7.0-20191204001-standard" -name "ESXi-
 set-esximageprofile -ImageProfile "ESXi-6.7.0-custom" -acceptancelevel "CommunitySupported"
 ```
 
-![image-20211121193658977](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121193658977.png)
+![image-20211121193658977](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117762.png)
 
 **Step4：**
 
@@ -110,7 +110,7 @@ set-esximageprofile -ImageProfile "ESXi-6.7.0-custom" -acceptancelevel "Communit
 add-esxsoftwaredepot net55-r8168-8.045a-napi-offline_bundle.zip
 ```
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121192612423.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117785.png)
 
 **Step5：**
 
@@ -118,7 +118,7 @@ add-esxsoftwaredepot net55-r8168-8.045a-napi-offline_bundle.zip
 add-esxsoftwarepackage -ImageProfile "ESXi-6.7.0-custom" -SoftwarePackage "net55-r8168"
 ```
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121193731456.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118007.png)
 
 **Step6：**检查是否加入成功
 
@@ -126,9 +126,9 @@ add-esxsoftwarepackage -ImageProfile "ESXi-6.7.0-custom" -SoftwarePackage "net55
 (get-esximageprofile ESXi-6.7.0-custom).viblist
 ```
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121194014377.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118647.png)
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121194032789.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118228.png)
 
 **Step7：**导出文件
 
@@ -144,7 +144,7 @@ add-esxsoftwarepackage -ImageProfile "ESXi-6.7.0-custom" -SoftwarePackage "net55
 export-esximageprofile -imageprofile ESXi-6.7.0-custom -exporttoiso  -filepath .\ESXi-6.7.0-custom.iso  -nosignaturecheck  -Force
 ```
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121194508487.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118913.png)
 
 ## 得到ISO文件之后
 
@@ -166,7 +166,7 @@ export-esximageprofile -imageprofile ESXi-6.7.0-custom -exporttoiso  -filepath .
   ls /vmfs/devices/disks/
   ```
 
-  ![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121195147891.png)
+  ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118644.png)
 
 - 查看分区表
 
@@ -182,11 +182,11 @@ export-esximageprofile -imageprofile ESXi-6.7.0-custom -exporttoiso  -filepath .
 
   第二行是硬盘的总体信息
 
-  ![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121195537443.png)
+  ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118376.png)
 
   第三行之后是分区信息
 
-  ![](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121195553861.png)
+  ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118009.png)
 
 - 创建分区
 

@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: vue ElementUI中的BackTop组件使用
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/20210302131412.png'
+cover: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310137105.png
 tags:
   - Vue
   - ElementUI

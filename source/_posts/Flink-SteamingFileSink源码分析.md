@@ -5,7 +5,7 @@ author:
   link: 'https://halfcoke.github.io/'
 mathjax: true
 subtitle: Flink SteamingFileSink源码分析
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/20201223151557.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131610.png'
 tags:
   - Flink
   - 流处理
@@ -33,7 +33,7 @@ Flink中的`StreamingFileSink`是用来将流式数据写入文件系统的Sink�
 
 在写入文件时，文件有三种状态：`in-progress`，`pending`，`finished`，这是为了提供对精准一次语义的保证，新来的数据会首先写入到`in-progress`文件中，当通过用户定义的RollingPolicy触发了文件的关闭条件时(比如文件大小)，会关闭in-progress文件，并向一个新的`in-progress`文件中继续写数据。直到收到Checkpoint成功的信息时，会将`pending`的文件转换为`finished`。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20210704231111.svg)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131203.png)
 
 ## 源码分析(Base Flink-1.12.3)
 
@@ -72,11 +72,11 @@ public class StreamingFileSink<IN> extends RichSinkFunction<IN> implements Check
 
 `StreamingFileSink`的构造函数的访问修饰符是`protected`，需要通过两个Builder方法新建实例。
 
-![image-20210704233834035](https://gitee.com/halfcoke/blog_img/raw/master/20210704233838.png)
+![image-20210704233834035](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131546.png)
 
 而且这两个Builder均继承自`StreamingFileSink`的内部抽象类`BucketsBuilder`。
 
-![image-20210705000231492](https://gitee.com/halfcoke/blog_img/raw/master/20210705101329.png)
+![image-20210705000231492](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131650.png)
 
 这两个类的实例化是通过`StreamingFileSink`中的两个静态方法
 
@@ -169,7 +169,7 @@ public static <IN> StreamingFileSink.DefaultBulkFormatBuilder<IN> forBulkFormat(
 
 数据消费的时序图及其说明如下：
 
-![](https://gitee.com/halfcoke/blog_img_2021/raw/master/20210705135458.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131187.png)
 
 进行数据消费时，主要的步骤有以下几步：
 
@@ -241,7 +241,7 @@ public static <IN> StreamingFileSink.DefaultBulkFormatBuilder<IN> forBulkFormat(
 
 ##### 执行checkpoint逻辑
 
-![](https://gitee.com/halfcoke/blog_img_2021/raw/master/20210705144723.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131060.png)
 
 在`org.apache.flink.streaming.api.functions.sink.filesystem.Buckets#snapshotActiveBuckets`中依次对每个bucket调用`org.apache.flink.streaming.api.functions.sink.filesystem.Bucket#onReceptionOfCheckpoint`，然后再将`onReceptionOfCheckpoint`返回的状态进行序列化保存
 
@@ -316,7 +316,7 @@ private void prepareBucketForCheckpointing(long checkpointId) throws IOException
 
 `org.apache.flink.streaming.api.functions.sink.filesystem.StreamingFileSink#notifyCheckpointComplete`方法用来执行checkpoint完成时的逻辑
 
-![](https://gitee.com/halfcoke/blog_img_2021/raw/master/20210705155856.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131350.png)
 
 这其中最终调用的方法是`org.apache.flink.streaming.api.functions.sink.filesystem.Bucket#onSuccessfulCompletionOfCheckpoint`
 
@@ -354,17 +354,17 @@ void onSuccessfulCompletionOfCheckpoint(long checkpointId) throws IOException {
 
 写数据时的inprogress文件
 
-![image-20210705161008160](https://gitee.com/halfcoke/blog_img_2021/raw/master/20210705161008.png)
+![image-20210705161008160](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131121.png)
 
 finished文件，可供下游使用
 
-![image-20210705161125002](https://gitee.com/halfcoke/blog_img_2021/raw/master/20210705161125.png)
+![image-20210705161125002](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132279.png)
 
 ## StreamingFileSink对Failover的处理
 
 StreamingFileSink在恢复状态时，会恢复每个bucket中的计数信息、正在写的in-progress、pending的信息。
 
-![image-20210705171020224](https://gitee.com/halfcoke/blog_img_2021/raw/master/20210705171020.png)
+![image-20210705171020224](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132932.png)
 
 当Failover出现在不同的阶段：
 

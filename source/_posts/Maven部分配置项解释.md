@@ -10,6 +10,7 @@ tags:
   - 开发工具
   - maven
 categories:
+  - 工具
   - 开发工具
   - maven
 abbrlink: 4346098d

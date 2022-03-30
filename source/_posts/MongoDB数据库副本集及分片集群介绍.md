@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: MongoDB数据库副本集及分片集群介绍
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/20210704040220.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135844.png'
 tags:
   - 数据库
   - MongoDB

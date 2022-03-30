@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: frp端口转发工具加部署详解
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/20210908221022.jpg'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127016.jpeg'
 tags:
   - Linux
   - SSH
@@ -45,7 +45,7 @@ frp采用CS模式，需要在具有公网IP的节点上设置服务端，在需�
 
 工具的安装部署也极为便捷，直接解压压缩包便可以获得如下文件。
 
-![image-20210908224239220](https://gitee.com/halfcoke/blog_img/raw/master/20210908224239.png)
+![image-20210908224239220](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127255.png)
 
 文件非常清晰，`frpc`表示客户端，`frpc.ini`表示客户端配置；`frps`表示服务端，`frps.ini`表示服务端配置。
 
@@ -256,11 +256,11 @@ remote_port = 3389
 
   - `<log>`记录日志的模式。
 
-    ![image-20210908232555264](https://gitee.com/halfcoke/blog_img/raw/master/20210908232555.png)
+    ![image-20210908232555264](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127247.png)
 
   配置完成后，在`myapp.exe`所在的目录直接输入`cmd .`（注意有个空格 和点）直接打开cmd窗口，如下所示
 
-  ![image-20210908233045415](https://gitee.com/halfcoke/blog_img/raw/master/20210908233045.png)
+  ![image-20210908233045415](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127398.png)
 
   然后执行
 
@@ -338,4 +338,4 @@ systemctl stop frps
 - [frp中文官网](https://gofrp.org/)
 - [WinSW](https://github.com/winsw/winsw)
 
-好了~剩下的功能大家可以自行探索，别干什么触碰高压线的事就行哈~
+好了，剩下的功能大家可以自行探索，别干什么触碰高压线的事就行哈

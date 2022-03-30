@@ -5,7 +5,7 @@ author:
   link: 'https://halfcoke.github.io/'
 typora-copy-images-to: upload
 mathjax: true
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/20210704040505.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310129101.png'
 tags:
   - 数据库
   - ClickHouse
@@ -41,5 +41,5 @@ Distributed引擎需要以下几个参数：
 
 在分布式表上执行查询的流程简图如下所示。发出查询后，各个实例之间会交换自己持有的分片的表数据，最终汇总到同一个实例上返回给用户。
 
-![img](https://gitee.com/halfcoke/blog_img_2021/raw/master/20210705182734.webp)
+![img](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310129328.webp)
 

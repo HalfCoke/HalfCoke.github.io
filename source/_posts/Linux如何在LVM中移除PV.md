@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: Linux如何在LVM中移除PV
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/1200px-LVM1.svg.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134214.png'
 tags:
   - Linux
   - LVM
@@ -28,11 +28,11 @@ update: 2021-03-18 09:38:22
 
 通过`lsblk`命令我们可以看到，当前根目录的`LVM`是用了两个盘的，即`sda`和`sdb`。我们想将`sda`从`LVM`中拿出来，这样`sda`就可以用来做别的事情了。
 
-![image-20210318100540412](https://gitee.com/halfcoke/blog_img/raw/master/20210318100540.png)
+![image-20210318100540412](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134687.png)
 
 使用`df -hT`查看当前分区的使用情况，我们可以看到根目录只用了72G，`/home`目录空闲有249G，这个时候我们可以将`/home`中的一部分空间拿出来，最好空闲直接大于72G，保证能装得下。如果小于72G的时候不确定能不能装得下，这部分需要自己试一下。
 
-![image-20210318101352606](https://gitee.com/halfcoke/blog_img/raw/master/20210318101352.png)
+![image-20210318101352606](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134104.png)
 
 我们执行一下`lvdisplay`，查看一下lv的信息，下图列出了部分内容。
 

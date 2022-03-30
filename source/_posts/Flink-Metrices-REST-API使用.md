@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: 介绍通过REST API获取Flink相关状态
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/20201223151557.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310130905.png'
 tags:
   - Flink
   - metrics
@@ -65,11 +65,11 @@ jvm提供的[`getProcessCpuLoad()`方法](https://docs.oracle.com/javase/7/docs/
 
 - 可以通过jps获得TaskManager的进程ID
 
-![image-20201224222950624](https://gitee.com/halfcoke/blog_img/raw/master/img/20201224222950.png)
+![image-20201224222950624](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131222.png)
 
 - 然后根据进程ID通过`top -H -p 23621`可以看到线程对CPU的使用情况，这里可以看到每一个算子都是一个线程，但是使用程序导出时应考虑一下其他命令
 
-![image-20201224222919852](https://gitee.com/halfcoke/blog_img/raw/master/img/20201224222919.png)
+![image-20201224222919852](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131259.png)
 
 #### JVM 内存使用情况
 
@@ -129,7 +129,7 @@ MemoryUsage对象包含四部分
 
   表示可用于内存管理的最大内存量(以字节为单位)。它的值可能没有定义。如果定义了最大内存量，则可能随时间而改变。如果定义了max，则已使用和提交的内存总量将始终小于或等于max。如果试图增加已用内存使其大于提交内存，这样即使used <= max仍然为true(例如，当系统的虚拟内存不足时)，那么内存分配可能会失败。
 
-![image-20201228104216053](https://gitee.com/halfcoke/blog_img/raw/master/img/20201228104216.png)
+![image-20201228104216053](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131803.png)
 
 对jvm内存的事情情况通过 OpenJDK管理工具获取
 
@@ -287,7 +287,7 @@ oshi访问`/proc/stat`文件获取CPU信息
 
 `/proc/stat`文件部分截图
 
-![image-20201223170433096](https://gitee.com/halfcoke/blog_img/raw/master/img/20201223170433.png)
+![image-20201223170433096](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131765.png)
 
 ***重要***
 
@@ -346,7 +346,7 @@ oshi访问文件` /proc/meminfo `来获取内存信息
 
 `/proc/meminfo`文件部分截图
 
-![image-20201223165623999](https://gitee.com/halfcoke/blog_img/raw/master/img/20201223165624.png)
+![image-20201223165623999](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131311.png)
 
 ```java
 // org/apache/flink/runtime/metrics/util/SystemResourcesMetricsInitializer.java
@@ -367,7 +367,7 @@ oshi访问文件` /proc/meminfo `来获取内存信息，与获取内存使用�
 
 Swap的使用，能表现出系统内存是否够用，如果频繁使用Swap，则表示*系统内存不足*。
 
-![image-20201223170913324](https://gitee.com/halfcoke/blog_img/raw/master/img/20201223170913.png)
+![image-20201223170913324](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131950.png)
 
 ```java
 // org/apache/flink/runtime/metrics/util/SystemResourcesMetricsInitializer.java

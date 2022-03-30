@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: GoLang远程开发配置
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/20210306101640.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132941.png'
 tags:
   - Go语言
   - 远程开发
@@ -91,25 +91,25 @@ func main() {
 
 ！！！很重要，不然无法断点调试
 
-![image-20210306120910761](https://gitee.com/halfcoke/blog_img/raw/master/20210306120910.png)
+![image-20210306120910761](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132304.png)
 
 在GoLand配置`Deployment`，将本地文件同步到服务器上，如何配置Deployment参考网络上其他教程，讲这部分内容的很多，主要步骤如下截图：
 
-![image-20210306103624938](https://gitee.com/halfcoke/blog_img/raw/master/20210306103625.png)
+![image-20210306103624938](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132358.png)
 
-![image-20210306103717312](https://gitee.com/halfcoke/blog_img/raw/master/20210306103717.png)
+![image-20210306103717312](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132513.png)
 
 点击这里
 
-![image-20210306103925994](https://gitee.com/halfcoke/blog_img/raw/master/20210306103926.png)
+![image-20210306103925994](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133594.png)
 
 新建一个Go Remote配置
 
-![image-20210306103951739](https://gitee.com/halfcoke/blog_img/raw/master/20210306103951.png)
+![image-20210306103951739](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133462.png)
 
 根据自己的情况设置IP和端口
 
-![image-20210306104039977](https://gitee.com/halfcoke/blog_img/raw/master/20210306104040.png)
+![image-20210306104039977](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133240.png)
 
 在**远程环境**的终端上进入刚刚的项目路径（比如我的是`/tmp/go_practice/2021-03-06`），然后选择执行如下命令
 
@@ -120,8 +120,8 @@ dlv debug --headless --listen=:2345 --api-version=2
 
 然后回到Goland点击调试即可
 
-![image-20210306121101391](https://gitee.com/halfcoke/blog_img/raw/master/20210306121101.png)
+![image-20210306121101391](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133618.png)
 
 直接在GoLand中进行远程调试就很方便了。
 
-![image-20210306121931106](https://gitee.com/halfcoke/blog_img/raw/master/20210306121931.png)
+![image-20210306121931106](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133606.png)

@@ -1,7 +1,7 @@
 ---
 title: Linux如何使用LVM进行磁盘扩容
 subtitle: 在Linux下，使用LVM对现有磁盘进行扩容
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/1200px-LVM1.svg.png'
+cover: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133555.png
 author:
   nick: HalfCoke
   link: 'https://halfcoke.github.io/'
@@ -40,11 +40,11 @@ fdisk -l
 
 命令执行结果与下图类似：
 
-![image-20201106185215998](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106185215998.png)
+![image-20201106185215998](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133707.png)
 
 可以看到我们这块磁盘有`268.4GB`大小的空间，但只有两个分区`vda1`和`vda2`。我们同样可以使用<span id="lsblk">`lsblk`</span>来查看当前分区状态。执行结果应该类似下图：
 
-![image-20201106190400637](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106190400637.png)
+![image-20201106190400637](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133939.png)
 
 通过这里我们看到，主要要解决的问题是，如何把我们这200多GB的空间都用上。
 
@@ -58,11 +58,11 @@ fdisk /dev/vda
 
 命令执行后的状态应该类似下图：
 
-![image-20201106190949198](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106190949198.png)
+![image-20201106190949198](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133328.png)
 
 我们可以在这里输入`p`来查看当前硬盘的信息，结果如下：
 
-![image-20201106191051650](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106191051650.png)
+![image-20201106191051650](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133271.png)
 
 接下来执行我们的扩容过程。
 
@@ -70,11 +70,11 @@ fdisk /dev/vda
 
 新建分区的过程如下图所示，输入`n`，然后输入`P`（最多四个分区）。接下来的`Partition number`、`First sector`及`Last sector`我这里选择的都是默认值，因为我要用到剩下全部的磁盘空间，你在设置的时候根据你自己的情况决定。
 
-![image-20201106191356630](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106191356630.png)
+![image-20201106191356630](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134519.png)
 
 再次输入`p`，我们可以看到新建的分区。
 
-![image-20201106191912730](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106191912730.png)
+![image-20201106191912730](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134126.png)
 
 ### 修改分区类型
 
@@ -82,13 +82,13 @@ fdisk /dev/vda
 
 输入`t`，选择新建出来的分区号，我这里是`3`，然后输入`8e`，再输入`p`查看分区类型，我们可以看到新建的分区的类型已经更改过来了。
 
-![image-20201106192200782](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106192200782.png)
+![image-20201106192200782](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134288.png)
 
 ### 写入分区表
 
 输入`w`，将刚刚的更改写入。然后执行`partprobe`重读分区表。
 
-![image-20201106192900952](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106192900952.png)
+![image-20201106192900952](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134435.png)
 
 ### 扩容VG 
 
@@ -100,13 +100,13 @@ fdisk /dev/vda
 vgextend centos /dev/vda3
 ```
 
-![image-20201106193352723](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106193352723.png)
+![image-20201106193352723](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134753.png)
 
 ### 扩容LV
 
 输入`lvdisplay`来查看当前存在的LV信息，如下图所示。
 
-![image-20201106194122215](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106194122215.png)
+![image-20201106194122215](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134700.png)
 
 确定我们要扩容的分区，可以通过刚才执行的<a href="#lsblk">`lsblk`</a>命令查看，我们这里要扩容的`LV Path`是`/dev/centos/root`。
 
@@ -125,7 +125,7 @@ df -h
 
 
 
-![image-20201106201915719](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201106201915719.png)
+![image-20201106201915719](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134157.png)
 
 ---
 
@@ -133,4 +133,4 @@ df -h
 
 欢迎扫码关注，不定期更新各种经验。
 
-<img src="https://gitee.com/halfcoke/blog_img/raw/master/img/qrcode.jpg" style="zoom: 67%;" />
+<img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134385.jpeg" style="zoom: 67%;" />

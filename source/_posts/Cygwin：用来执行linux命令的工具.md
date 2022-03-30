@@ -6,11 +6,12 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: Cygwin：用来执行linux命令的工具安装与配置
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/20210509160110.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310129661.png'
 tags:
   - 系统工具
   - cygwin
 categories:
+  - 工具
   - 系统工具
   - cygwin
 abbrlink: 8d1f253e
@@ -36,11 +37,11 @@ update: 2021-05-09 15:57:59
 
 安装软件需要运行Cygwin安装包，一直点击下一步到如下页面。
 
-![image-20210509160734409](https://gitee.com/halfcoke/blog_img/raw/master/20210509160929.png)
+![image-20210509160734409](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108820.png)
 
 比如要安装wget，则在搜索框中输入`wget`，view选择Full。然后选择软件版本，我这里已经安装过了，所以会有`keep`和`reinstall`选项。然后再一直点击下一步即可。
 
-![image-20210509160832027](https://gitee.com/halfcoke/blog_img/raw/master/20210509160940.png)
+![image-20210509160832027](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108541.png)
 
 ### 方法二
 
@@ -48,7 +49,7 @@ update: 2021-05-09 15:57:59
 
 这时启动cygwin终端已经可以使用`apt-cyg`命令了。
 
-![image-20210509161847316](https://gitee.com/halfcoke/blog_img/raw/master/20210509162122.png)
+![image-20210509161847316](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108268.png)
 
 ## 其他说明
 

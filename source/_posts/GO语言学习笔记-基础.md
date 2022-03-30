@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: Go语言学习笔记，Go语言基本内容
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/20201120135457.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132178.png'
 tags:
   - 学习笔记
   - go语言
@@ -167,8 +167,8 @@ func getURL(ch chan<- string) {
 
 ```
 
-![image-20201120172805036](https://gitee.com/halfcoke/blog_img/raw/master/img/20201120172805.png)
+![image-20201120172805036](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132710.png)
 
 ### 2. 算法原理
 
-![image-20201127210210047](https://gitee.com/halfcoke/blog_img/raw/master/img/20201127210210.png)
+![image-20201127210210047](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132305.png)

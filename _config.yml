@@ -15,13 +15,13 @@ menu:
   home: /
   archive: /archives
 # 博客图标
-favicon_ico: https://gitee.com/halfcoke/blog_img/raw/master/img/logo.svg
-logo: https://gitee.com/halfcoke/blog_img/raw/master/20210228214106.svg
-qrcode: https://gitee.com/halfcoke/blog_img/raw/master/img/sin_qrcode.png
-default_cover: https://gitee.com/halfcoke/blog_img/raw/master/img/article.webp
-header_cover: https://gitee.com/halfcoke/blog_img/raw/master/img/background.webp
-error_page_bg: https://gitee.com/halfcoke/blog_img/raw/master/img/404.webp
-loader_img: https://gitee.com/halfcoke/blog_img/raw/master/img/loader.gif
+favicon_ico: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310111533.svg
+logo: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310111533.svg
+qrcode: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310112462.png
+default_cover: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310112442.webp
+header_cover: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310112213.webp
+error_page_bg: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310113736.webp
+loader_img: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310113025.gif
 # 站长信息
 author:
   name: HalfCoke

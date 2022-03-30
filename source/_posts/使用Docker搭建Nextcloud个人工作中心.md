@@ -16,7 +16,7 @@ categories:
 abbrlink: b6c7e144
 date: 2021-10-10 21:07:53
 update: 2021-10-10 21:07:53
-cover: https://gitee.com/halfcoke/blog_img/raw/master/20211020172344.png
+cover: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310125449.png
 ---
 
 # 使用Docker搭建Nextcloud个人工作中心(同步盘+离线下载+。。。)(完整版)
@@ -431,7 +431,7 @@ server {
 
 可以进行一些配置，大体上如下图所示
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211010224657.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310125240.png)
 
 同样可以通过手机端、电脑端对其进行访问(接入同一个局域网)
 
@@ -544,31 +544,31 @@ services:
 
 设置中文后打开bind dns server页面
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211010231732.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310125393.png)
 
 进行转发和传输设置
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211010231810.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126745.png)
 
 进行访问控制列表设置
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211010231828.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126310.png)
 
 在这里创建新的主区域
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211010231922.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126888.png)
 
 这里根据自己的实际情况去填，Email地址随便写
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211010232341.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126311.png)
 
 点击新建以后，点击地址
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211010232223.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126055.png)
 
 按照如下填写即可
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211010232445.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126147.png)
 
 等待一段时间，把路由器的DNS服务器设置为台式机，然后链接到路由器的局域网里，就可以使用`host example.cn`来查看地址，如果可以定位到台式机，就没问题了。
 
@@ -580,29 +580,29 @@ services:
 
 主页面基本就是这个样子，很简洁，在右侧可以进行一些设置。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020152944.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126125.png)
 
 在文件页面是这个样子，有文件版本记录。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020174724.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126992.png)
 
 在本地删除的文件，云端也会有记录，可以进行文件恢复
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020172019.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127302.png)
 
 #### Windows客户端
 
 Windows客户端可以设置忽略同步的文件或文件夹，这个也是比较方便的地方，比如`node_modules`终于不需要同步了（之前onedrive不支持进行这样的设置）。总体的使用也是比较方便易懂的。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020153126.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126836.png)
 
 同步文件夹也可以进行设置，我直接用之前Onedrive创建的文件夹了。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020153508.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126771.png)
 
 在文件管理器中看基本上是这个样子。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020171440.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126674.png)
 
 nextcloud有虚拟文件支持，就是类似onedrive的文件随选。但是我这边一开启就容易卡死，关闭后就一直正常。
 
@@ -628,23 +628,23 @@ nextcloud有虚拟文件支持，就是类似onedrive的文件随选。但是我
 
 点击应用，然后选择你需要安装的插件，下载并启用即可
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020170024.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126709.png)
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020170112.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126703.png)
 
 #### 离线安装：
 
 访问nextcloud官方插件商店[https://apps.nextcloud.com/](https://apps.nextcloud.com/)，选择想要的插件，并下载指定版本。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020170241.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126139.png)
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020170316.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126318.png)
 
 将插件压缩包，放入`/data/nextcloud-data/custom_apps`中解压即可。
 
 返回你自己的nextcloud，在应用页面会发现放入的插件，启用即可。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020170513.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126973.png)
 
 刚安装好的话应该是不支持用户注册的，可以安装一个注册插件，方便朋友临时用一下。
 
@@ -659,5 +659,5 @@ apt install -y libmagickcore-6.q16-6-extra #支持svg
 apt install -y cron # 执行定时任务
 ```
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20211020170841.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310126080.png)
 

@@ -64,7 +64,7 @@ I: 切换Irix模式和Solaris模式
 
 ## 显示结果介绍
 
-![image-20201223140206196](https://gitee.com/halfcoke/blog_img/raw/master/img/20201223140206.png)
+![image-20201223140206196](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133699.png)
 
 ```
 top - 14:12:41 up 40 days,  8:58,  1 user,  load average: 0.01, 0.04, 0.05

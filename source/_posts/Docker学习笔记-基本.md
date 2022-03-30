@@ -1,7 +1,7 @@
 ---
 title: Docker学习笔记-基本
 subtitle: 'Docker学习笔记，Dockerfile,compose,swarm的基本内容'
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/docker.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310130800.png'
 author:
   nick: HalfCoke
   link: 'https://halfcoke.github.io/'
@@ -18,7 +18,7 @@ update: 2020-11-10 13:10:43
 ---
 # Docker学习笔记
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/img/1158417-20190119105601346-1695190871.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108236.png)
 
 ## 基本概念
 
@@ -118,7 +118,7 @@ Server: Docker Engine - Community
 docker run hello-world
 ```
 
-![image-20201107230858385](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201107230858385.png)
+![image-20201107230858385](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108047.png)
 
 ```bash
 # 8. 查看下载的helloworld镜像
@@ -153,7 +153,7 @@ DockerServer接收到Docker-client的指令，就会执行这个命令。
 1. Docker比虚拟机更少的抽象层
 2. Docker利用的是宿主机的内核，vm需要的是Guest os
 
-![image-20201107232451728](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201107232451728.png)
+![image-20201107232451728](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108495.png)
 
 所以，新建一个容器的时候，Docker不需要像虚拟机一样重新加载一个操作系统，避免引导。虚拟机是加载Guest os，分钟级别，而Docker是利用宿主机的操作系统 ，省略这个过程，秒级。
 
@@ -625,7 +625,7 @@ df42673d50f2        centos              "/bin/bash"         28 seconds ago      
 
 ---
 
-![image-20201108173050520](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108173050520.png)
+![image-20201108173050520](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108501.png)
 
 ```bash
 # 1. 搜索镜像   建议在Docker Hub上搜索  能够看到详细信息
@@ -700,7 +700,7 @@ docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=
 # 查看状态
 ```
 
-![image-20201108180804691](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108180804691.png)
+![image-20201108180804691](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108534.png)
 
 ```bash
 [root@centos7vm ~]# curl localhost:9211
@@ -763,7 +763,7 @@ tomcat                   latest              dab3cf97dd54        39 hours ago   
 
 ### 什么是数据卷
 
-![image-20201108195121399](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108195121399.png)
+![image-20201108195121399](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108967.png)
 
 容器内的目录映射到外部目录，为了容器的持久化和同步操作，容器间数据能够共享
 
@@ -780,7 +780,7 @@ docker run -it -v /root/test:/home centos /bin/bash
 docker inspect 容器id
 ```
 
-![image-20201108195708778](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108195708778.png)
+![image-20201108195708778](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108732.png)
 
 其中source是主机内的地址，Destination是容器内的地址
 
@@ -788,7 +788,7 @@ docker inspect 容器id
 # 测试
 ```
 
-![image-20201108200240055](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108200240055.png)
+![image-20201108200240055](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108813.png)
 
 之后修改直接在本地修改
 
@@ -940,11 +940,11 @@ bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  run  s
 
 没有写名字，这是匿名挂载
 
-![image-20201108210619365](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108210619365.png)
+![image-20201108210619365](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108237.png)
 
 查看容器属性，确定是匿名挂载
 
-![image-20201108210750028](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108210750028.png)
+![image-20201108210750028](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310108658.png)
 
 这种使用方式非常多，如果构建镜像的时候没有挂载，就要手动挂载 -v 卷名:容器内路径。
 
@@ -954,13 +954,13 @@ bin  dev  etc  home  lib  lib64  lost+found  media  mnt  opt  proc  root  run  s
 
 两个mysql之间同步数据
 
-![image-20201108211127849](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108211127849.png)
+![image-20201108211127849](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109275.png)
 
 ```bash
 # 启动容器，通过自己写的镜像启动
 ```
 
-![image-20201108211313942](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108211313942.png)
+![image-20201108211313942](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109026.png)
 
 ```bash
 # 再新建一个容器，从docker01中继承数据卷
@@ -1030,19 +1030,19 @@ ENV 		# 构建的时候，设置的环境变量
 
 这里放的图片比较多，更全面的写展示各种命令
 
-![image-20201108213930017](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108213930017.png)
+![image-20201108213930017](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109001.png)
 
-![image-20201108213418167](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108213418167.png)
+![image-20201108213418167](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109418.png)
 
-![image-20201108213512266](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108213512266.png)
+![image-20201108213512266](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109331.png)
 
-![image-20201108213536145](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108213536145.png)
+![image-20201108213536145](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109341.png)
 
 ### 实战测试
 
 Docker Hub中绝大多数镜像都是从基础镜像过来的FROM scratch，然后配置需要的软件和环境
 
-![image-20201108214918038](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201108214918038.png)
+![image-20201108214918038](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109369.png)
 
 ```bash
 # 创建自己的centos
@@ -1154,7 +1154,7 @@ drwxr-xr-x  20 root root 262 Aug  9 21:40 var
 
 1. 准备压缩文件
 
-   ![image-20201109103657554](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201109103657554.png)
+   ![image-20201109103657554](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109751.png)
 
 2. 编写Dockerfile文件 官方命名`Dockerfile`，build就会自动寻找这个文件，不需要`-f`指定
 
@@ -1234,7 +1234,7 @@ drwxr-xr-x  20 root root 262 Aug  9 21:40 var
 
    ### 小结
 
-   ![image-20201109135918607](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201109135918607.png)
+   ![image-20201109135918607](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109789.png)
 
 ## Docker网络
 
@@ -1417,7 +1417,7 @@ b9de4a74c582        none                null                local
 
 ```
 
-![image-20201109192308737](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201109192308737.png)
+![image-20201109192308737](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109378.png)
 
 ```bash
 # 添加两个容器
@@ -1498,9 +1498,9 @@ PING tomcat02 (192.168.0.3) 56(84) bytes of data.
 
 ### 网络连通
 
-![image-20201109192920354](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201109192920354.png)
+![image-20201109192920354](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109757.png)
 
-![image-20201109192945986](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201109192945986.png)
+![image-20201109192945986](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310109184.png)
 
 **测试打通**
 
