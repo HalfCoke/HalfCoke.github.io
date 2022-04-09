@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="{{ config.language|default(theme.language) }}">
 <head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6942839821989447"
+     crossorigin="anonymous"></script>
     <meta charset="utf-8" />
     {% block title %}
         <title>{% if page.title %}{{ page.title }} | {% endif %}{{ config.subtitle|default(theme.subtitle) }}</title>
