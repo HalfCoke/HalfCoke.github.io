@@ -12,8 +12,8 @@
     "version": "5.2.0"
   },
   "dependencies": {
-    "cross-spawn": "^7.0.3",
-    "cwebp-bin": "^7.0.1",
+    "cross-spawn": "^5.1.0",
+    "cwebp-bin": "^5.1.0",
     "hexo": "^5.0.0",
     "hexo-abbrlink": "^2.2.1",
     "hexo-autoprefixer": "^2.0.0",
@@ -31,6 +31,8 @@
     "hexo-renderer-stylus": "^2.0.0",
     "hexo-renderer-swig": "^1.1.0",
     "hexo-server": "^2.0.0",
+    "imagemin-webp": "^5.1.0",
+    "jpegtran-bin": "^3.2.0",
     "lunr": "github:mamboer/lunr.js",
     "moment": "^2.29.1",
     "node-sass": "^4.14.0",
