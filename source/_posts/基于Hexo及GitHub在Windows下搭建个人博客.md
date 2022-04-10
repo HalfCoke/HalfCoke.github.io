@@ -1,7 +1,7 @@
 ---
 title: 基于Hexo及GitHub在Windows下搭建个人博客
 subtitle: 使用Hexo及GitHub在Windows下部署个人博客，利用GitHub做图床，将图片保存至GitHub
-cover: https://gitee.com/halfcoke/blog_img/raw/master/img/20201102182344.png
+cover: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102312796.png
 tags:
   - Hexo
   - GitHub
@@ -40,19 +40,19 @@ Hexo[官网](https://hexo.io/zh-cn/)提供了一些[安装说明](https://hexo.i
 
    当前Node.js官网[https://nodejs.org/zh-cn/](https://nodejs.org/zh-cn/)所提供的下载版本为14.15.0，可直接[点击下载](https://nodejs.org/dist/v14.15.0/node-v14.15.0-x64.msi)。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102132645990.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102312931.png)
 
 2. 安装
 
    下载完成后，直接使用默认设置一直`next`就可以，安装路径自行更改。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102133232192.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102312851.png)
 
 3. 验证
 
    使用`WIN+R`打开运行，输入`cmd`，然后输入`npm -v`验证是否安装成功。如下图所示则没有问题。
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102133438956.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102312437.png)
 
 #### Git安装
 
@@ -68,7 +68,7 @@ Hexo[官网](https://hexo.io/zh-cn/)提供了一些[安装说明](https://hexo.i
 
    安装完成后，重新打开cmd，输入`git --version`，应该出现如下提示。
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102134311394.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102312903.png)
    
 4. 初始化配置
 
@@ -87,7 +87,7 @@ Hexo需要在本地有一个文件夹，来存放与自己博客有关的内容�
 
 1. 在一个你喜欢的地方新建一个文件夹
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102134745775.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102312899.png)
 
 2. 安装Hexo
 
@@ -105,7 +105,7 @@ Hexo需要在本地有一个文件夹，来存放与自己博客有关的内容�
 
    应该输出：
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102142055989.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102312619.png)
 
 3. 初始化
 
@@ -134,7 +134,7 @@ Hexo需要在本地有一个文件夹，来存放与自己博客有关的内容�
 
    至此你的第一个页面应该生成完成了。
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102143050036.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313441.png)
 
    但是这页面也太简单了！！！
 
@@ -160,13 +160,13 @@ your_repo.github.io   # 对 仓库名叫这个，<your_repo>设置为你自己Gi
 
 2. 然后登录进去，按下图点击创建一个仓库
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102143936299.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313452.png)
 
 3. 在下图红框的位置填入自己GitHub的名字，后续可以直接通过这个域名访问自己的博客(当然也可以通过其他方式自定义，这个后续再说)。
 
    比如我的这个账号的就是`halfcokey`
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102151749812.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313810.png)
    
    关于GitHub就差不多这样了，接下来我们配置一下Hexo
 
@@ -296,7 +296,7 @@ PicGo的配置方式比较容易，我们选择`GitHub图床`
 
 看到我们需要填写`仓库名`、`分支名`、`Token`这些信息，下面我们分别介绍一下。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102164205931.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313065.png)
 
 1. 仓库名
 
@@ -310,29 +310,29 @@ PicGo的配置方式比较容易，我们选择`GitHub图床`
 
    在GitHub自己头像的位置点击`settings`，或者直接点击[https://github.com/settings/profile](https://github.com/settings/profile)
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102164652421.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313070.png)
 
    然后点击`Developer settings->Personal access tokens`，或者直接点击[https://github.com/settings/tokens](https://github.com/settings/tokens)
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102164803092.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313610.png)
 
    然后点击`Generate new token`
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102165048712.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313413.png)
 
    在Note的位置随便输入一个名字，下面的权限选第一个应该就行，如果前两个都选上。拉到最下面点击生成。
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102165252125.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313481.png)
 
    这时会有这样的提示，把这一串复制填写在PicGo的Token中，这样就可以了。
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102165419821.png)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313863.png)
 
 ### Typora
 
 [Typora](https://typora.io/)直接支持使用[PicGo](https://molunerfinn.com/PicGo/)。在`文件->偏好设置`中进行如下配置，主要是红框的位置
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/img/image-20201102164000589.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313229.png)
 
 然后当你打开一个MarkDown文件的时候，点击Typora的`格式->图像->当插入本地图片时->上传图片`就可以了。这样你放进来的图片就会自动上传到你的仓库中，而且链接也会替换成在线链接。
 
@@ -376,4 +376,4 @@ PicGo的配置方式比较容易，我们选择`GitHub图床`
 有任何问题欢迎一起探讨！
 欢迎扫码关注，不定期更新各种经验。
 
-<img src="https://gitee.com/halfcoke/blog_img/raw/master/img/qrcode.jpg" style="zoom: 67%;" />
+<img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102313614.jpeg" style="zoom: 67%;" />

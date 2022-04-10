@@ -5,7 +5,7 @@ author:
   link: 'https://halfcoke.github.io/'
 typora-copy-images-to: upload
 mathjax: true
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/img/20210112220434.jpg'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102309451.jpeg'
 tags:
   - xrdp
   - Linux
@@ -223,9 +223,9 @@ xrdp安装软件包将启动时，要求您 **输入密码。** 提供密码并�
 
 要将驱动器重定向到xrdp远程会话，必须 **确保在“本地资源”选项卡中选择的唯一选项是“剪贴板”选项和“驱动器”选项。**检查以下屏幕截图，并确保您具有相同的设置。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/img/20210112222636.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102309471.png)
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/img/20210112222656.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102309501.png)
 
 相应地设置了这些设置后，您应该会看到thin client文件夹中装有来自Windows计算机的重定向驱动器。
 

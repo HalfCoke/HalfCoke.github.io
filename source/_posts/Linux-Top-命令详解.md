@@ -15,7 +15,7 @@ categories:
 abbrlink: '8649918'
 date: 2020-12-23 13:53:45
 update: 2020-12-23 13:53:45
-cover: https://gitee.com/halfcoke/blog_img/raw/master/img/20201223140206.png
+cover: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102311990.png
 ---
 
 # Linux下Top命令详解

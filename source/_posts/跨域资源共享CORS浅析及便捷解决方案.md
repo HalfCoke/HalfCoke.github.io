@@ -6,7 +6,7 @@ author:
 typora-copy-images-to: upload
 mathjax: true
 subtitle: 跨域资源共享CORS浅析及便捷解决方案
-cover: 'https://gitee.com/halfcoke/blog_img/raw/master/20210301153141.png'
+cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102308982.png'
 tags:
   - WEB技术
 categories:
@@ -25,7 +25,7 @@ update: 2021-03-01 15:30:11
 
 > 出于安全性，浏览器限制脚本内发起的跨源HTTP请求。 例如，XMLHttpRequest和Fetch API遵循同源策略。 这意味着使用这些API的Web应用程序只能从加载应用程序的同一个域请求HTTP资源，除非响应报文包含了正确CORS响应头。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20210301152715.jpg)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102308378.jpeg)
 
 在上图中，当我们访问`domain-a.com`的页面，这其中蓝色的image是从`domain-a.com`请求的，这属于同源请求，是被允许的。红色的image是从 `domain-b.com`请求的，需要收到CORS机制的控制
 
@@ -35,7 +35,7 @@ update: 2021-03-01 15:30:11
 
 > 比如说，假如站点 [http://foo.example](http://foo.example/) 的网页应用想要访问 [http://bar.other](http://bar.other/) 的资源。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20210301152728.jpg)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102308566.jpeg)
 
 分别查看请求报文和响应报文
 
@@ -90,7 +90,7 @@ function callOtherDomain(){
 
 > 上面的代码使用 POST 请求发送一个 XML 文档，该请求包含了一个自定义的请求首部字段（X-PINGOTHER: pingpong）。另外，该请求的 Content-Type 为 application/xml。因此，该请求需要首先发起“预检请求”。
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20210301152739.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102308507.png)
 
 ```xml
 OPTIONS /resources/post-here/ HTTP/1.1
@@ -182,16 +182,16 @@ Access-Control-Max-Age: 86400
 - 在[heroku.com](http://heroku.com/)注册一个账号
 - 在[heroku.com](http://heroku.com/)上创建一个app
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20210301152757.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102308258.png)
 
 - app名字唯一，后续访问时会用到，比如我的就是halfcoke1
 - 选择GitHub，输入刚刚Fork的仓库，点击connect
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20210301152805.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102308021.png)
 
 - 点击这两个位置，然后等待完成
 
-![](https://gitee.com/halfcoke/blog_img/raw/master/20210301152812.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102308207.png)
 
 - 接下来便可以通过 [`https://halfcoke1.herokuapp.com/](https://halfcoke1.herokuapp.com/)<url>`的方式进行访问，比如访问 [`https://halfcoke1.herokuapp.com/https://github.com/login/oauth/access_token`](https://halfcoke.herokuapp.com/https://github.com/login/oauth/access_token)
 
