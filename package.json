@@ -34,6 +34,6 @@
     "lunr": "github:mamboer/lunr.js",
     "moment": "^2.29.1",
     "node-sass": "^4.14.0",
-    "object-assign": "^4.1.1",
+    "object-assign": "^4.1.1"
   }
 }
