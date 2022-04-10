@@ -12,8 +12,6 @@
     "version": "5.2.0"
   },
   "dependencies": {
-    "cross-spawn": "^5.1.0",
-    "cwebp-bin": "^5.1.0",
     "hexo": "^5.0.0",
     "hexo-abbrlink": "^2.2.1",
     "hexo-autoprefixer": "^2.0.0",
@@ -37,6 +35,5 @@
     "moment": "^2.29.1",
     "node-sass": "^4.14.0",
     "object-assign": "^4.1.1",
-    "optipng-bin": "^8.1.0"
   }
 }
