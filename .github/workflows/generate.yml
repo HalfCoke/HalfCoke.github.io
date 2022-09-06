@@ -1,18 +1,47 @@
-name: Publish Blog
+# workflow name
+name: Hexo Blog CI
+
+# master branch on push, auto run，当这个分支进行Commit的时候就会执行这个工作流，注意选对分支
 on:
   workflow_dispatch:
   push:
     branches:
       - Hexo
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install
-      - run: npm install -g hexo-cli
-      - run: hexo g && hexo d
+      # check it to your workflow can access it
+      # from: https://github.com/actions/checkout
+      - name: Checkout Repository master branch
+        uses: actions/checkout@master
 
+      # from: https://github.com/actions/setup-node
+      - name: Setup Node.js 10.x
+        uses: actions/setup-node@master
+        with:
+          node-version: "10.x"
+
+      - name: Setup Hexo Dependencies
+        run: |
+          npm install hexo-cli -g
+          npm install
+
+      - name: Setup Deploy Private Key
+        env:
+          HEXO_DEPLOY_PRIVATE_KEY: ${{ secrets.HEXO_DEPLOY_PRIVATE_KEY }}
+        run: |
+          mkdir -p ~/.ssh/
+          echo "$HEXO_DEPLOY_PRIVATE_KEY" > ~/.ssh/id_rsa 
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+      - name: Setup Git Infomation
+        run: |
+          git config --global user.name 'Halfcoke' 
+          git config --global user.email 'Halfcokey@gmail.com'
+      - name: Deploy Hexo
+        run: |
+          hexo clean
+          hexo generate 
+          hexo deploy
