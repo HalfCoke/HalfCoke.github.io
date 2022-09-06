@@ -8,7 +8,7 @@ subtitle: 'CCCCCoke'
 subtitle_desc: '可乐喝多了胖'
 description: ''
 keywords:
-language: zh-cn
+language: zh-CN
 timezone: 'Asia/ShangHai'
 # Menu
 menu:
@@ -78,7 +78,7 @@ relative_link: false
 future: true
 highlight:
   enable: true
-  line_number: true
+  line_number: false
   auto_detect: false
   tab_replace: ''
   wrap: true
@@ -86,7 +86,7 @@ highlight:
 prismjs:
   enable: false
   preprocess: true
-  line_number: true
+  line_number: false
   tab_replace: ''
 
 # Home page setting

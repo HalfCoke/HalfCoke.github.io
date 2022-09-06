@@ -1,0 +1,13 @@
+- class_name: 友情链接
+  class_desc:
+  link_list:
+    - name: yangsoon
+      desc: yangsoon
+      avatar:
+      link: https://yangsoon.github.io/
+    - name: ccoverflow
+      desc: ccoverflow
+      link: https://ccoverflow.github.io/
+    - name: Woody Tells
+      desc: Woody Tells
+      link: https://woody5962.github.io/
