@@ -1,8 +1,11 @@
 .idea
 node_modules
-.deploy_git
 public
 db.json
 package-lock.json
 .DS_Store
+Thumbs.db
+*.log
+.deploy*/
+_multiconfig.yml%
 
