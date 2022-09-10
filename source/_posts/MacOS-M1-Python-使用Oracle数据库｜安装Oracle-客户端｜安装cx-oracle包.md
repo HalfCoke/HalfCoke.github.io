@@ -1,18 +1,19 @@
 ---
 title: MacOS M1 Python 使用Oracle数据库｜安装Oracle 客户端｜安装cx_oracle包
-date: 2022-09-10 10:58:49
-update: 2021-05-02 18:48:31
 author:
   nick: HalfCoke
   link: 'https://halfcoke.github.io/'
 typora-copy-images-to: upload
-tags: 
+tags:
   - 环境部署
   - mac
   - 工具
 categories:
   - 环境部署
   - mac
+abbrlink: 88b111d7
+date: 2022-09-10 10:58:49
+update: 2021-05-02 18:48:31
 ---
 
 ## 安装rosetta2（可选）
