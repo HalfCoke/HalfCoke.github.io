@@ -80,7 +80,7 @@ favicon: /img/favicon.png
 
 # Avatar (頭像)
 avatar:
-  img: https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png
+  img: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg
   effect: false
 
 # Disable all banner image
@@ -454,10 +454,10 @@ microsoft_clarity:
 
 # Google Adsense (谷歌廣告)
 google_adsense:
-  enable: false
+  enable: true
   auto_ads: true
   js: https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js
-  client:
+  client: pub-6942839821989447
   enable_page_level_ads: true
 
 # Insert ads manually (手動插入廣告)

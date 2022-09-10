@@ -14,6 +14,7 @@ categories:
 abbrlink: 88b111d7
 date: 2022-09-10 10:58:49
 update: 2021-05-02 18:48:31
+cover: https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/maxresdefault.jpg
 ---
 
 ## 安装rosetta2（可选）
