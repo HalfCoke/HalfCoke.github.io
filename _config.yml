@@ -108,3 +108,9 @@ deploy:
   type: git
   repo: git@github.com:HalfCoke/HalfCoke.github.io.git
   branch: master
+
+search:
+  path: search.xml
+  field: post
+  content: true
+  template: ./search.xml
