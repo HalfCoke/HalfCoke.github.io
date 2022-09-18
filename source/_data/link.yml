@@ -2,12 +2,13 @@
   class_desc:
   link_list:
     - name: yangsoon
-      desc: yangsoon
-      avatar:
+      descr: yangsoon
+      avatar: https://www.notion.so/image/https%3A%2F%2Fs3-us-west-2.amazonaws.com%2Fsecure.notion-static.com%2F37907dd5-3c76-4966-a419-daa027a84972%2FIMG_2189.jpg?table=block&id=72a66971-7cf6-42c2-a252-4439d99d8f44&cache=v2
       link: https://yangsoon.github.io/
     - name: ccoverflow
-      desc: ccoverflow
+      descr: ccoverflow
       link: https://ccoverflow.github.io/
+      avatar: https://ccoverflow.github.io/img/chenchen.jpeg
     - name: Woody Tells
-      desc: Woody Tells
+      descr: Woody Tells
       link: https://woody5962.github.io/

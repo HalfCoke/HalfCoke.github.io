@@ -3,4 +3,4 @@
 
 内容会在公众号同步更新
 
-![qrcode](https://github.com/HalfCoke/HalfCoke.github.io/blob/Hexo/themes/hexo-theme-skapp/source/img/qrcode.jpg?raw=true)
+![qrcode](https://github.com/HalfCoke/HalfCoke.github.io/qrcode.jpg?raw=true)
