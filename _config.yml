@@ -110,7 +110,7 @@ deploy:
   branch: master
 
 search:
-  path: search.xml
+#  path: search.xml
   field: post
   content: true
-  template: ./search.xml
+#  template: ./search.xml

@@ -3,4 +3,4 @@
 
 内容会在公众号同步更新
 
-![qrcode](https://github.com/HalfCoke/HalfCoke.github.io/qrcode.jpg?raw=true)
+![qrcode](https://halfcoke.github.io/qrcode.jpg)
