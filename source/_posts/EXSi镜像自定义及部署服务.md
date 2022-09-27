@@ -176,7 +176,7 @@ export-esximageprofile -imageprofile ESXi-6.7.0-custom -exporttoiso  -filepath .
   partedUtil getptbl "/vmfs/devices/disks/t10.ATA_____Lenovo_X800_SATA_256G_SSD_______________8S16010501X03403263_"
   ```
 
-  ![image-20211121195405778](https://gitee.com/halfcoke/blog_img/raw/master/image-20211121195405778.png)
+  ![image-20211121195405778](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20211121195405778.png)
 
   第一行是分区格式gpt
 
