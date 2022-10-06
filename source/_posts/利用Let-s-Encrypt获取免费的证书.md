@@ -137,9 +137,30 @@ Nginx 的配置 `ssl_certificate` 使用 `/etc/nginx/ssl/fullchain.cer` ，而�
 
 这里使用docker来实现自动生成证书至指定路径，需要将docker的生成路径暴露出来。
 
-acme.sh本身也提供了docker方式
+acme.sh本身也提供了docker方式，acme.sh提供的docker方式应该能处理大多数场景https://github.com/acmesh-official/acme.sh/wiki/Run-acme.sh-in-docker
 
+这里主要实现的是通过docker获取证书，然后将证书输出到指定文件夹中
 
+Dockerfile相关文件参考：https://github.com/HalfCoke/open_action/tree/main/docker/acme.sh
+
+也可以直接使用`docker pull halfcoke/acme.sh`这个镜像：https://hub.docker.com/repository/docker/halfcoke/acme.sh
+
+镜像的使用方式如下：
+
+```bash
+docker run -d \
+-e EMAIL=abc@example.com \
+-e DOMAINS="a.example.com,b.example.com,*.c.example.com" \
+-e API="DNSPOD;dpid,dpkey" \
+-v /path/to/ssl:/ssl
+halfcoke/acme.sh
+```
+
+目前仅支持DNSPOD api，后面会逐渐增加，或者自行改造也比较容易。
+
+向nginx中配置证书，使用这两个文件即可
+
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221006173103336.png)
 
 ### Case3: todo
 
