@@ -121,8 +121,6 @@ systemctl disable firewalld --now
    docker pull docker-registry.nginx.com/nap-dos/app_protect_dos_arb:1.1.0
    ```
 
-   
-
 6. 将镜像推送至私有仓库
 
    根据实际版本修改脚本中的版本号
@@ -154,6 +152,7 @@ systemctl disable firewalld --now
    docker tag rancher/mirrored-metrics-server:$METRICS $PRIVATE_REGISTRY/rancher/mirrored-metrics-server:$METRICS
    docker tag rancher/mirrored-pause:$PAUSE $PRIVATE_REGISTRY/rancher/mirrored-pause:$PAUSE
    docker tag nginx/nginx-ingress:$INGRESS_NGINX_CONTROLLER $PRIVATE_REGISTRY/nginx/nginx-ingress:$INGRESS_NGINX_CONTROLLER
+   # 注意下面这个tag的替换，打标记时去掉了docker-registry.nginx.com，这是为了配合k3s私有仓库进行拉取
    docker tag docker-registry.nginx.com/nap-dos/app_protect_dos_arb:$INGRESS_NGINX_APP_PROTECT $PRIVATE_REGISTRY/nap-dos/app_protect_dos_arb:$INGRESS_NGINX_APP_PROTECT
    
    docker push $PRIVATE_REGISTRY/rancher/mirrored-library-busybox:$BUSYBOX 
@@ -176,12 +175,10 @@ cat > /etc/rancher/k3s/registries.yaml  << EOF
 mirrors:
   docker.io:
     endpoint:
-      - "http://10.111.7.106:5000"
-  registry.k8s.io:
+      - "http://192.168.6.1:5000"
+  docker-registry.nginx.com:
     endpoint:
-      - "http://10.111.7.106:5000"
-    rewrite:
-      "^rancher/(.*)": "mirrorproject/rancher-images/$1"
+      - "http://192.168.6.1:5000"
 EOF
 ```
 
@@ -198,7 +195,7 @@ chmod +x install.sh
 cp k3s /usr/local/bin/
 ```
 
-#### 准备离线安装ingress-nginx-controller
+#### 离线安装ingress-nginx-controller
 
 官方安装说明：https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/
 
@@ -206,15 +203,16 @@ cp k3s /usr/local/bin/
 
 注意：ingress默认只能进行http(s)代理，为了进行tcp或udp代理，并且将服务端口暴露在宿主机桑，需要对官方文件进行一些调整
 
-1. 
+1. 在ingress的DaemonSet中的spec.template.spec中增加`hostNetwork: true`
+2. 在args部分取消`- -global-configuration=$(POD_NAMESPACE)/nginx-configuration`注释
 
-执行如下命令
+可以从这里下载已经修改好的yml，链接：https://halfcoke.github.io/config/nginx-ingress/nginx-ingress.yml
+
+然后执行如下命令
 
 ```bash
 kubectl apply -f ingress-nginx.yml
 ```
-
-
 
 ### 单Server
 
@@ -229,16 +227,163 @@ INSTALL_K3S_SKIP_DOWNLOAD=true INSTALL_K3S_EXEC='server --cluster-init --disable
 #### 代理安装
 
 ```bash
-INSTALL_K3S_SKIP_DOWNLOAD=true K3S_URL=https://10.111.7.106:6443 K3S_TOKEN=FpqAiu2DZgSEyuHHoH83mFrm ./install.sh
+INSTALL_K3S_SKIP_DOWNLOAD=true K3S_URL=https://192.168.6.1:6443 K3S_TOKEN=FpqAiu2DZgSEyuHHoH83mFrm ./install.sh
 ```
+#### 离线安装ingress-nginx-controller
 
+官方安装说明：https://docs.nginx.com/nginx-ingress-controller/installation/installation-with-manifests/
+
+将所需文件存储为`ingress-nginx.yml`
+
+注意：ingress默认只能进行http(s)代理，为了进行tcp或udp代理，并且将服务端口暴露在宿主机上，需要对官方文件进行一些调整
+
+1. 在ingress的DaemonSet中的spec.template.spec中增加`hostNetwork: true`
+2. 在args部分取消`- -global-configuration=$(POD_NAMESPACE)/nginx-configuration`注释
+
+可以从这里下载已经修改好的yaml，链接：https://halfcoke.github.io/config/nginx-ingress/nginx-ingress.yml
+
+然后执行如下命令
+
+```bash
+kubectl apply -f ingress-nginx.yml
+```
 ### 高可用
 
-
-
-
+todo...
 
 # 简单服务部署
 
+使用nginx服务进行测试
 
+1. 直接下载nginx服务yaml文件，包含了deployment、service、ingress
+
+   使用`kubectl apply -f demo.yml`进行部署
+
+   下载链接：https://halfcoke.github.io/config/nginx-ingress/demo.yml
+
+   ```yaml
+   apiVersion: apps/v1
+   kind: Deployment
+   metadata:
+     name: nginx-deployment
+   spec:
+     selector:
+       matchLabels:
+         app: nginx-demo
+     replicas: 1 # 告知 Deployment 运行 1 个与该模板匹配的 Pod
+     template:
+       metadata:
+         labels:
+           app: nginx-demo
+       spec:
+         containers:
+           - name: nginx-demo-container
+             image: nginx:1
+             ports:
+               - containerPort: 80
+                 name: nginx-port
+   ---
+   apiVersion: v1
+   kind: Service
+   metadata:
+     name: nginx-service
+   spec:
+     selector:
+       app: nginx-demo
+     ports:
+       - name: nginx-demo-port
+         protocol: TCP
+         port: 8080
+         targetPort: nginx-port
+   ---
+   apiVersion: networking.k8s.io/v1
+   kind: Ingress
+   metadata:
+     name: nginx-igs
+     annotations:
+       ingress.kubernetes.io/ssl-redirect: "false"
+   spec:
+     ingressClassName: nginx
+     rules:
+       - host: abc.test.com
+         http:
+           paths:
+             - path: /
+               pathType: Prefix
+               backend:
+                 service:
+                   name: nginx-service
+                   port:
+                     number: 8080
+   ---
+   apiVersion: k8s.nginx.org/v1alpha1
+   kind: GlobalConfiguration
+   metadata:
+     name: nginx-configuration
+     namespace: nginx-ingress
+   spec:
+     listeners:
+       - name: nginx-tcp
+         port: 1234
+         protocol: TCP
+   ---
+   ```
+   
+   
+   
+2. 下载TransportServer的yml文件
+
+   【**注意**】这个资源必须单独部署，这里为了将1234端口暴露在宿主机上，将nginx-ingress设置为hostNetwork，[上文](https://halfcoke.github.io/2022/50e64521/#离线安装ingress-nginx-controller)提到了这个配置。
+
+   使用`kubectl apply -f demo-ts.yml`部署
+
+   下载链接https://halfcoke.github.io/config/nginx-ingress/demo-ts.yml
+
+   ```yaml
+   # 必须单独创建
+   apiVersion: k8s.nginx.org/v1alpha1
+   kind: TransportServer
+   metadata:
+     name: nginx-ts
+   spec:
+     listener:
+       name: nginx-tcp
+       protocol: TCP
+     upstreams:
+       - name: nginx-up
+         service: nginx-service
+         port: 8080
+     action:
+       pass: nginx-up
+   ```
+
+然后通过两种方式可以访问
+
+1. 通过80端口访问，这种方式进行了http代理，即七层代理
+
+   ```bash
+   curl -H 'Host: abc.test.com' 你的宿主机ip
+   ```
+
+2. 通过1234端口访问，这种方式进行了tcp代理，即四层代理
+
+   ```bash
+   curl 你的宿主机ip:1234
+   ```
+
+   
+
+## 下一步
+
+1. 文件挂载
+2. 高可用
+3. 通过ingress进行访问控制
+
+# 参考资料
+
+1. k8s ingress实现http/https7层和tcp四层代理，https://blog.51cto.com/leejia/2497454
+2. Nginx-ingress，https://docs.nginx.com/nginx-ingress-controller/
+3. k3s文档，https://docs.k3s.io/
+4. 代理tcp udp服务demo，https://github.com/nginxinc/kubernetes-ingress/tree/v2.4.1/examples/ingress-resources/tcp-udp
+5. nodeport和hostNetowrk对比，https://xuxinkun.github.io/2019/06/11/ingress/
 
