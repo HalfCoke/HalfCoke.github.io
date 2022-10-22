@@ -13,7 +13,7 @@ tags:
   - 流处理
 categories:
   - 大数据
-  - 流处理框架
+  - 流处理
   - Flink
 abbrlink: c73cf02
 date: 2020-12-23 15:10:30

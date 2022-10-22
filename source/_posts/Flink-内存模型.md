@@ -12,7 +12,7 @@ tags:
   - 流处理
 categories:
   - 大数据
-  - 流处理框架
+  - 流处理
   - Flink
 abbrlink: '9367e715'
 date: 2021-01-04 14:23:01
