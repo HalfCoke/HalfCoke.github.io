@@ -116,6 +116,8 @@ systemctl disable firewalld --now
 
 5. 下载ingress-nginx必要镜像（需要代理或者科学）
 
+   或者下载：https://github.com/HalfCoke/HalfCoke.github.io/releases/download/nginx-ingress/nginx-ingress.tar.gz
+
    ```bash
    docker pull nginx/nginx-ingress:2.4.1
    docker pull docker-registry.nginx.com/nap-dos/app_protect_dos_arb:1.1.0
@@ -130,7 +132,7 @@ systemctl disable firewalld --now
    
    PRIVATE_REGISTRY="192.168.6.1:5000"
    docker load -i k3s-airgap-images-amd64.tar.gz
-   
+   docker load -i nginx-ingress.tar.gz
    BUSYBOX="1.34.1"
    HELM="v0.7.3-build20220613"
    TRAEFIK="2.6.2"
