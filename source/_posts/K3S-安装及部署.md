@@ -255,13 +255,13 @@ todo...
 
 # 简单服务部署
 
-使用nginx服务进行测试
+## 使用nginx服务进行测试
 
 1. 直接下载nginx服务yaml文件，包含了deployment、service、ingress
 
    使用`kubectl apply -f demo.yml`进行部署
 
-   下载链接：https://halfcoke.github.io/config/nginx-ingress/demo.yml
+   下载链接：https://halfcoke.github.io/config/nginx-ingress/demo/demo.yml
 
    ```yaml
    apiVersion: apps/v1
@@ -339,7 +339,7 @@ todo...
 
    使用`kubectl apply -f demo-ts.yml`部署
 
-   下载链接https://halfcoke.github.io/config/nginx-ingress/demo-ts.yml
+   下载链接https://halfcoke.github.io/config/nginx-ingress/demo/demo-ts.yml
 
    ```yaml
    # 必须单独创建
@@ -373,7 +373,106 @@ todo...
    curl 你的宿主机ip:1234
    ```
 
-   
+
+## 暴露端口-方法2（不使用hostNetwork）
+
+这种方法需要修改nginx-ingress 的 daemonSet
+
+完整的DaemonSet如下，是上文链接https://halfcoke.github.io/config/nginx-ingress/nginx-ingress.yml中最后一部分的内容
+
+修改说明请见注释
+
+每次修改后建议先delete再apply，否则可能出现所有端口都暴露在宿主机上（即便没配置hostPort）
+
+这样，之后如果需要暴露出其他端口，则需要重启DaemoSet，这样可以实现定点暴露端口。
+
+每次重启只重启该DaemoSet即可，其他的资源不要动，否则集群上所有服务都要重启
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: nginx-ingress
+  namespace: nginx-ingress
+spec:
+  selector:
+    matchLabels:
+      app: nginx-ingress
+  template:
+    metadata:
+      labels:
+        app: nginx-ingress
+     #annotations:
+       #prometheus.io/scrape: "true"
+       #prometheus.io/port: "9113"
+       #prometheus.io/scheme: http
+    spec:
+      serviceAccountName: nginx-ingress
+      automountServiceAccountToken: true
+      # hostNetwork: true # 在这个文件中我们对此进行注释
+      containers:
+      - image: nginx/nginx-ingress:2.4.1
+        imagePullPolicy: IfNotPresent
+        name: nginx-ingress
+        ports:
+        - name: http
+          containerPort: 80 # container端口是容器端口
+          hostPort: 80 # hostPort用来表示是否将容器的端口暴露在宿主机上，理论上可以与容器端口不一致
+        - name: https
+          containerPort: 443
+          hostPort: 443
+        - name: tcp-test # 在这里新增1234端口
+          containerPort: 1234
+          hostPort: 1234
+        - name: readiness-port
+          containerPort: 8081
+        - name: prometheus
+          containerPort: 9113
+        readinessProbe:
+         httpGet:
+           path: /nginx-ready
+           port: readiness-port
+         periodSeconds: 1
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "128Mi"
+         #limits:
+         #  cpu: "1"
+         #  memory: "1Gi"
+        securityContext:
+          allowPrivilegeEscalation: true
+          runAsUser: 101 #nginx
+          capabilities:
+            drop:
+            - ALL
+            add:
+            - NET_BIND_SERVICE
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        args:
+        - -nginx-configmaps=$(POD_NAMESPACE)/nginx-config
+        - -default-server-tls-secret=$(POD_NAMESPACE)/default-server-secret
+        - -global-configuration=$(POD_NAMESPACE)/nginx-configuration
+        # - -ready-status=false # 这个选项用来是否开启readiness，不开启的话get pod容器一直无法ready（需要通过其他方法，这里不做介绍）
+        - -nginx-status=true # 是否开启nginx status服务
+        - -nginx-status-allow-cidrs=127.0.0.1,::1
+        - -nginx-status-port=64231
+        #- -include-year
+        #- -v=3 # Enables extensive logging. Useful for troubleshooting.
+        #- -report-ingress-status
+        #- -external-service=nginx-ingress
+        #- -enable-prometheus-metrics
+```
+
+
 
 ## 下一步
 
