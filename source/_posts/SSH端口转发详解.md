@@ -150,7 +150,7 @@ SSH端口转发(隧道)可以建立SSH通道，并将TCP链接放到这个通道
 
    当然，有的时候我们可能只是想穿透防火墙，如下图所示，`主机B`的防火墙仅打开了22端口，但`主机B`上运行着许多服务，在防火墙外的`主机A`无法直接访问。这时我们也可以通过本地转发的方式来访问`主机B`上的一些服务。
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/20210111155514.svg)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/20210111155514.svg)
 
    在`主机A`上执行如下操作：
 
@@ -164,7 +164,7 @@ SSH端口转发(隧道)可以建立SSH通道，并将TCP链接放到这个通道
 
    在使用远程转发时，我们考虑这样一个场景，`主机C`上运行着一个服务，但是`主机C`没有公网ip，`主机A`无法直接访问服务。而`主机B`则有公网IP，这时又不想将`主机C`上的服务转移到`主机B`上。这时我们就可以考虑使用远程转发。
 
-   ![](https://gitee.com/halfcoke/blog_img/raw/master/img/20210111175702.svg)
+   ![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/20210111175702.svg)
 
 我们在**`主机C`**上执行以下操作：
 
