@@ -239,6 +239,8 @@ EOD
 sshpass -p ${{ secrets.SERVER_SSH_PASSWORD }} ssh -o "StrictHostKeyChecking no" -f -NT -p ${{ secrets.SERVER_SSH_PORT }} -R :${{ secrets.SERVER_REMOTE_PORT }}:localhost:${{ secrets.SERVER_REMOTE_PORT }} ${{ secrets.SERVER_SSH_USER }}@${{ secrets.SERVER_IP }}
 ```
 
+关于ssh端口转发的详细介绍请参考这篇文章：SSH端口转发详解https://halfcoke.github.io/2021/cac946/
+
 ### Github Action Secrets配置
 
 需要在Secrets中配置下面这几个变量：
