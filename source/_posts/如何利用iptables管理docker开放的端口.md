@@ -1,7 +1,5 @@
 ---
 title: 如何利用iptables管理docker开放的端口？
-date: 2022-09-18 14:41:08
-update: 2022-09-18 14:41:08
 tags:
   - Docker
   - iptables
@@ -12,6 +10,9 @@ author:
   nick: HalfCoke
   link: 'https://halfcoke.github.io/'
 cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310130800.png'
+abbrlink: 27bb66e8
+date: 2022-09-18 14:41:08
+update: 2022-09-18 14:41:08
 ---
 
 # 如何利用iptables管理docker开放的端口？

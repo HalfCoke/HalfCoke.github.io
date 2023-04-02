@@ -1,0 +1,383 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>ESXi镜像自定义(集成网卡驱动)及硬盘分区 | CCCCCoke</title><meta name="keywords" content="虚拟化,ESXi,VMware"><meta name="author" content="HalfCoke"><meta name="copyright" content="HalfCoke"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="ESXi镜像自定义(集成网卡驱动)及硬盘分区安装ESXi至物理机时，需要提前查看硬件兼容列表，此次安装时发现ESXi原生没有RTL-r8168网卡驱动，需要将网卡驱动打包至ESXi镜像中。 目前(2021-11-20)尝试过后，ESXi7.0暂无法使用该网卡(r8168) ESXi镜像自定义ESXi镜像自定义有两种方式，一是使用Powershell脚本安装，另一种是自己使用命令打包镜像。 环境准备">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ESXi镜像自定义(集成网卡驱动)及硬盘分区">
+<meta property="og:url" content="https://halfcoke.github.io/2021/ef096570/index.html">
+<meta property="og:site_name" content="CCCCCoke">
+<meta property="og:description" content="ESXi镜像自定义(集成网卡驱动)及硬盘分区安装ESXi至物理机时，需要提前查看硬件兼容列表，此次安装时发现ESXi原生没有RTL-r8168网卡驱动，需要将网卡驱动打包至ESXi镜像中。 目前(2021-11-20)尝试过后，ESXi7.0暂无法使用该网卡(r8168) ESXi镜像自定义ESXi镜像自定义有两种方式，一是使用Powershell脚本安装，另一种是自己使用命令打包镜像。 环境准备">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117154.jpeg">
+<meta property="article:published_time" content="2021-11-20T14:53:35.000Z">
+<meta property="article:modified_time" content="2022-10-03T06:25:49.000Z">
+<meta property="article:author" content="HalfCoke">
+<meta property="article:tag" content="虚拟化">
+<meta property="article:tag" content="ESXi">
+<meta property="article:tag" content="VMware">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117154.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://halfcoke.github.io/2021/ef096570/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'pub-6942839821989447',
+  enable_page_level_ads: 'true'
+});</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'ESXi镜像自定义(集成网卡驱动)及硬盘分区',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-10-03 14:25:49'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">54</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">38</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CCCCCoke</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">ESXi镜像自定义(集成网卡驱动)及硬盘分区</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-11-20T14:53:35.000Z" title="发表于 2021-11-20 22:53:35">2021-11-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-10-03T06:25:49.000Z" title="更新于 2022-10-03 14:25:49">2022-10-03</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF/">虚拟化技术</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E8%99%9A%E6%8B%9F%E5%8C%96%E6%8A%80%E6%9C%AF/ESXi/">ESXi</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="ESXi镜像自定义(集成网卡驱动)及硬盘分区"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="ESXi镜像自定义-集成网卡驱动-及硬盘分区"><a href="#ESXi镜像自定义-集成网卡驱动-及硬盘分区" class="headerlink" title="ESXi镜像自定义(集成网卡驱动)及硬盘分区"></a>ESXi镜像自定义(集成网卡驱动)及硬盘分区</h1><p>安装ESXi至物理机时，需要提前查看硬件兼容列表，此次安装时发现ESXi原生没有RTL-r8168网卡驱动，需要将网卡驱动打包至ESXi镜像中。</p>
+<p>目前(2021-11-20)尝试过后，ESXi7.0暂无法使用该网卡(r8168)</p>
+<h2 id="ESXi镜像自定义"><a href="#ESXi镜像自定义" class="headerlink" title="ESXi镜像自定义"></a>ESXi镜像自定义</h2><p>ESXi镜像自定义有两种方式，一是使用Powershell脚本安装，另一种是自己使用命令打包镜像。</p>
+<h3 id="环境准备"><a href="#环境准备" class="headerlink" title="环境准备"></a>环境准备</h3><h4 id="PowerCLI安装"><a href="#PowerCLI安装" class="headerlink" title="PowerCLI安装"></a>PowerCLI安装</h4><p>当前版本VMware Power CLI安装较为容易，官网链接：<a target="_blank" rel="noopener" href="https://developer.vmware.com/powercli">https://developer.vmware.com/powercli</a></p>
+<p><strong>step1：</strong> 使用管理员身份打开powershell</p>
+<p><strong>step2：</strong>粘贴<code>Install-Module -Name VMware.PowerCLI</code>然后回车</p>
+<h4 id="ESXi官方镜像文件准备（脚本安装时可选）"><a href="#ESXi官方镜像文件准备（脚本安装时可选）" class="headerlink" title="ESXi官方镜像文件准备（脚本安装时可选）"></a>ESXi官方镜像文件准备（脚本安装时可选）</h4><p>自定义ESXi镜像时，不能直接使用iso文件，需要使用<strong>Offline Bundle</strong>文件，点击<a target="_blank" rel="noopener" href="https://customerconnect.vmware.com/downloads/info/slug/datacenter_cloud_infrastructure/vmware_vsphere/6_7">官方下载链接</a>，或者访问我的<a target="_blank" rel="noopener" href="https://github.com/HalfCoke/custom-vmware-exsi/raw/main/esxi/ESXi670-201912001.zip">下载链接</a></p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117820.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117696.png"></p>
+<h4 id="网卡驱动准备-以r8168为例"><a href="#网卡驱动准备-以r8168为例" class="headerlink" title="网卡驱动准备(以r8168为例)"></a>网卡驱动准备(以r8168为例)</h4><p><a target="_blank" rel="noopener" href="https://vibsdepot.v-front.de/wiki/index.php/Net55-r8168">下载</a>网卡驱动，vib格式在使用脚本打包的时候会用到，Offline Bundle格式在使用命令行打包时会用到</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117630.png"></p>
+<p>在当前路径新建文件夹<code>drivers</code>，将vib格式的网卡驱动移动进文件夹</p>
+<p>至此，环境准备工作完成</p>
+<h3 id="自定义镜像打包"><a href="#自定义镜像打包" class="headerlink" title="自定义镜像打包"></a>自定义镜像打包</h3><h4 id="使用脚本方式打包"><a href="#使用脚本方式打包" class="headerlink" title="使用脚本方式打包"></a>使用脚本方式打包</h4><ol>
+<li><p>纯离线方式（推荐）</p>
+<p> <strong>Step1：</strong> 在<code>https://github.com/VFrontDe/ESXi-Customizer-PS</code>下载最新的release版本的脚本(ps1文件就是powershell脚本)，并将脚本放入ESXi镜像文件所在的目录</p>
+<p> <strong>Step2：</strong>运行脚本</p>
+ <figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\ESXi<span class="literal">-Customizer-PS</span>.ps1 <span class="literal">-izip</span> ESXi670<span class="literal">-201912001</span>.zip <span class="literal">-pkgDir</span> .\drivers\</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在线方式</p>
+<p><strong>Step1：</strong> 在<code>https://github.com/VFrontDe/ESXi-Customizer-PS</code>下载最新的release版本的脚本(ps1文件就是powershell脚本)</p>
+<p><strong>Step2：</strong>直接运行<code>.\ESXi-Customizer-PS.ps1 -v67 -vft -load net55-r8168</code></p>
+<p>这种方式理论上应该是可以的，但是实际执行时总会出现错误，使用第一种离线方式打包成功了</p>
+</li>
+</ol>
+<h4 id="命令行自行打包"><a href="#命令行自行打包" class="headerlink" title="命令行自行打包"></a>命令行自行打包</h4><p><strong>Step1：</strong>将之前下载的zip文件添加到工作空间中，执行<code>add-esxsoftwaredepot .\ESXi670-201912001.zip</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117070.png"></p>
+<p><strong>Step2：</strong>检查当前的<code>Acceptance Level</code>，执行<code>get-esximageprofile</code>，接下来需要修改<code>Acceptance Level</code></p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117003.png"></p>
+<p><strong>Step3：</strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">new-esximageprofile</span> <span class="literal">-cloneprofile</span> <span class="string">&quot;ESXi-6.7.0-20191204001-standard&quot;</span> <span class="literal">-name</span> <span class="string">&quot;ESXi-6.7.0-custom&quot;</span> <span class="literal">-vendor</span> <span class="string">&quot;VMware-cus&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117892.png"></p>
+<p><strong>Step4：</strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">set-esximageprofile</span> <span class="literal">-ImageProfile</span> <span class="string">&quot;ESXi-6.7.0-custom&quot;</span> <span class="literal">-acceptancelevel</span> <span class="string">&quot;CommunitySupported&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117762.png" alt="image-20211121193658977"></p>
+<p><strong>Step4：</strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">add-esxsoftwaredepot</span> net55<span class="literal">-r8168-8</span>.<span class="number">045</span>a<span class="literal">-napi-offline_bundle</span>.zip</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117785.png"></p>
+<p><strong>Step5：</strong></p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">add-esxsoftwarepackage</span> <span class="literal">-ImageProfile</span> <span class="string">&quot;ESXi-6.7.0-custom&quot;</span> <span class="literal">-SoftwarePackage</span> <span class="string">&quot;net55-r8168&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118007.png"></p>
+<p><strong>Step6：</strong>检查是否加入成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(get-esximageprofile ESXi-6.7.0-custom).viblist</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118647.png"></p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118228.png"></p>
+<p><strong>Step7：</strong>导出文件</p>
+<ul>
+<li>ZIP (Bundle)：</li>
+</ul>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export-esximageprofile</span> <span class="literal">-imageprofile</span> ESXi<span class="literal">-6</span>.<span class="number">7.0</span><span class="literal">-custom</span> <span class="literal">-exporttobundle</span>  <span class="literal">-filepath</span> .\ESXi<span class="literal">-6</span>.<span class="number">7.0</span><span class="literal">-custom</span>.zip  <span class="literal">-nosignaturecheck</span>  <span class="literal">-Force</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ISO (Installable)：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export-esximageprofile -imageprofile ESXi-6.7.0-custom -exporttoiso  -filepath .\ESXi-6.7.0-custom.iso  -nosignaturecheck  -Force</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118913.png"></p>
+<h2 id="得到ISO文件之后"><a href="#得到ISO文件之后" class="headerlink" title="得到ISO文件之后"></a>得到ISO文件之后</h2><p>拿到iso文件后就可以像正常装系统一样写入到u盘中去安装了</p>
+<p>安装教程有很多，随便搜搜就行了</p>
+<h2 id="硬盘分区及数据存储"><a href="#硬盘分区及数据存储" class="headerlink" title="硬盘分区及数据存储"></a>硬盘分区及数据存储</h2><p>一般通过web页面即可创建，但有时也需要手动创建来解决问题，手动分区及创建存储方式如下</p>
+<h3 id="硬盘分区"><a href="#硬盘分区" class="headerlink" title="硬盘分区"></a>硬盘分区</h3><p>在ESXi中进行分区需要使用<code>partedUtil</code>工具</p>
+<ul>
+<li><p>查看硬盘列表，上面框起来的就是实际的硬盘以及分区，后面有数字的表示分区，没有数字的表示硬盘本身</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">ls</span> /vmfs/devices/disks/</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118644.png"></p>
+</li>
+<li><p>查看分区表</p>
+<p>查看硬盘<code>t10.ATA_____Lenovo_X800_SATA_256G_SSD_______________8S16010501X03403263_</code>实例如下</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">partedUtil getptbl <span class="string">&quot;/vmfs/devices/disks/t10.ATA_____Lenovo_X800_SATA_256G_SSD_______________8S16010501X03403263_&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20211121195405778.png" alt="image-20211121195405778"></p>
+<p>第一行是分区格式gpt</p>
+<p>第二行是硬盘的总体信息</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118376.png"></p>
+<p>第三行之后是分区信息</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310118009.png"></p>
+</li>
+<li><p>创建分区</p>
+<p>在创建分区时要注意的是，必须完整的输入分区表，如下所示</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">partedUtil setptbl <span class="string">&quot;/vmfs/devices/disks/t10.ATA_____Lenovo_X800_SATA_256G_SSD_______________8S16010501X03403263_&quot;</span> gpt <span class="string">&quot;1 64 8191 C12A7328F81F11D2BA4B00A0C93EC93B 128&quot;</span> <span class="string">&quot;5 8224 520191 EBD0A0A2B9E5443387C068B6B72699C7  0&quot;</span> <span class="string">&quot;6 520224 1032191 EBD0A0A2B9E5443387C068B6B72699C7  0&quot;</span> <span class="string">&quot;7 1032224 1257471 9D27538040AD11DBBF97000C2911D1B8  0&quot;</span> <span class="string">&quot;8 1257504 1843199 EBD0A0A2B9E5443387C068B6B72699C7  0&quot;</span> <span class="string">&quot;9 1843200 7086079 9D27538040AD11DBBF97000C2911D1B8  0&quot;</span> <span class="string">&quot;2 7086080 15472639 EBD0A0A2B9E5443387C068B6B72699C7  0&quot;</span> <span class="string">&quot;3 15472640 500118158 AA31E02A400F11DB9590000C2911D1B8  0&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>ESXi&#x2F;ESX 常用的分区类型包括：</p>
+<table>
+<thead>
+<tr>
+<th><strong>分区</strong></th>
+<th><strong>GUID</strong></th>
+<th><strong>类型（十六进制）</strong></th>
+<th><strong>类型（十进制）</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>VMFS 数据存储</td>
+<td>AA31E02A400F11DB9590000C2911D1B8</td>
+<td>0xFB</td>
+<td>251</td>
+</tr>
+<tr>
+<td>VMKCore 诊断</td>
+<td>9D27538040AD11DBBF97000C2911D1B8</td>
+<td>0xFC</td>
+<td>252</td>
+</tr>
+<tr>
+<td>VMware 预留</td>
+<td>9198EFFC31C011DB8F78000C2911D1B8</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>基本数据</td>
+<td>EBD0A0A2B9E5443387C068B6B72699C7</td>
+<td>0x83</td>
+<td>131</td>
+</tr>
+<tr>
+<td>Linux Swap</td>
+<td>0657FD6DA4AB43C484E50933C84B4F4F</td>
+<td>0x82</td>
+<td>130</td>
+</tr>
+<tr>
+<td>Linux LVM</td>
+<td>E6D6D379F50744C2A23C238F2A3DF928</td>
+<td>0x8E</td>
+<td>142</td>
+</tr>
+<tr>
+<td>Linux RAID</td>
+<td>A19D880F05FC4D3BA006743F0F84911E</td>
+<td>0xFD</td>
+<td>253</td>
+</tr>
+<tr>
+<td>EFi 系统</td>
+<td>C12A7328F81F11D2BA4B00A0C93EC93B</td>
+<td>0xEF</td>
+<td>239</td>
+</tr>
+<tr>
+<td>Microsoft 预留</td>
+<td>E3C9E3160B5C4DB8817DF92DF00215AE</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>未使用条目</td>
+<td>00000000000000000000000000000000</td>
+<td></td>
+<td></td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="创建数据存储"><a href="#创建数据存储" class="headerlink" title="创建数据存储"></a>创建数据存储</h3><p>创建数据存储需要使用<code> vmkfstools</code>命令</p>
+<p>使用示例：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vmkfstools -C vmfs6 -S NewDatastore /vmfs/devices/disks/t10.ATA_____Lenovo_X800_SATA_256G_SSD_______________8S16010501X03403263_:3</span><br></pre></td></tr></table></figure>
+
+<p>接下来就可以在web页面看到相关的存储信息了</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>1 VMware Front Experience：<a target="_blank" rel="noopener" href="https://www.v-front.de/">https://www.v-front.de/</a></p>
+<p>2 Download VMware vSphere：<a target="_blank" rel="noopener" href="https://customerconnect.vmware.com/downloads/info/slug/datacenter_cloud_infrastructure/vmware_vsphere/6_7">https://customerconnect.vmware.com/downloads/info/slug/datacenter_cloud_infrastructure&#x2F;vmware_vsphere&#x2F;6_7</a></p>
+<p>3 使用脚本添加网卡驱动：<a target="_blank" rel="noopener" href="http://woshub.com/add-drivers-vmware-esxi-iso-image/">http://woshub.com/add-drivers-vmware-esxi-iso-image/</a></p>
+<p>4 使用命令行打包镜像：<a target="_blank" rel="noopener" href="https://communities.vmware.com/t5/ESXi-Discussions/Pink-Screen-ESXi-6-5-Failed-Install-Unable-to-Verify-Acceptance/m-p/504351#M42504">https://communities.vmware.com/t5/ESXi-Discussions/Pink-Screen-ESXi-6-5-Failed-Install-Unable-to-Verify-Acceptance/m-p/504351#M42504</a></p>
+<p>5 ESXi硬盘分区：<a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/1036609?lang=zh_CN">https://kb.vmware.com/s/article/1036609?lang=zh_CN</a></p>
+<p>6 ESXi创建数据存储：<a target="_blank" rel="noopener" href="https://kb.vmware.com/s/article/1009829?lang=zh_CN">https://kb.vmware.com/s/article/1009829?lang=zh_CN</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io">HalfCoke</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io/2021/ef096570/">https://halfcoke.github.io/2021/ef096570/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://halfcoke.github.io" target="_blank">CCCCCoke</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%99%9A%E6%8B%9F%E5%8C%96/">虚拟化</a><a class="post-meta__tags" href="/tags/ESXi/">ESXi</a><a class="post-meta__tags" href="/tags/VMware/">VMware</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310117154.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/88b111d7/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/maxresdefault.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">MacOS M1 Python 使用Oracle数据库｜安装Oracle 客户端｜安装cx_oracle包</div></div></a></div><div class="next-post pull-right"><a href="/2021/b6c7e144/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310125449.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">使用Docker搭建Nextcloud个人工作中心</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">HalfCoke</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">35</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">54</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">38</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HalfCoke"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/HalfCoke" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">文章慢慢更新，乖，别急</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ESXi%E9%95%9C%E5%83%8F%E8%87%AA%E5%AE%9A%E4%B9%89-%E9%9B%86%E6%88%90%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8-%E5%8F%8A%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA"><span class="toc-number">1.</span> <span class="toc-text">ESXi镜像自定义(集成网卡驱动)及硬盘分区</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ESXi%E9%95%9C%E5%83%8F%E8%87%AA%E5%AE%9A%E4%B9%89"><span class="toc-number">1.1.</span> <span class="toc-text">ESXi镜像自定义</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E5%87%86%E5%A4%87"><span class="toc-number">1.1.1.</span> <span class="toc-text">环境准备</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#PowerCLI%E5%AE%89%E8%A3%85"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">PowerCLI安装</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ESXi%E5%AE%98%E6%96%B9%E9%95%9C%E5%83%8F%E6%96%87%E4%BB%B6%E5%87%86%E5%A4%87%EF%BC%88%E8%84%9A%E6%9C%AC%E5%AE%89%E8%A3%85%E6%97%B6%E5%8F%AF%E9%80%89%EF%BC%89"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">ESXi官方镜像文件准备（脚本安装时可选）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BD%91%E5%8D%A1%E9%A9%B1%E5%8A%A8%E5%87%86%E5%A4%87-%E4%BB%A5r8168%E4%B8%BA%E4%BE%8B"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">网卡驱动准备(以r8168为例)</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E9%95%9C%E5%83%8F%E6%89%93%E5%8C%85"><span class="toc-number">1.1.2.</span> <span class="toc-text">自定义镜像打包</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E8%84%9A%E6%9C%AC%E6%96%B9%E5%BC%8F%E6%89%93%E5%8C%85"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">使用脚本方式打包</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E8%87%AA%E8%A1%8C%E6%89%93%E5%8C%85"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">命令行自行打包</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BE%97%E5%88%B0ISO%E6%96%87%E4%BB%B6%E4%B9%8B%E5%90%8E"><span class="toc-number">1.2.</span> <span class="toc-text">得到ISO文件之后</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="toc-number">1.3.</span> <span class="toc-text">硬盘分区及数据存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A1%AC%E7%9B%98%E5%88%86%E5%8C%BA"><span class="toc-number">1.3.1.</span> <span class="toc-text">硬盘分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="toc-number">1.3.2.</span> <span class="toc-text">创建数据存储</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.4.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"/></a><div class="content"><a class="title" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）">使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）</a><time datetime="2023-04-02T07:58:29.000Z" title="发表于 2023-04-02 15:58:29">2023-04-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/spf.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"/></a><div class="content"><a class="title" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具">白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具</a><time datetime="2022-10-30T08:01:55.000Z" title="发表于 2022-10-30 16:01:55">2022-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/50e64521/" title="K3S 安装及部署"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221021222858950.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="K3S 安装及部署"/></a><div class="content"><a class="title" href="/2022/50e64521/" title="K3S 安装及部署">K3S 安装及部署</a><time datetime="2022-10-21T14:22:19.000Z" title="发表于 2022-10-21 22:22:19">2022-10-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/b14aeca0/" title="利用Let's Encrypt获取免费的证书"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用Let's Encrypt获取免费的证书"/></a><div class="content"><a class="title" href="/2022/b14aeca0/" title="利用Let's Encrypt获取免费的证书">利用Let's Encrypt获取免费的证书</a><time datetime="2022-10-03T06:26:40.000Z" title="发表于 2022-10-03 14:26:40">2022-10-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/27bb66e8/" title="如何利用iptables管理docker开放的端口？"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310130800.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="如何利用iptables管理docker开放的端口？"/></a><div class="content"><a class="title" href="/2022/27bb66e8/" title="如何利用iptables管理docker开放的端口？">如何利用iptables管理docker开放的端口？</a><time datetime="2022-09-18T06:41:08.000Z" title="发表于 2022-09-18 14:41:08">2022-09-18</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By HalfCoke</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '0373d8209e264e713cc6',
+      clientSecret: '5959db7d97f07e6f602d9ef98744530be3bea3fe',
+      repo: 'HalfCoke.github.io',
+      owner: 'HalfCoke',
+      admin: ['HalfCoke'],
+      id: '2a2e6270174dc4118e598cb4350a9f25',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

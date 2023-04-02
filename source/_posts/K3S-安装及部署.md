@@ -4,9 +4,8 @@ author:
   nick: HalfCoke
   link: 'https://halfcoke.github.io/'
 typora-copy-images-to: upload
-cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221021222858950.png'
-date: 2022-10-21 22:22:19
-update: 2022-10-21 22:22:19
+cover: >-
+  https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221021222858950.png
 tags:
   - 学习笔记
   - K3S
@@ -14,6 +13,9 @@ tags:
 categories:
   - 学习笔记
   - K3S
+abbrlink: '50e64521'
+date: 2022-10-21 22:22:19
+update: 2022-10-21 22:22:19
 ---
 
 # K3s

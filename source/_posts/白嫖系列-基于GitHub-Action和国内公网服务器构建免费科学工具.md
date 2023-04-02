@@ -3,7 +3,6 @@ title: 白嫖系列-基于GitHub Action和国内公网服务器构建免费科�
 author:
   nick: HalfCoke
   link: 'https://halfcoke.github.io/'
-date: 2022-10-30 16:01:55
 typora-copy-images-to: upload
 cover: 'https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/spf.jpg'
 tags:
@@ -14,6 +13,8 @@ categories:
   - 工具
   - 折腾
   - 科学工具
+abbrlink: a2e7677e
+date: 2022-10-30 16:01:55
 ---
 
 > 重要说明：这篇文章仅用于技术探讨，请遵守相关法律法规
@@ -36,7 +37,7 @@ Action的功能在这里可以直接看到
 
 Action主要通过写yaml文件进行定义，yaml文件需要定义在`.github/workflows`路径下
 
-![image-20221030164124222](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221030164124222.png)
+![](https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221030164124222.png)
 
 下面给出一个简单的action文件的组成部分
 
@@ -48,7 +49,7 @@ on: # action的触发条件，比如手动、定时、收到push事件等
     - cron: '*/30 * * * *'
 jobs: # 开始定义要执行的任务
   first: # 任务的名称，这个‘first’可以自定义名字
-    runs-on: unbuntu-latest # 需要依赖于什么环境运行，参看官网https://docs.github.com/en/actions/using-jobs/choosing-the-runner-for-a-job
+    runs-on: unbuntu-latest # 需要依赖于什么环境运行，参考官网https://docs.github.com/en/actions/using-jobs/choosing-the-runner-for-a-job
     steps: # 开始定义任务执行的步骤
       - name: set env # 步骤的名字
         run: | # 这一步骤的脚本，可以直接sudo执行命令，环境中的默认用户名是runner，下面这个脚本就是修改runner的默认密码
