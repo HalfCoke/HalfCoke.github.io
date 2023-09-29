@@ -4,6 +4,39 @@
   
     
     <entry>
+      <title>DeltaLake论文阅读笔记</title>
+      <link href="/2023/c0df81a5/"/>
+      <url>/2023/c0df81a5/</url>
+      
+        <content type="html"><![CDATA[<h1 id="DeltaLake论文：Lakehouse-A-New-Generation-of-Open-Platforms-that-Unify-Data-Warehousing-and-Advanced-Analytics"><a href="#DeltaLake论文：Lakehouse-A-New-Generation-of-Open-Platforms-that-Unify-Data-Warehousing-and-Advanced-Analytics" class="headerlink" title="DeltaLake论文：Lakehouse: A New Generation of Open Platforms that Unify Data Warehousing and Advanced Analytics"></a>DeltaLake论文：Lakehouse: A New Generation of Open Platforms that Unify Data Warehousing and Advanced Analytics</h1><blockquote><p>论文原文地址：<a href="http://cidrdb.org/cidr2021/papers/cidr2021_paper17.pdf">http://cidrdb.org/cidr2021/papers/cidr2021_paper17.pdf</a></p></blockquote>]]></content>
+      
+      
+      <categories>
+          
+          <category> 大数据 </category>
+          
+          <category> 存储架构 </category>
+          
+          <category> Lakehouse </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 大数据 </tag>
+            
+            <tag> Lakehouse </tag>
+            
+            <tag> DeltaLake </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）</title>
       <link href="/2023/6b488705/"/>
       <url>/2023/6b488705/</url>
