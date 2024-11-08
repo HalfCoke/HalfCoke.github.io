@@ -30,6 +30,8 @@ date: 2023-04-02 15:58:29
 2. 需要申请ssl证书，建议使用certbot，安装教程有很多，安装完成后可以使用如下命令申请自定义证书
 
    ```bash
+   apt install certbot
+   apt install python3-certbot-nginx
    # 仅申请，不进行安装
    certbot certonly --nginx -d test.example.org
    # 可以通过crontab配置renew
@@ -37,7 +39,7 @@ date: 2023-04-02 15:58:29
    # 在打开的编辑器中放入以下内容
    0 12 * * * /usr/bin/certbot renew --quiet
    ```
-
+   
    
 
 # Trojan代理服务部署
