@@ -1,0 +1,335 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>FRP端口转发工具 | CCCCCoke</title><meta name="keywords" content="Linux,SSH,转发,隧道"><meta name="author" content="HalfCoke"><meta name="copyright" content="HalfCoke"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="FRP端口转发工具及部署方式详解(win+linux)前言在此前的文章中，介绍了使用ssh命令进行端口转发。 使用ssh进行端口转发有优点也有缺点，其优点主要在使用方便，服务器上基本都安装了ssh服务用来进行远程登录，因此只要有ssh命令就能实现端口转发的功能。但其缺点也很明显，主要在于远程转发、本地转发、动态转发等配置参数让使用者常常混淆，使用频率不高时也记不住这些参数。如果忘记设置ssh保活或">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FRP端口转发工具">
+<meta property="og:url" content="https://halfcoke.github.io/2021/f282203b/index.html">
+<meta property="og:site_name" content="CCCCCoke">
+<meta property="og:description" content="FRP端口转发工具及部署方式详解(win+linux)前言在此前的文章中，介绍了使用ssh命令进行端口转发。 使用ssh进行端口转发有优点也有缺点，其优点主要在使用方便，服务器上基本都安装了ssh服务用来进行远程登录，因此只要有ssh命令就能实现端口转发的功能。但其缺点也很明显，主要在于远程转发、本地转发、动态转发等配置参数让使用者常常混淆，使用频率不高时也记不住这些参数。如果忘记设置ssh保活或">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127016.jpeg">
+<meta property="article:published_time" content="2021-09-08T14:06:21.000Z">
+<meta property="article:modified_time" content="2024-11-08T17:41:15.690Z">
+<meta property="article:author" content="HalfCoke">
+<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="SSH">
+<meta property="article:tag" content="转发">
+<meta property="article:tag" content="隧道">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127016.jpeg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://halfcoke.github.io/2021/f282203b/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'pub-6942839821989447',
+  enable_page_level_ads: 'true'
+});</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'FRP端口转发工具',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-09 01:41:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CCCCCoke</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">FRP端口转发工具</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-09-08T14:06:21.000Z" title="发表于 2021-09-08 22:06:21">2021-09-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-08T17:41:15.690Z" title="更新于 2024-11-09 01:41:15">2024-11-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%B7%A5%E5%85%B7/">工具</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="FRP端口转发工具"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="FRP端口转发工具及部署方式详解-win-linux"><a href="#FRP端口转发工具及部署方式详解-win-linux" class="headerlink" title="FRP端口转发工具及部署方式详解(win+linux)"></a>FRP端口转发工具及部署方式详解(win+linux)</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在此前的<a href="https://halfcoke.github.io/2021/cac946/">文章</a>中，介绍了使用ssh命令进行端口转发。</p>
+<p>使用ssh进行端口转发有优点也有缺点，其优点主要在使用方便，服务器上基本都安装了ssh服务用来进行远程登录，因此只要有ssh命令就能实现端口转发的功能。但其缺点也很明显，主要在于远程转发、本地转发、动态转发等配置参数让使用者常常混淆，使用频率不高时也记不住这些参数。如果忘记设置ssh保活或出现网络波动导致链接断开也不方便自动重连，常常需要用户自己再写脚本来维护，这也增加了复杂性。</p>
+<p>在实际使用中使用ssh来进行临时的端口转发比较方便，但是如果我们想建立一个长期的转发链接的时候(比如转发Windows的远程访问端口，可以随时远程访问放在固定位置的电脑)，在使用ssh就可能要自己造一些轮子。</p>
+<p>为方便起见，更推荐使用frp工具进行端口转发。</p>
+<h2 id="frp工具介绍"><a href="#frp工具介绍" class="headerlink" title="frp工具介绍"></a>frp工具介绍</h2><p>frp 是一个专注于内网穿透的高性能的反向代理应用，支持 TCP、UDP、HTTP、HTTPS 等多种协议。可以将内网服务以安全、便捷的方式通过具有公网 IP 节点的中转暴露到公网。</p>
+<p>frp是采用go语言编写的开源工具，go保证了高效率，开源保证了工具没有夹带私货，可以放心使用。</p>
+<p>首先附上frp工具的下载链接：<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/releases">https://github.com/fatedier/frp/releases</a></p>
+<p>frp工具有很多种功能，我们将在本文中介绍最基本的端口转发部分的功能。</p>
+<p>frp采用CS模式，需要在具有公网IP的节点上设置服务端，在需要进行转发的机器上设置客户端。</p>
+<p>工具的安装部署也极为便捷，直接解压压缩包便可以获得如下文件。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127255.png" alt="image-20210908224239220"></p>
+<p>文件非常清晰，<code>frpc</code>表示客户端，<code>frpc.ini</code>表示客户端配置；<code>frps</code>表示服务端，<code>frps.ini</code>表示服务端配置。</p>
+<p>接下来我们介绍一下用于端口转发的服务端、客户端的配置项。</p>
+<h3 id="frp服务端配置"><a href="#frp服务端配置" class="headerlink" title="frp服务端配置"></a>frp服务端配置</h3><p>服务端配置daemo如下，实现基本功能需要配置的内容非常少。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">bind_port</span> = <span class="number">1234</span></span><br><span class="line"></span><br><span class="line"><span class="attr">authentication_method</span> = token</span><br><span class="line"><span class="attr">authenticate_heartbeats</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">authenticate_new_work_conns</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">token</span> = ^EJSNkz4MLMJC6W!TyLhmNwJ3k3Hk833cmzBNU2ZasD3dja4*Bf</span><br><span class="line"></span><br><span class="line"><span class="attr">log_file</span> = /opt/frp_0.<span class="number">37.0</span>_linux_amd64/log/frps.log</span><br><span class="line"><span class="attr">log_level</span> = debug</span><br><span class="line"><span class="attr">log_max_days</span> = <span class="number">7</span></span><br></pre></td></tr></table></figure>
+
+<p>在我的配置文件中主要分为三个部分：</p>
+<ul>
+<li><p>基本配置</p>
+<p>在这项配置中，配置**<code>frp</code>服务端监听的端口**，这个端口是用来与frp客户端进行链接的，与我们后续要转发的服务无关。这一项一定要有，不然客户端也不知道链接谁。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">bind_port</span> = <span class="number">1234</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安全配置</p>
+<p>这一项配置不是强制的，但是推荐配置。毕竟你也不想那自己的服务器去做慈善，主要以防万一你的服务端frp泄露。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">authentication_method</span> = token</span><br><span class="line"><span class="attr">authenticate_heartbeats</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">authenticate_new_work_conns</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">token</span> = ^EJSNkz4MLMJC6W!TyLhmNwJ3k3Hk833cmzBNU2ZasD3dja4*Bf</span><br></pre></td></tr></table></figure>
+
+<p>其中token换成自己生成的，其余三项配置与我相同即可，配置项的意思就是英文的意思，不用过多解释了。</p>
+</li>
+<li><p>日志配置</p>
+<p>日志配置根据自己的需要进行配置即可，也可以不配置，主要用来查看一下有没有异常的链接或查看bug等情况使用。</p>
+<p><code>log_file</code>默认是<code>./frps.log</code></p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">log_file</span> = /opt/frp_0.<span class="number">37.0</span>_linux_amd64/log/frps.log</span><br><span class="line"><span class="attr">log_level</span> = debug</span><br><span class="line"><span class="attr">log_max_days</span> = <span class="number">7</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="frp客户端配置"><a href="#frp客户端配置" class="headerlink" title="frp客户端配置"></a>frp客户端配置</h3><p>客户端的配置内容稍微多一点，因为涉及到我们要转发的服务的配置。服务端的配置daemon如下所示。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[common]</span></span><br><span class="line"><span class="attr">server_addr</span> = test.cn</span><br><span class="line"><span class="attr">server_port</span> = <span class="number">1234</span></span><br><span class="line"></span><br><span class="line"><span class="attr">token</span> = ^EJSNkz4MLMJC6W!TyLhmNwJ3k3Hk833cmzBNU2ZasD3dja4*Bf</span><br><span class="line"><span class="attr">authentication_method</span> = token</span><br><span class="line"><span class="attr">authenticate_heartbeats</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">authenticate_new_work_conns</span> = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">user</span> = my_computer</span><br><span class="line"></span><br><span class="line"><span class="attr">log_file</span> = ./log/frpc.log</span><br><span class="line"><span class="attr">log_level</span> = debug</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="section">[rdp]</span></span><br><span class="line"><span class="attr">type</span> = tcp</span><br><span class="line"><span class="attr">use_compression</span> = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">local_ip</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">local_port</span> = <span class="number">3389</span></span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">3389</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在这个配置文件中，可以分为5个部分：</p>
+<ul>
+<li><p>基本配置</p>
+<p>在基本配置中，需要配置<code>frp</code>服务端的ip地址和端口，端口需要与服务端配置中<code>bind_port</code>相同。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">server_addr</span> = test.cn</span><br><span class="line"><span class="attr">server_port</span> = <span class="number">1234</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>安全配置</p>
+<p>安全配置需要与服务端保持一致，所有的内容都应相同。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">token</span> = ^EJSNkz4MLMJC6W!TyLhmNwJ3k3Hk833cmzBNU2ZasD3dja4*Bf</span><br><span class="line"><span class="attr">authentication_method</span> = token</span><br><span class="line"><span class="attr">authenticate_heartbeats</span> = <span class="literal">true</span></span><br><span class="line"><span class="attr">authenticate_new_work_conns</span> = <span class="literal">true</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>用户名配置</p>
+<p>这条配置信息其实是给待转发端口的服务名增加了前缀，因为可能存在多个客户端共用同一个服务端的情况，避免服务名称冲突。</p>
+<p>比如在我们的配置中，要转发的<code>rdp</code>服务的完整服务名会自动拼接为<code>my_computer.rdp</code>。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">user</span> = my_computer</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>日志配置</p>
+<p>日志配置与服务端的作用相同，根据需要选择配置即可。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">log_file</span> = ./log/frpc.log</span><br><span class="line"><span class="attr">log_level</span> = debug</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>服务配置</p>
+<p>需要转发的服务在这里配置，其中<code>[rdp]</code>为服务名，中括号包起来的部分可以自定义</p>
+<p><code>type</code>表示服务的链接类型，我们用于转发远程桌面或ssh端口是使用<code>tcp</code>，完整的选项可以参考<a target="_blank" rel="noopener" href="https://gofrp.org/docs/reference/proxy/#%E5%9F%BA%E7%A1%80%E9%85%8D%E7%BD%AE">官网说明</a>。</p>
+<p><code>use_compression</code>表示是否对数据进行压缩</p>
+<p><code>local_ip</code>和<code>local_port</code>表示运行<code>frp</code>客户端的机器能够直接访问到的地址，比如我要转发本机的远程桌面端口，就是如下的配置。如果我要转发本地局域网内的其他服务，按照当前机器访问服务的地址和端口填写即可。</p>
+<p><code>remote_port</code>表示在**<code>frp</code>服务端<strong>上监听的端口(用来访问当前服务使用)。在我的配置文件中，访问<code>test.cn:2345</code>也就相当于访问了</strong><code>frp</code>客户端**的3389端口。</p>
+<figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[rdp]</span></span><br><span class="line"><span class="attr">type</span> = tcp</span><br><span class="line"><span class="attr">use_compression</span> = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="attr">local_ip</span> = <span class="number">127.0</span>.<span class="number">0.1</span></span><br><span class="line"><span class="attr">local_port</span> = <span class="number">3389</span></span><br><span class="line"><span class="attr">remote_port</span> = <span class="number">2345</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="部署方式"><a href="#部署方式" class="headerlink" title="部署方式"></a>部署方式</h2><p>接下来介绍一下在Windows上与Linux上将frp部署的方式。</p>
+<h3 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h3><ul>
+<li><p>方式一</p>
+<p>可以直接运行<code>frpc.exe</code>，但是这样无法做到后台运行，而且重启以后就没办法自动启动，所以推荐使用方式二，将<code>frpc</code>作为服务部署</p>
+</li>
+<li><p>方式二</p>
+<p>为了将<code>frpc.exe</code>作为服务部署，需要借助<a target="_blank" rel="noopener" href="https://github.com/winsw/winsw"><code>WinSW</code>工具</a>。这一工具仅需要简单的配置便可以将自己的应用作为windows服务。</p>
+<p>可以从<a target="_blank" rel="noopener" href="https://github.com/winsw/winsw/releases">https://github.com/winsw/winsw/releases</a>下载对应版本的软件(32位或64位)。</p>
+<p><code>WinSW-x64.exe</code>或<code>WinSW-x32.exe</code>下载好以后，将该文件命名成你喜欢的名字，比如<code>myapp.exe</code>，同时新建一个同名的xml文件<code>myapp.xml</code>。</p>
+<p>继续本文的例子，我们可以复制一下内容到xml文件中。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">service</span>&gt;</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">&lt;!-- ID of the service. It should be unique across the Windows system--&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>rdpforward<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- Display name of the service --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">name</span>&gt;</span>RDP Port Forward <span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">  <span class="comment">&lt;!-- Service description --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">description</span>&gt;</span>Forward Windows RDP Port<span class="tag">&lt;/<span class="name">description</span>&gt;</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">&lt;!-- Path to the executable, which should be started --&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">executable</span>&gt;</span>frp_0.37.0_windows_amd64\frpc.exe<span class="tag">&lt;/<span class="name">executable</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">arguments</span>&gt;</span>-c &quot;frp_0.37.0_windows_amd64\frpc.ini&quot;  <span class="tag">&lt;/<span class="name">arguments</span>&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">startmode</span>&gt;</span>Automatic<span class="tag">&lt;/<span class="name">startmode</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">onfailure</span> <span class="attr">action</span>=<span class="string">&quot;restart&quot;</span> <span class="attr">delay</span>=<span class="string">&quot;10 sec&quot;</span>/&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">log</span> <span class="attr">mode</span>=<span class="string">&quot;reset&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">log</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">service</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>其中:</p>
+<ul>
+<li><p><code>&lt;id&gt;</code>应该为系统范围内独一无二的标识。自己直接写就行，一般也不会和系统里的重复。</p>
+</li>
+<li><p><code>&lt;name&gt;</code>为服务显示的名称，比如在下图中显示出了我这个服务的名称。</p>
+</li>
+<li><p><code>&lt;description&gt;</code>为服务的描述，和名称一样，也是给自己看的。</p>
+</li>
+<li><p><code>&lt;executable&gt;</code>要执行程序的路径，这里我写的是相对路径。</p>
+</li>
+<li><p><code>&lt;arguments&gt;</code>执行程序的参数，对frpc来说，需要指定一下配置文件的位置。</p>
+</li>
+<li><p><code>&lt;startmode&gt;</code>启动模式，是否是开机自动运行。</p>
+</li>
+<li><p><code>&lt;onfailure&gt;</code>服务启动失败时的动作。</p>
+</li>
+<li><p><code>&lt;log&gt;</code>记录日志的模式。</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127247.png" alt="image-20210908232555264"></p>
+</li>
+</ul>
+<p>配置完成后，在<code>myapp.exe</code>所在的目录直接输入<code>cmd .</code>（注意有个空格 和点）直接打开cmd窗口，如下所示</p>
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127398.png" alt="image-20210908233045415"></p>
+<p>然后执行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">myapp.exe install</span><br><span class="line">myapp.exe start</span><br><span class="line"><span class="comment"># 如果想删除则是</span></span><br><span class="line">myapp.exe stop</span><br><span class="line">myapp.exe uninstall</span><br></pre></td></tr></table></figure>
+
+<p>至此，Windows上服务部署完成。</p>
+</li>
+</ul>
+<h3 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h3><p>在Linux上部署服务通常是frp服务端，下面以部署服务端为例说明，客户端同理。</p>
+<p><code>frp</code>工具非常贴心的已经带了服务的配置文件（位于<code>frp</code>的<code>systemd</code>文件夹下），我们仅需要做一些修改就好。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Frp Server Service</span><br><span class="line">After=network.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">User=nobody</span><br><span class="line">Restart=on-failure</span><br><span class="line">RestartSec=5s</span><br><span class="line">ExecStart=/usr/bin/frps -c /etc/frp/frps.ini</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>将其中的<code>ExecStart</code>的内容按照实际放置的位置填写就好。</p>
+<p><code>User</code>根据实际情况写，也可以不写。</p>
+<p>我的配置信息如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=Frp server daemon</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">WorkingDirectory=/opt/frp_0.37.0_linux_amd64</span><br><span class="line">ExecStart=/opt/frp_0.37.0_linux_amd64/frps -c /opt/frp_0.37.0_linux_amd64/frps.ini</span><br><span class="line">Restart=on-failure</span><br><span class="line">RestartSec=10s</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>然后将文件命名为<code>frps.service</code>，扩展名为service即可。</p>
+<p>然后将文件copy至<code>/etc/systemd/system/</code>中。</p>
+<p>运行如下命令启动服务</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 启动服务</span></span><br><span class="line">systemctl start frps</span><br><span class="line"><span class="comment"># 开机启动</span></span><br><span class="line">systemctl <span class="built_in">enable</span> frps</span><br><span class="line"><span class="comment"># 取消开机启动</span></span><br><span class="line">systemctl <span class="built_in">disable</span> frps</span><br><span class="line"><span class="comment"># 停止服务</span></span><br><span class="line">systemctl stop frps</span><br></pre></td></tr></table></figure>
+
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://gofrp.org/">frp中文官网</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/winsw/winsw">WinSW</a></li>
+</ul>
+<p>好了，剩下的功能大家可以自行探索，别干什么触碰高压线的事就行哈</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io">HalfCoke</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io/2021/f282203b/">https://halfcoke.github.io/2021/f282203b/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://halfcoke.github.io" target="_blank">CCCCCoke</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Linux/">Linux</a><a class="post-meta__tags" href="/tags/SSH/">SSH</a><a class="post-meta__tags" href="/tags/%E8%BD%AC%E5%8F%91/">转发</a><a class="post-meta__tags" href="/tags/%E9%9A%A7%E9%81%93/">隧道</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310127016.jpeg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/b6c7e144/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310125449.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">使用Docker搭建Nextcloud个人工作中心</div></div></a></div><div class="next-post pull-right"><a href="/2021/828bfc98/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Java常用工具类总结(持续更新)</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/cac946/" title="SSH端口转发详解"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135924.jpeg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-01-10</div><div class="title">SSH端口转发详解</div></div></a></div><div><a href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/spf.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-30</div><div class="title">白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具</div></div></a></div><div><a href="/2022/50e64521/" title="K3S 安装及部署"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221021222858950.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-21</div><div class="title">K3S 安装及部署</div></div></a></div><div><a href="/2020/8649918/" title="Linux Top 命令详解"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102311990.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-23</div><div class="title">Linux Top 命令详解</div></div></a></div><div><a href="/2020/189b3b4/" title="Linux如何使用LVM进行磁盘扩容"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310133555.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-06</div><div class="title">Linux如何使用LVM进行磁盘扩容</div></div></a></div><div><a href="/2021/2d54e946/" title="Linux如何在LVM中移除PV"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134214.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-03-18</div><div class="title">Linux如何在LVM中移除PV</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">HalfCoke</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HalfCoke"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/HalfCoke" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">文章慢慢更新，乖，别急</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#FRP%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91%E5%B7%A5%E5%85%B7%E5%8F%8A%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F%E8%AF%A6%E8%A7%A3-win-linux"><span class="toc-number">1.</span> <span class="toc-text">FRP端口转发工具及部署方式详解(win+linux)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#frp%E5%B7%A5%E5%85%B7%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.2.</span> <span class="toc-text">frp工具介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#frp%E6%9C%8D%E5%8A%A1%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.1.</span> <span class="toc-text">frp服务端配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#frp%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%85%8D%E7%BD%AE"><span class="toc-number">1.2.2.</span> <span class="toc-text">frp客户端配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2%E6%96%B9%E5%BC%8F"><span class="toc-number">1.3.</span> <span class="toc-text">部署方式</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Windows"><span class="toc-number">1.3.1.</span> <span class="toc-text">Windows</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux"><span class="toc-number">1.3.2.</span> <span class="toc-text">Linux</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">1.4.</span> <span class="toc-text">参考资料</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/c0df81a5/" title="DeltaLake论文阅读笔记"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202309291558033.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DeltaLake论文阅读笔记"/></a><div class="content"><a class="title" href="/2023/c0df81a5/" title="DeltaLake论文阅读笔记">DeltaLake论文阅读笔记</a><time datetime="2023-09-29T07:52:34.000Z" title="发表于 2023-09-29 15:52:34">2023-09-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/Nginx-Web-Server-Reverse-Proxy-Load-Balancer-Dengan-Performa-Tinggi.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"/></a><div class="content"><a class="title" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）">使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）</a><time datetime="2023-04-02T07:58:29.000Z" title="发表于 2023-04-02 15:58:29">2023-04-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/spf.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"/></a><div class="content"><a class="title" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具">白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具</a><time datetime="2022-10-30T08:01:55.000Z" title="发表于 2022-10-30 16:01:55">2022-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/50e64521/" title="K3S 安装及部署"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221021222858950.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="K3S 安装及部署"/></a><div class="content"><a class="title" href="/2022/50e64521/" title="K3S 安装及部署">K3S 安装及部署</a><time datetime="2022-10-21T14:22:19.000Z" title="发表于 2022-10-21 22:22:19">2022-10-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/b14aeca0/" title="利用Let's Encrypt获取免费的证书"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用Let's Encrypt获取免费的证书"/></a><div class="content"><a class="title" href="/2022/b14aeca0/" title="利用Let's Encrypt获取免费的证书">利用Let's Encrypt获取免费的证书</a><time datetime="2022-10-03T06:26:40.000Z" title="发表于 2022-10-03 14:26:40">2022-10-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By HalfCoke</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '0373d8209e264e713cc6',
+      clientSecret: '5959db7d97f07e6f602d9ef98744530be3bea3fe',
+      repo: 'HalfCoke.github.io',
+      owner: 'HalfCoke',
+      admin: ['HalfCoke'],
+      id: '610b8134894203bd6c628a8a0e1b5d65',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

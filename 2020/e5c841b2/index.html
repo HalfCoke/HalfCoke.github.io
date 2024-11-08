@@ -1,0 +1,241 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>GO语言学习笔记-基础 | CCCCCoke</title><meta name="keywords" content="学习笔记,go语言"><meta name="author" content="HalfCoke"><meta name="copyright" content="HalfCoke"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Go语言学习笔记-基础内容基础概念通道是一种允许某一例程向另一例程传递指定类型的值的通信机制。 当一个goroutine试图在一个通道上进行发送或接收操作时，它会阻塞，直到另一个goroutine试图进行接收或发送操作才传递值，并开始处理两个goroutine。 一些习惯 Go语言使用驼峰式风格 包名称本身总是由小写字母组成。 通常名称的作用域越大，就使用越长且更有意义的名称。  生命周期问题 如">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GO语言学习笔记-基础">
+<meta property="og:url" content="https://halfcoke.github.io/2020/e5c841b2/index.html">
+<meta property="og:site_name" content="CCCCCoke">
+<meta property="og:description" content="Go语言学习笔记-基础内容基础概念通道是一种允许某一例程向另一例程传递指定类型的值的通信机制。 当一个goroutine试图在一个通道上进行发送或接收操作时，它会阻塞，直到另一个goroutine试图进行接收或发送操作才传递值，并开始处理两个goroutine。 一些习惯 Go语言使用驼峰式风格 包名称本身总是由小写字母组成。 通常名称的作用域越大，就使用越长且更有意义的名称。  生命周期问题 如">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132178.png">
+<meta property="article:published_time" content="2020-11-20T05:53:56.000Z">
+<meta property="article:modified_time" content="2024-11-08T17:41:15.694Z">
+<meta property="article:author" content="HalfCoke">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="go语言">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132178.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://halfcoke.github.io/2020/e5c841b2/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'pub-6942839821989447',
+  enable_page_level_ads: 'true'
+});</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'GO语言学习笔记-基础',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-09 01:41:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CCCCCoke</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">GO语言学习笔记-基础</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-11-20T05:53:56.000Z" title="发表于 2020-11-20 13:53:56">2020-11-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-08T17:41:15.694Z" title="更新于 2024-11-09 01:41:15">2024-11-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/Go%E8%AF%AD%E8%A8%80/">Go语言</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="GO语言学习笔记-基础"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="Go语言学习笔记-基础内容"><a href="#Go语言学习笔记-基础内容" class="headerlink" title="Go语言学习笔记-基础内容"></a>Go语言学习笔记-基础内容</h1><h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p><strong>通道</strong>是一种允许某一例程向另一例程传递指定类型的值的通信机制。</p>
+<p>当一个goroutine试图在一个通道上进行发送或接收操作时，它会阻塞，直到另一个goroutine试图进行接收或发送操作才传递值，并开始处理两个goroutine。</p>
+<h3 id="一些习惯"><a href="#一些习惯" class="headerlink" title="一些习惯"></a>一些习惯</h3><ul>
+<li>Go语言使用<strong>驼峰式</strong>风格</li>
+<li>包名称本身总是由小写字母组成。</li>
+<li>通常名称的作用域越大，就使用越长且更有意义的名称。</li>
+</ul>
+<h3 id="生命周期问题"><a href="#生命周期问题" class="headerlink" title="生命周期问题"></a>生命周期问题</h3><ul>
+<li>如果一个实体在函数中声明，那么它仅对函数局部有效。如果一个实体在函数外部声明，它将对&#x3D;&#x3D;<strong>包</strong>&#x3D;&#x3D;里所有源文件可见。</li>
+<li>实体第一个字母的大小写决定其可见性是否跨包。</li>
+</ul>
+<h3 id="作用域与生命周期"><a href="#作用域与生命周期" class="headerlink" title="作用域与生命周期"></a>作用域与生命周期</h3><p>声明的作用域是声明在程序文本中出现的区域，它是一个编译时属性。变量的生命周期是变量在程序执行期间能被程序的其他部分所引用的起止时间，它是一个运行时属性。</p>
+<p>在包级别声明，可以被同一个包里的任何文件引用；导入的包是文件级别的，所以可以在同一个文件内引用；</p>
+<p>内部的声明会覆盖外层的。</p>
+<h2 id="基础语句"><a href="#基础语句" class="headerlink" title="基础语句"></a>基础语句</h2><h3 id="循环语句"><a href="#循环语句" class="headerlink" title="循环语句"></a>循环语句</h3><p>for是go里面唯一的循环语句，有以下形式</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 1. 第一种，与其他语言的for循环类似</span></span><br><span class="line"><span class="keyword">for</span> initialization;condition;post&#123;</span><br><span class="line">    <span class="comment">// 0个或多个语句</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 2. 第二种，其他语言的while语句</span></span><br><span class="line"><span class="keyword">for</span> condition&#123;</span><br><span class="line">    <span class="comment">// 语句</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 3. 第三种，传统的无限循环</span></span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">    <span class="comment">// 语句</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 4. 第四种，在字符串或slice数据上迭代</span></span><br><span class="line"><span class="keyword">for</span> _,_ := <span class="keyword">range</span> os.Args[<span class="number">1</span>:]&#123;</span><br><span class="line">    <span class="comment">//语句</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="new-函数"><a href="#new-函数" class="headerlink" title="new 函数"></a>new 函数</h3><p>使用new函数创建变量，表达式<code>new(T)</code>创建一个未命名的T类型变量，初始化未T类型的零值，<strong>并返回其地址</strong>。</p>
+<h2 id="一些待解决的问题"><a href="#一些待解决的问题" class="headerlink" title="一些待解决的问题"></a>一些待解决的问题</h2><h3 id="1-URL响应问题"><a href="#1-URL响应问题" class="headerlink" title="1. URL响应问题"></a>1. URL响应问题</h3><p>使用go做服务器时，<strong>以<code>/</code>结尾的处理模式匹配所有含有这个前缀的URL</strong>，比如下面这个例子，会触发两次处理。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">http.HandleFunc(<span class="string">&quot;/&quot;</span>, handler2)</span><br><span class="line">http.HandleFunc(<span class="string">&quot;/count&quot;</span>,counter)</span><br></pre></td></tr></table></figure>
+
+<p>但有个问题，使用<code>http.Get</code>对url进行请求时，就不会触发<code>/</code>。服务器与客户端代码如下，访问结果在代码下方。</p>
+<p>服务端代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;log&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">var</span> mu sync.Mutex</span><br><span class="line"><span class="keyword">var</span> count <span class="type">int</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 问题：这种方式处理，是否两个处理函数都会触发</span></span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/&quot;</span>, handler2)</span><br><span class="line">	http.HandleFunc(<span class="string">&quot;/count&quot;</span>,counter)</span><br><span class="line">	log.Fatal(http.ListenAndServe(<span class="string">&quot;localhost:8000&quot;</span>,<span class="literal">nil</span>))</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">handler2</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">	mu.Lock()</span><br><span class="line">	count++</span><br><span class="line">	fmt.Fprintf(w, <span class="string">&quot;URL.Path = %q\n&quot;</span>, r.URL.Path)</span><br><span class="line">	fmt.Println(<span class="string">&quot;this is path &#x27;/&#x27;&quot;</span>)</span><br><span class="line">	mu.Unlock()</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">counter</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span>&#123;</span><br><span class="line">	mu.Lock()</span><br><span class="line">	fmt.Fprintf(w, <span class="string">&quot;Count %d\n&quot;</span>,count)</span><br><span class="line">	fmt.Println(<span class="string">&quot;this is path &#x27;count&#x27;&quot;</span>)</span><br><span class="line">	mu.Unlock()</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>客户端代码:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;io&quot;</span></span><br><span class="line">	<span class="string">&quot;net/http&quot;</span></span><br><span class="line">	<span class="string">&quot;os&quot;</span></span><br><span class="line">	<span class="string">&quot;strings&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ch := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="type">string</span>)</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">		<span class="keyword">go</span> getURL(ch)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">		fmt.Println(&lt;-ch)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getURL</span><span class="params">(ch <span class="keyword">chan</span>&lt;- <span class="type">string</span>)</span></span> &#123;</span><br><span class="line">	url := <span class="string">&quot;http://localhost:8000/count&quot;</span></span><br><span class="line">	start := time.Now()</span><br><span class="line">	resp, err := http.Get(url)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Sprint(os.Stderr, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	reader := <span class="built_in">new</span>(strings.Builder)</span><br><span class="line">	io.Copy(reader, resp.Body)</span><br><span class="line">	resp.Body.Close()</span><br><span class="line">	secs := time.Since(start).Seconds()</span><br><span class="line">	ch &lt;- fmt.Sprintf(<span class="string">&quot;%.2fs %s&quot;</span>, secs, reader.String())</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132710.png" alt="image-20201120172805036"></p>
+<h3 id="2-算法原理"><a href="#2-算法原理" class="headerlink" title="2. 算法原理"></a>2. 算法原理</h3><p><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132305.png" alt="image-20201127210210047"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io">HalfCoke</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io/2020/e5c841b2/">https://halfcoke.github.io/2020/e5c841b2/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://halfcoke.github.io" target="_blank">CCCCCoke</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">学习笔记</a><a class="post-meta__tags" href="/tags/go%E8%AF%AD%E8%A8%80/">go语言</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310132178.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2020/8649918/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202204102311990.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Linux Top 命令详解</div></div></a></div><div class="next-post pull-right"><a href="/2020/4adf7b4/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310134262.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Linux用户权限'/etc/sudoer'配置</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2020/42d8e328/" title="Docker学习笔记-基本"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310130800.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-11-10</div><div class="title">Docker学习笔记-基本</div></div></a></div><div><a href="/2021/3ee22ef9/" title="Java SPI机制简单介绍"><img class="cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-04</div><div class="title">Java SPI机制简单介绍</div></div></a></div><div><a href="/2022/50e64521/" title="K3S 安装及部署"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221021222858950.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-10-21</div><div class="title">K3S 安装及部署</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">HalfCoke</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HalfCoke"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/HalfCoke" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">文章慢慢更新，乖，别急</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0-%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9"><span class="toc-number">1.</span> <span class="toc-text">Go语言学习笔记-基础内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">基础概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E4%B9%A0%E6%83%AF"><span class="toc-number">1.1.1.</span> <span class="toc-text">一些习惯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E9%97%AE%E9%A2%98"><span class="toc-number">1.1.2.</span> <span class="toc-text">生命周期问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E4%B8%8E%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">1.1.3.</span> <span class="toc-text">作用域与生命周期</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.2.</span> <span class="toc-text">基础语句</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5"><span class="toc-number">1.2.1.</span> <span class="toc-text">循环语句</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#new-%E5%87%BD%E6%95%B0"><span class="toc-number">1.2.2.</span> <span class="toc-text">new 函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%BA%9B%E5%BE%85%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.</span> <span class="toc-text">一些待解决的问题</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-URL%E5%93%8D%E5%BA%94%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. URL响应问题</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E7%AE%97%E6%B3%95%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 算法原理</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/c0df81a5/" title="DeltaLake论文阅读笔记"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202309291558033.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DeltaLake论文阅读笔记"/></a><div class="content"><a class="title" href="/2023/c0df81a5/" title="DeltaLake论文阅读笔记">DeltaLake论文阅读笔记</a><time datetime="2023-09-29T07:52:34.000Z" title="发表于 2023-09-29 15:52:34">2023-09-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/Nginx-Web-Server-Reverse-Proxy-Load-Balancer-Dengan-Performa-Tinggi.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"/></a><div class="content"><a class="title" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）">使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）</a><time datetime="2023-04-02T07:58:29.000Z" title="发表于 2023-04-02 15:58:29">2023-04-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/spf.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"/></a><div class="content"><a class="title" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具">白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具</a><time datetime="2022-10-30T08:01:55.000Z" title="发表于 2022-10-30 16:01:55">2022-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/50e64521/" title="K3S 安装及部署"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221021222858950.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="K3S 安装及部署"/></a><div class="content"><a class="title" href="/2022/50e64521/" title="K3S 安装及部署">K3S 安装及部署</a><time datetime="2022-10-21T14:22:19.000Z" title="发表于 2022-10-21 22:22:19">2022-10-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/b14aeca0/" title="利用Let's Encrypt获取免费的证书"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用Let's Encrypt获取免费的证书"/></a><div class="content"><a class="title" href="/2022/b14aeca0/" title="利用Let's Encrypt获取免费的证书">利用Let's Encrypt获取免费的证书</a><time datetime="2022-10-03T06:26:40.000Z" title="发表于 2022-10-03 14:26:40">2022-10-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By HalfCoke</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '0373d8209e264e713cc6',
+      clientSecret: '5959db7d97f07e6f602d9ef98744530be3bea3fe',
+      repo: 'HalfCoke.github.io',
+      owner: 'HalfCoke',
+      admin: ['HalfCoke'],
+      id: '962db2f59efba42b25a4beba8693a2de',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>Flink 内存模型 | CCCCCoke</title><meta name="keywords" content="Flink,流处理,内存"><meta name="author" content="HalfCoke"><meta name="copyright" content="HalfCoke"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Flink内存模型Flink1.12.0支持更为细粒度的内存配置，本文基于Flink1.12对现行的Flink内存管理机制进行介绍，主要内容来自Flink文档 总内存说明Flink JVM 进程的进程总内存（Total Process Memory）包含了由 Flink 应用使用的内存（Flink 总内存）以及由运行 Flink 的 JVM 使用的内存。 Flink 总内存（Total Flink">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Flink 内存模型">
+<meta property="og:url" content="https://halfcoke.github.io/2021/9367e715/index.html">
+<meta property="og:site_name" content="CCCCCoke">
+<meta property="og:description" content="Flink内存模型Flink1.12.0支持更为细粒度的内存配置，本文基于Flink1.12对现行的Flink内存管理机制进行介绍，主要内容来自Flink文档 总内存说明Flink JVM 进程的进程总内存（Total Process Memory）包含了由 Flink 应用使用的内存（Flink 总内存）以及由运行 Flink 的 JVM 使用的内存。 Flink 总内存（Total Flink">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg">
+<meta property="article:published_time" content="2021-01-04T06:23:01.000Z">
+<meta property="article:modified_time" content="2024-11-08T17:41:15.694Z">
+<meta property="article:author" content="HalfCoke">
+<meta property="article:tag" content="Flink">
+<meta property="article:tag" content="流处理">
+<meta property="article:tag" content="内存">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://halfcoke.github.io/2021/9367e715/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'pub-6942839821989447',
+  enable_page_level_ads: 'true'
+});</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Flink 内存模型',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-11-09 01:41:15'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CCCCCoke</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">Flink 内存模型</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-01-04T06:23:01.000Z" title="发表于 2021-01-04 14:23:01">2021-01-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-11-08T17:41:15.694Z" title="更新于 2024-11-09 01:41:15">2024-11-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/">大数据</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%B5%81%E5%A4%84%E7%90%86/">流处理</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%A4%A7%E6%95%B0%E6%8D%AE/%E6%B5%81%E5%A4%84%E7%90%86/Flink/">Flink</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Flink 内存模型"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="Flink内存模型"><a href="#Flink内存模型" class="headerlink" title="Flink内存模型"></a>Flink内存模型</h1><p>Flink1.12.0支持更为细粒度的内存配置，本文基于Flink1.12对现行的Flink内存管理机制进行介绍，主要内容来自<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/deployment/memory/mem_setup.html">Flink文档</a></p>
+<h2 id="总内存说明"><a href="#总内存说明" class="headerlink" title="总内存说明"></a>总内存说明</h2><p>Flink JVM 进程的<em>进程总内存（Total Process Memory）</em>包含了由 Flink 应用使用的内存（<em>Flink 总内存</em>）以及由运行 Flink 的 JVM 使用的内存。 <em>Flink 总内存（Total Flink Memory）</em>包括 <em>JVM 堆内存（Heap Memory）</em>和<em>堆外内存（Off-Heap Memory）</em>。 其中堆外内存包括<em>直接内存（Direct Memory）</em>和<em>本地内存（Native Memory）</em>。</p>
+<img src="https://ci.apache.org/projects/flink/flink-docs-release-1.12/fig/process_mem_model.svg" style="width:35%" />
+
+<p>配置Flink内存使用的简单方法可以使用如下两个配置项</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>Component</strong></th>
+<th align="left"><strong>Option for TaskManager</strong></th>
+<th align="left"><strong>Option for JobManager</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Total Flink memory</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/deployment/config.html#taskmanager-memory-flink-size"><code>taskmanager.memory.flink.size</code></a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/deployment/config.html#jobmanager-memory-flink-size"><code>jobmanager.memory.flink.size</code></a></td>
+</tr>
+<tr>
+<td align="left">Total process memory</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/deployment/config.html#taskmanager-memory-process-size"><code>taskmanager.memory.process.size</code></a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/deployment/config.html#jobmanager-memory-process-size"><code>jobmanager.memory.process.size</code></a></td>
+</tr>
+</tbody></table>
+<p>Flink会根据默认值或其他配置参数来调整剩余内存部分的大小。</p>
+<ul>
+<li><p>配置<code>Flink memory</code>对于<code>standalone deployments</code>更为合适，该参数可以声明为Flink本身提供多少内存，<code>total Flink memory</code>被划分为<code>JVM Heap</code>和<code>Off-heap</code>内存。</p>
+</li>
+<li><p>配置<code>total process memory</code>可以声明Flink JVM进程总计使用多少内存，对于容器话部署来说，这涉及请求多大的容器。</p>
+</li>
+<li><p>此外，可以通过设置<code>total Flink memory</code>中的特定内部组成部分来进行内存配置，JM及TM所需要设置的内存组成部分是不一样的。详情参考<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#configure-heap-and-managed-memory">TaskManager</a>和<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_jobmanager.html#configure-jvm-heap">JobManager</a>文档。</p>
+</li>
+</ul>
+<p>用户需要选择至少一种方式进行配置，需要从以下无默认值的配置参数（参数组合中）选择一个给出明确的配置。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>TaskManager:</strong></th>
+<th align="left"><strong>JobManager:</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-flink-size"><code>taskmanager.memory.flink.size</code></a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#jobmanager-memory-flink-size"><code>jobmanager.memory.flink.size</code></a></td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-process-size"><code>taskmanager.memory.process.size</code></a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#jobmanager-memory-process-size"><code>jobmanager.memory.process.size</code></a></td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-task-heap-size"><code>taskmanager.memory.task.heap.size</code></a> 和 <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-managed-size"><code>taskmanager.memory.managed.size</code></a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#jobmanager-memory-heap-size"><code>jobmanager.memory.heap.size</code></a></td>
+</tr>
+</tbody></table>
+<p>同时进行<code>total process memory</code>及<code>total flink memory</code>配置时可能会造成配置冲突</p>
+<p>Flink 进程启动时，会根据配置的和自动推导出的各内存部分大小，显式地设置以下 JVM 参数：</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>JVM 参数</strong></th>
+<th align="left"><strong>TaskManager 取值</strong></th>
+<th align="left"><strong>JobManager 取值</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><em>-Xmx</em> 和 <em>-Xms</em></td>
+<td align="left">框架堆内存 + 任务堆内存</td>
+<td align="left">JVM 堆内存 (*)</td>
+</tr>
+<tr>
+<td align="left"><em>-XX:MaxDirectMemorySize</em> （TaskManager 始终设置，JobManager 见注释）</td>
+<td align="left">框架堆外内存 + 任务堆外内存(**) + 网络内存</td>
+<td align="left">堆外内存 (**) (***)</td>
+</tr>
+<tr>
+<td align="left"><em>-XX:MaxMetaspaceSize</em></td>
+<td align="left">JVM Metaspace</td>
+<td align="left">JVM Metaspace</td>
+</tr>
+</tbody></table>
+<p>(*) 请记住，根据所使用的 GC 算法，你可能无法使用到全部堆内存。一些 GC 算法会为它们自身分配一定量的堆内存。这会导致<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/ops/metrics.html#memory">堆的指标</a>返回一个不同的最大值。<br>(**) 请注意，堆外内存也包括了用户代码使用的本地内存（非直接内存）。<br>(***) 只有在 <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#jobmanager-memory-enable-jvm-direct-memory-limit"><code>jobmanager.memory.enable-jvm-direct-memory-limit</code></a> 设置为 <code>true</code> 时，JobManager 才会设置 <em>JVM 直接内存限制</em>。</p>
+<h2 id="TaskManager内存模型"><a href="#TaskManager内存模型" class="headerlink" title="TaskManager内存模型"></a>TaskManager内存模型</h2><h3 id="配置堆内存和托管内存"><a href="#配置堆内存和托管内存" class="headerlink" title="配置堆内存和托管内存"></a>配置堆内存和托管内存</h3><p>另一种配置 Flink 内存的方式是同时设置<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#task-operator-heap-memory">任务堆内存</a>和<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#managed-memory">托管内存</a>。 通过这种方式，用户可以更好地掌控用于 Flink 任务的 JVM 堆内存及 Flink 的<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#managed-memory">托管内存</a>大小。</p>
+<p>Flink 会根据默认值或其他配置参数自动调整剩余内存部分的大小。 关于各内存部分的更多细节，请参考<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#detailed-memory-model">相关文档</a>。</p>
+<p><strong>提示</strong> 如果已经明确设置了任务堆内存和托管内存，建议不要再设置<em>进程总内存</em>或 <em>Flink 总内存</em>，否则可能会造成内存配置冲突。</p>
+<h4 id="任务-算子-堆内存"><a href="#任务-算子-堆内存" class="headerlink" title="任务(算子)堆内存"></a>任务(算子)堆内存</h4><p>如果希望确保指定大小的 JVM 堆内存给用户代码使用，可以明确指定<em>任务堆内存</em>（<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-task-heap-size"><code>taskmanager.memory.task.heap.size</code></a>）。 指定的内存将被包含在总的 JVM 堆空间中，专门用于 Flink 算子及用户代码的执行。</p>
+<h4 id="托管内存"><a href="#托管内存" class="headerlink" title="托管内存"></a>托管内存</h4><p><em>托管内存</em>是由 Flink 负责分配和管理的本地（堆外）内存。 以下场景需要使用<em>托管内存</em>：</p>
+<ul>
+<li>流处理作业中用于 <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/ops/state/state_backends.html#the-rocksdbstatebackend">RocksDB State Backend</a>。</li>
+<li><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/dev/batch/">批处理作业</a>中用于排序、哈希表及缓存中间结果。</li>
+<li>流处理和批处理作业中用于<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/dev/python/table-api-users-guide/udfs/python_udfs.html">在 Python 进程中执行用户自定义函数</a>。</li>
+</ul>
+<p>可以通过以下两种范式指定<em>托管内存</em>的大小：</p>
+<ul>
+<li>通过 <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-managed-size"><code>taskmanager.memory.managed.size</code></a> 明确指定其大小。</li>
+<li>通过 <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-managed-fraction"><code>taskmanager.memory.managed.fraction</code></a> 指定在<em>Flink 总内存</em>中的占比。</li>
+</ul>
+<p>当同时指定二者时，会优先采用指定的大小（Size）。 若二者均未指定，会根据<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-managed-fraction">默认占比</a>进行计算。</p>
+<h4 id="消费者权重"><a href="#消费者权重" class="headerlink" title="消费者权重"></a>消费者权重</h4><p>对于包含不同种类的托管内存消费者的作业，可以进一步控制托管内存如何在消费者之间分配。 通过 <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-managed-consumer-weights"><code>taskmanager.memory.managed.consumer-weights</code></a> 可以为每一种类型的消费者指定一个权重，Flink 会按照权重的比例进行内存分配。 目前支持的消费者类型包括：</p>
+<ul>
+<li><code>DATAPROC</code>：用于流处理中的 RocksDB State Backend 和批处理中的内置算法。</li>
+<li><code>PYTHON</code>：用户 Python 进程。</li>
+</ul>
+<p>例如，一个流处理作业同时使用到了 RocksDB State Backend 和 Python UDF，消费者权重设置为 <code>DATAPROC:70,PYTHON:30</code>，那么 Flink 会将 <code>70%</code> 的托管内存用于 RocksDB State Backend，<code>30%</code> 留给 Python 进程。</p>
+<p><strong>提示</strong> 只有作业中包含某种类型的消费者时，Flink 才会为该类型分配托管内存。 例如，一个流处理作业使用 Heap State Backend 和 Python UDF，消费者权重设置为 <code>DATAPROC:70,PYTHON:30</code>，那么 Flink 会将全部托管内存用于 Python 进程，因为 Heap State Backend 不使用托管内存。</p>
+<p><strong>提示</strong> 对于未出现在消费者权重中的类型，Flink 将不会为其分配托管内存。 如果缺失的类型是作业运行所必须的，则会引发内存分配失败。 默认情况下，消费者权重中包含了所有可能的消费者类型。 上述问题仅可能出现在用户显式地配置了消费者权重的情况下。</p>
+<h3 id="配置堆外内存-直接内存或本地内存"><a href="#配置堆外内存-直接内存或本地内存" class="headerlink" title="配置堆外内存(直接内存或本地内存)"></a>配置堆外内存(直接内存或本地内存)</h3><p>用户代码中分配的堆外内存被归为<em>任务堆外内存（Task Off-heap Memory）</em>，可以通过 <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-task-off-heap-size"><code>taskmanager.memory.task.off-heap.size</code></a> 指定。</p>
+<p><strong>提示</strong> 你也可以调整<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#framework-memory">框架堆外内存（Framework Off-heap Memory）</a>。 这是一个进阶配置，建议仅在确定 Flink 框架需要更多的内存时调整该配置。</p>
+<p>Flink 将<em>框架堆外内存</em>和<em>任务堆外内存</em>都计算在 JVM 的<em>直接内存</em>限制中，请参考 <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup.html#jvm-parameters">JVM 参数</a>。</p>
+<p><strong>提示</strong> 本地内存（非直接内存）也可以被归在<em>框架堆外内存</em>或<em>任务堆外内存</em>中，在这种情况下 JVM 的<em>直接内存</em>限制可能会高于实际需求。</p>
+<p><strong>提示</strong> <em>网络内存（Network Memory）</em>同样被计算在 JVM <em>直接内存</em>中。 Flink 会负责管理网络内存，保证其实际用量不会超过配置大小。 因此，调整<em>网络内存</em>的大小不会对其他堆外内存有实质上的影响。</p>
+<img src="https://ci.apache.org/projects/flink/flink-docs-release-1.12/fig/detailed-mem-model.svg" style="width:35%" />
+
+<p>如上图所示，下表中列出了 Flink TaskManager 内存模型的所有组成部分，以及影响其大小的相关配置参数。</p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>组成部分</strong></th>
+<th align="left"><strong>配置参数</strong></th>
+<th align="left"><strong>描述</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#framework-memory">框架堆内存（Framework Heap Memory）</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-framework-heap-size"><code>taskmanager.memory.framework.heap.size</code></a></td>
+<td align="left">用于 Flink 框架的 JVM 堆内存（进阶配置）。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#task-operator-heap-memory">任务堆内存（Task Heap Memory）</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-task-heap-size"><code>taskmanager.memory.task.heap.size</code></a></td>
+<td align="left">用于 Flink 应用的算子及用户代码的 JVM 堆内存。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#managed-memory">托管内存（Managed memory）</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-managed-size"><code>taskmanager.memory.managed.size</code></a> <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-managed-fraction"><code>taskmanager.memory.managed.fraction</code></a></td>
+<td align="left">由 Flink 管理的用于排序、哈希表、缓存中间结果及 RocksDB State Backend 的本地内存。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#framework-memory">框架堆外内存（Framework Off-heap Memory）</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-framework-off-heap-size"><code>taskmanager.memory.framework.off-heap.size</code></a></td>
+<td align="left">用于 Flink 框架的<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#configure-off-heap-memory-direct-or-native">堆外内存（直接内存或本地内存）</a>（进阶配置）。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#configure-off-heap-memory-direct-or-native">任务堆外内存（Task Off-heap Memory）</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-task-off-heap-size"><code>taskmanager.memory.task.off-heap.size</code></a></td>
+<td align="left">用于 Flink 应用的算子及用户代码的<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup_tm.html#configure-off-heap-memory-direct-or-native">堆外内存（直接内存或本地内存）</a>。</td>
+</tr>
+<tr>
+<td align="left">网络内存（Network Memory）</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-network-min"><code>taskmanager.memory.network.min</code></a> <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-network-max"><code>taskmanager.memory.network.max</code></a> <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-network-fraction"><code>taskmanager.memory.network.fraction</code></a></td>
+<td align="left">用于任务之间数据传输的直接内存（例如网络传输缓冲）。该内存部分为基于 <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup.html#configure-total-memory">Flink 总内存</a>的<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup.html#capped-fractionated-components">受限的等比内存部分</a>。</td>
+</tr>
+<tr>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup.html#jvm-parameters">JVM Metaspace</a></td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-jvm-metaspace-size"><code>taskmanager.memory.jvm-metaspace.size</code></a></td>
+<td align="left">Flink JVM 进程的 Metaspace。</td>
+</tr>
+<tr>
+<td align="left">JVM 开销</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-jvm-overhead-min"><code>taskmanager.memory.jvm-overhead.min</code></a> <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-jvm-overhead-max"><code>taskmanager.memory.jvm-overhead.max</code></a> <a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/config.html#taskmanager-memory-jvm-overhead-fraction"><code>taskmanager.memory.jvm-overhead.fraction</code></a></td>
+<td align="left">用于其他 JVM 开销的本地内存，例如栈空间、垃圾回收空间等。该内存部分为基于<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup.html#configure-total-memory">进程总内存</a>的<a target="_blank" rel="noopener" href="https://ci.apache.org/projects/flink/flink-docs-release-1.12/zh/deployment/memory/mem_setup.html#capped-fractionated-components">受限的等比内存部分</a>。</td>
+</tr>
+</tbody></table>
+<h2 id="Web-UI-界面介绍"><a href="#Web-UI-界面介绍" class="headerlink" title="Web UI 界面介绍"></a>Web UI 界面介绍</h2><p><img src="https://gitee.com/halfcoke/blog_img/raw/master/20210312150340.svg"></p>
+<h3 id="内存根据Slot数量划分部分源码"><a href="#内存根据Slot数量划分部分源码" class="headerlink" title="内存根据Slot数量划分部分源码"></a>内存根据Slot数量划分部分源码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// org/apache/flink/runtime/resourcemanager/slotmanager/SlotManagerImpl.java</span></span><br><span class="line"><span class="meta">@VisibleForTesting</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ResourceProfile <span class="title function_">generateDefaultSlotResourceProfile</span><span class="params">(WorkerResourceSpec workerResourceSpec, <span class="type">int</span> numSlotsPerWorker)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> ResourceProfile.newBuilder()</span><br><span class="line">        .setCpuCores(workerResourceSpec.getCpuCores().divide(numSlotsPerWorker))</span><br><span class="line">        .setTaskHeapMemory(workerResourceSpec.getTaskHeapSize().divide(numSlotsPerWorker))</span><br><span class="line">        .setTaskOffHeapMemory(workerResourceSpec.getTaskOffHeapSize().divide(numSlotsPerWorker))</span><br><span class="line">        .setManagedMemory(workerResourceSpec.getManagedMemSize().divide(numSlotsPerWorker))</span><br><span class="line">        .setNetworkMemory(workerResourceSpec.getNetworkMemSize().divide(numSlotsPerWorker))</span><br><span class="line">        .build();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="获取已用Managed内存核心源码"><a href="#获取已用Managed内存核心源码" class="headerlink" title="获取已用Managed内存核心源码"></a>获取已用Managed内存核心源码</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// org/apache/flink/runtime/metrics/util/MetricUtils.java</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="type">long</span> <span class="title function_">getUsedManagedMemory</span><span class="params">(TaskSlotTable&lt;?&gt; taskSlotTable)</span> &#123;</span><br><span class="line">    Set&lt;AllocationID&gt; activeTaskAllocationIds = taskSlotTable.getActiveTaskSlotAllocationIds();</span><br><span class="line"></span><br><span class="line">    <span class="type">long</span> <span class="variable">usedMemory</span> <span class="operator">=</span> <span class="number">0L</span>;</span><br><span class="line">    <span class="keyword">for</span> (AllocationID allocationID : activeTaskAllocationIds) &#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">MemoryManager</span> <span class="variable">taskSlotMemoryManager</span> <span class="operator">=</span> taskSlotTable.getTaskMemoryManager(allocationID);</span><br><span class="line">            usedMemory += taskSlotMemoryManager.getMemorySize() - taskSlotMemoryManager.availableMemory();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (SlotNotFoundException e) &#123;</span><br><span class="line">            LOG.debug(<span class="string">&quot;The task slot &#123;&#125; is not present anymore and will be ignored in calculating the amount of used memory.&quot;</span>, allocationID);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> usedMemory;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Flink源码修改"><a href="#Flink源码修改" class="headerlink" title="Flink源码修改"></a>Flink源码修改</h3><ol>
+<li><p>增加显示算子实例与slot之间的对应关系</p>
+<p><code>请求地址</code>：</p>
+</li>
+</ol>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/20210107211317.png" alt="image-20210107211317693"></p>
+<p>​		<code>数据样例</code>：</p>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/20210107211257.png" alt="image-20210107211257448"></p>
+<ol start="2">
+<li>增加Taskmanager中对slotsStatus的显示</li>
+</ol>
+<p><img src="https://gitee.com/halfcoke/blog_img/raw/master/img/20210107213354.png" alt="image-20210107213354649"></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io">HalfCoke</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io/2021/9367e715/">https://halfcoke.github.io/2021/9367e715/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://halfcoke.github.io" target="_blank">CCCCCoke</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Flink/">Flink</a><a class="post-meta__tags" href="/tags/%E6%B5%81%E5%A4%84%E7%90%86/">流处理</a><a class="post-meta__tags" href="/tags/%E5%86%85%E5%AD%98/">内存</a></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/cac946/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135924.jpeg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">SSH端口转发详解</div></div></a></div><div class="next-post pull-right"><a href="/2020/b1d7d7b5/"><img class="next-cover" src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">深度强化学习相关调研笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/26c0fffa/" title="Flink HiveSink源码分析"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310130718.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-04</div><div class="title">Flink HiveSink源码分析</div></div></a></div><div><a href="/2020/c73cf02/" title="Flink Metrics REST API使用"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310130905.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-12-23</div><div class="title">Flink Metrics REST API使用</div></div></a></div><div><a href="/2021/6a92d281/" title="Flink StreamingFileSink源码分析"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310131610.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-04</div><div class="title">Flink StreamingFileSink源码分析</div></div></a></div><div><a href="/2021/102c449e/" title="基于Debezium的Flink-MySQL-CDC源码分析"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310143241.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-04</div><div class="title">基于Debezium的Flink-MySQL-CDC源码分析</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">HalfCoke</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">36</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">56</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HalfCoke"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/HalfCoke" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">文章慢慢更新，乖，别急</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Flink%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">Flink内存模型</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E5%86%85%E5%AD%98%E8%AF%B4%E6%98%8E"><span class="toc-number">1.1.</span> <span class="toc-text">总内存说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#TaskManager%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B"><span class="toc-number">1.2.</span> <span class="toc-text">TaskManager内存模型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%A0%86%E5%86%85%E5%AD%98%E5%92%8C%E6%89%98%E7%AE%A1%E5%86%85%E5%AD%98"><span class="toc-number">1.2.1.</span> <span class="toc-text">配置堆内存和托管内存</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%BB%E5%8A%A1-%E7%AE%97%E5%AD%90-%E5%A0%86%E5%86%85%E5%AD%98"><span class="toc-number">1.2.1.1.</span> <span class="toc-text">任务(算子)堆内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%98%E7%AE%A1%E5%86%85%E5%AD%98"><span class="toc-number">1.2.1.2.</span> <span class="toc-text">托管内存</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B6%88%E8%B4%B9%E8%80%85%E6%9D%83%E9%87%8D"><span class="toc-number">1.2.1.3.</span> <span class="toc-text">消费者权重</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%85%8D%E7%BD%AE%E5%A0%86%E5%A4%96%E5%86%85%E5%AD%98-%E7%9B%B4%E6%8E%A5%E5%86%85%E5%AD%98%E6%88%96%E6%9C%AC%E5%9C%B0%E5%86%85%E5%AD%98"><span class="toc-number">1.2.2.</span> <span class="toc-text">配置堆外内存(直接内存或本地内存)</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Web-UI-%E7%95%8C%E9%9D%A2%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.3.</span> <span class="toc-text">Web UI 界面介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%A0%B9%E6%8D%AESlot%E6%95%B0%E9%87%8F%E5%88%92%E5%88%86%E9%83%A8%E5%88%86%E6%BA%90%E7%A0%81"><span class="toc-number">1.3.1.</span> <span class="toc-text">内存根据Slot数量划分部分源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8E%B7%E5%8F%96%E5%B7%B2%E7%94%A8Managed%E5%86%85%E5%AD%98%E6%A0%B8%E5%BF%83%E6%BA%90%E7%A0%81"><span class="toc-number">1.3.2.</span> <span class="toc-text">获取已用Managed内存核心源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Flink%E6%BA%90%E7%A0%81%E4%BF%AE%E6%94%B9"><span class="toc-number">1.3.3.</span> <span class="toc-text">Flink源码修改</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2023/c0df81a5/" title="DeltaLake论文阅读笔记"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202309291558033.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DeltaLake论文阅读笔记"/></a><div class="content"><a class="title" href="/2023/c0df81a5/" title="DeltaLake论文阅读笔记">DeltaLake论文阅读笔记</a><time datetime="2023-09-29T07:52:34.000Z" title="发表于 2023-09-29 15:52:34">2023-09-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/Nginx-Web-Server-Reverse-Proxy-Load-Balancer-Dengan-Performa-Tinggi.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"/></a><div class="content"><a class="title" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）">使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）</a><time datetime="2023-04-02T07:58:29.000Z" title="发表于 2023-04-02 15:58:29">2023-04-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/spf.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"/></a><div class="content"><a class="title" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具">白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具</a><time datetime="2022-10-30T08:01:55.000Z" title="发表于 2022-10-30 16:01:55">2022-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/50e64521/" title="K3S 安装及部署"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/image-20221021222858950.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="K3S 安装及部署"/></a><div class="content"><a class="title" href="/2022/50e64521/" title="K3S 安装及部署">K3S 安装及部署</a><time datetime="2022-10-21T14:22:19.000Z" title="发表于 2022-10-21 22:22:19">2022-10-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/b14aeca0/" title="利用Let's Encrypt获取免费的证书"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="利用Let's Encrypt获取免费的证书"/></a><div class="content"><a class="title" href="/2022/b14aeca0/" title="利用Let's Encrypt获取免费的证书">利用Let's Encrypt获取免费的证书</a><time datetime="2022-10-03T06:26:40.000Z" title="发表于 2022-10-03 14:26:40">2022-10-03</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By HalfCoke</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '0373d8209e264e713cc6',
+      clientSecret: '5959db7d97f07e6f602d9ef98744530be3bea3fe',
+      repo: 'HalfCoke.github.io',
+      owner: 'HalfCoke',
+      admin: ['HalfCoke'],
+      id: '65a530d156bd064b2b32632467fca61f',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
