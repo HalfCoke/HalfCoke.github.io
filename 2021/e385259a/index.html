@@ -1,0 +1,246 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>MongoDB数据库副本集及分片集群介绍 | CCCCCoke</title><meta name="keywords" content="数据库,MongoDB"><meta name="author" content="HalfCoke"><meta name="copyright" content="HalfCoke"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="MongoDB数据库副本集及分片集群介绍MongoDB核心概念 Document： MongoDB中的数据记录就是一个Document，Document的结构与JSON比较类似； document可以嵌套   Collection: MongoDB的Document存储在collection中，collection的概念与关系型数据库中表的概念相对应   Database： Database可以包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MongoDB数据库副本集及分片集群介绍">
+<meta property="og:url" content="https://halfcoke.github.io/2021/e385259a/index.html">
+<meta property="og:site_name" content="CCCCCoke">
+<meta property="og:description" content="MongoDB数据库副本集及分片集群介绍MongoDB核心概念 Document： MongoDB中的数据记录就是一个Document，Document的结构与JSON比较类似； document可以嵌套   Collection: MongoDB的Document存储在collection中，collection的概念与关系型数据库中表的概念相对应   Database： Database可以包">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135844.png">
+<meta property="article:published_time" content="2021-07-03T19:29:09.000Z">
+<meta property="article:modified_time" content="2026-02-10T09:20:03.991Z">
+<meta property="article:author" content="HalfCoke">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="MongoDB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135844.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://halfcoke.github.io/2021/e385259a/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script async="async" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(adsbygoogle = window.adsbygoogle || []).push({
+  google_ad_client: 'pub-6942839821989447',
+  enable_page_level_ads: 'true'
+});</script><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":true,"languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: true
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'MongoDB数据库副本集及分片集群介绍',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2026-02-10 17:20:03'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+          const isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+          const isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+          const hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+          if (t === undefined) {
+            if (isLightMode) activateLightMode()
+            else if (isDarkMode) activateDarkMode()
+            else if (isNotSpecified || hasNoSupport) {
+              const now = new Date()
+              const hour = now.getHours()
+              const isNight = hour <= 6 || hour >= 18
+              isNight ? activateDarkMode() : activateLightMode()
+            }
+            window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+              if (saveToLocal.get('theme') === undefined) {
+                e.matches ? activateDarkMode() : activateLightMode()
+              }
+            })
+          } else if (t === 'light') activateLightMode()
+          else activateDarkMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">60</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="not-top-img" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">CCCCCoke</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友情链接</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav></header><main class="layout" id="content-inner"><div id="post"><div id="post-info"><h1 class="post-title">MongoDB数据库副本集及分片集群介绍</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2021-07-03T19:29:09.000Z" title="发表于 2021-07-04 03:29:09">2021-07-04</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-02-10T09:20:03.991Z" title="更新于 2026-02-10 17:20:03">2026-02-10</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/MongoDB/">MongoDB</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="MongoDB数据库副本集及分片集群介绍"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div><article class="post-content" id="article-container"><h1 id="MongoDB数据库副本集及分片集群介绍"><a href="#MongoDB数据库副本集及分片集群介绍" class="headerlink" title="MongoDB数据库副本集及分片集群介绍"></a>MongoDB数据库副本集及分片集群介绍</h1><h2 id="MongoDB核心概念"><a href="#MongoDB核心概念" class="headerlink" title="MongoDB核心概念"></a>MongoDB核心概念</h2><ul>
+<li><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/introduction/#document-database">Document</a>：</p>
+<p>MongoDB中的数据记录就是一个Document，Document的结构与JSON比较类似；</p>
+<p>document可以嵌套</p>
+<p><img src="https://docs.mongodb.com/manual/images/crud-annotated-document.bakedsvg.svg"></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/databases-and-collections/#collections">Collection</a>:</p>
+<p>MongoDB的Document存储在collection中，collection的概念与关系型数据库中表的概念相对应</p>
+<p><img src="https://docs.mongodb.com/manual/images/crud-annotated-collection.bakedsvg.svg"></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/databases-and-collections/#databases">Database</a>：</p>
+<p>Database可以包含多个collection</p>
+</li>
+</ul>
+<h2 id="副本集Replica-Set"><a href="#副本集Replica-Set" class="headerlink" title="副本集Replica Set"></a>副本集Replica Set</h2><p>副本集中的每个节点维护着相同的数据，副本集的存在是为了提供数据冗余，提供高可用</p>
+<p>副本集包含多个数据承载节点和一个可选的仲裁节点；在数据承载节点中，只有一个节点被视为主节点，其他的数据承载节点被视为备份节点</p>
+<p>主节点接收所有写操作，主节点记录所有对数据集的更改，将其作为oplog。</p>
+<p><img src="https://docs.mongodb.com/manual/images/replica-set-read-write-operations-primary.bakedsvg.svg"></p>
+<p>备份节点重复主节点的oplog，并将其中的操作应用在备份节点的数据中，从而与主节点之间形成同步。如果主节点不可用，有资格的备份节点将会选举出新的主节点。</p>
+<h2 id="分片集群"><a href="#分片集群" class="headerlink" title="分片集群"></a>分片集群</h2><p>分片的作用是将数据分布在多个机器上，MongoDB使用分片支持部署超大规模的数据，并提供高吞吐。</p>
+<p>MongoDB的分片集群包含以下组件：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/sharded-cluster-shards/">分片shard</a></p>
+<p>每个分片是分片数据的自己，每个分片都可以部署为一个replica set</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/sharded-cluster-query-router/">路由mongos</a></p>
+<p><code>mongos</code>作为一个查询的路由，作为用户查询MongoDB分片集群的入口</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://docs.mongodb.com/manual/core/sharded-cluster-config-servers/">配置服务器config servers</a></p>
+<p>配置服务器存放了集群的元数据和配置设置</p>
+</li>
+</ul>
+<p><img src="https://docs.mongodb.com/manual/images/sharded-cluster-production-architecture.bakedsvg.svg"></p>
+<p>MongoDB的将数据在collection级别分片， 将collection数据分布在集群的shards之间。</p>
+<p>用户在使用分片集群与非分片集群的MongoDB时，在使用上没有区别，通过客户端和mongouri即可访问；</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io">HalfCoke</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://halfcoke.github.io/2021/e385259a/">https://halfcoke.github.io/2021/e385259a/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://halfcoke.github.io" target="_blank">CCCCCoke</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">数据库</a><a class="post-meta__tags" href="/tags/MongoDB/">MongoDB</a></div><div class="post_share"><div class="social-share" data-image="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310135844.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2021/e20ce22c/"><img class="prev-cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310129101.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">ClickHouse分布式表介绍</div></div></a></div><div class="next-post pull-right"><a href="/2021/102c449e/"><img class="next-cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310143241.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">基于Debezium的Flink-MySQL-CDC源码分析</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2021/e20ce22c/" title="ClickHouse分布式表介绍"><img class="cover" src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202203310129101.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2021-07-04</div><div class="title">ClickHouse分布式表介绍</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/v2-bd05131cd8bea6dc03a408183fc37d22_b.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">HalfCoke</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">38</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">60</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">40</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/HalfCoke"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/HalfCoke" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">文章慢慢更新，乖，别急</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#MongoDB%E6%95%B0%E6%8D%AE%E5%BA%93%E5%89%AF%E6%9C%AC%E9%9B%86%E5%8F%8A%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4%E4%BB%8B%E7%BB%8D"><span class="toc-number">1.</span> <span class="toc-text">MongoDB数据库副本集及分片集群介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#MongoDB%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">MongoDB核心概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%AF%E6%9C%AC%E9%9B%86Replica-Set"><span class="toc-number">1.2.</span> <span class="toc-text">副本集Replica Set</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E7%89%87%E9%9B%86%E7%BE%A4"><span class="toc-number">1.3.</span> <span class="toc-text">分片集群</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2026/5cc98971/" title="OpenClaw能用来做什么？"><img src="https://i.loli.net/2020/05/01/gkihqEjXxJ5UZ1C.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="OpenClaw能用来做什么？"/></a><div class="content"><a class="title" href="/2026/5cc98971/" title="OpenClaw能用来做什么？">OpenClaw能用来做什么？</a><time datetime="2026-02-10T09:21:39.000Z" title="发表于 2026-02-10 17:21:39">2026-02-10</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2025/73aadaa1/" title="解决升级MacOS26 Tahoe后google chrome打开白屏的问题"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/google-chrome-logo.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="解决升级MacOS26 Tahoe后google chrome打开白屏的问题"/></a><div class="content"><a class="title" href="/2025/73aadaa1/" title="解决升级MacOS26 Tahoe后google chrome打开白屏的问题">解决升级MacOS26 Tahoe后google chrome打开白屏的问题</a><time datetime="2025-09-18T00:35:57.000Z" title="发表于 2025-09-18 08:35:57">2025-09-18</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/c0df81a5/" title="DeltaLake论文阅读笔记"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/202309291558033.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DeltaLake论文阅读笔记"/></a><div class="content"><a class="title" href="/2023/c0df81a5/" title="DeltaLake论文阅读笔记">DeltaLake论文阅读笔记</a><time datetime="2023-09-29T07:52:34.000Z" title="发表于 2023-09-29 15:52:34">2023-09-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/Nginx-Web-Server-Reverse-Proxy-Load-Balancer-Dengan-Performa-Tinggi.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）"/></a><div class="content"><a class="title" href="/2023/6b488705/" title="使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）">使用Nginx同时代理Web服务与Trojan（或其他TCP/UDP服务）</a><time datetime="2023-04-02T07:58:29.000Z" title="发表于 2023-04-02 15:58:29">2023-04-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"><img src="https://cdn.jsdelivr.net/gh/HalfCoke/blog_img@master/img/spf.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具"/></a><div class="content"><a class="title" href="/2022/a2e7677e/" title="白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具">白嫖系列-基于GitHub Action和国内公网服务器构建免费科学工具</a><time datetime="2022-10-30T08:01:55.000Z" title="发表于 2022-10-30 16:01:55">2022-10-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By HalfCoke</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '0373d8209e264e713cc6',
+      clientSecret: '5959db7d97f07e6f602d9ef98744530be3bea3fe',
+      repo: 'HalfCoke.github.io',
+      owner: 'HalfCoke',
+      admin: ['HalfCoke'],
+      id: '772f0056056e03bdf96d440f34f58aba',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

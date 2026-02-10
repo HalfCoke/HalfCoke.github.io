@@ -1,0 +1,15 @@
+# 必须单独创建
+apiVersion: k8s.nginx.org/v1alpha1
+kind: TransportServer
+metadata:
+  name: nginx-ts
+spec:
+  listener:
+    name: nginx-tcp
+    protocol: TCP
+  upstreams:
+    - name: nginx-up
+      service: nginx-service
+      port: 8080
+  action:
+    pass: nginx-up
