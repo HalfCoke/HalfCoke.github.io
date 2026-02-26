@@ -1,5 +1,6 @@
 ---
 title: openclaw 如何实现自我进化
+abbrlink: 188f1136
 date: 2026-02-25 15:23:55
 tags:
 ---

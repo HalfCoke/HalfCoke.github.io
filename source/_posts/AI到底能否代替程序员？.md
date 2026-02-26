@@ -1,5 +1,6 @@
 ---
 title: AI到底能否代替程序员？
+abbrlink: f3a58b9b
 date: 2026-02-13 16:23:28
 tags:
 ---
